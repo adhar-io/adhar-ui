@@ -1,0 +1,39 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .: {}
+
+  packages/a11y: {}
+
+  packages/angular: {}
+
+  packages/cli: {}
+
+  packages/design-sync: {}
+
+  packages/dtcg: {}
+
+  packages/icons: {}
+
+  packages/primitives: {}
+
+  packages/react: {}
+
+  packages/registry: {}
+
+  packages/solid: {}
+
+  packages/svelte: {}
+
+  packages/tailwind-preset: {}
+
+  packages/tokens: {}
+
+  packages/utils: {}
+
+  packages/vue: {}

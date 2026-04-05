@@ -1,0 +1,77 @@
+{
+  "nodeModulesDir": "auto",
+  "workspace": [
+    "./packages/tokens",
+    "./packages/tailwind-preset",
+    "./packages/utils",
+    "./packages/a11y",
+    "./packages/icons",
+    "./packages/primitives",
+    "./packages/react",
+    "./packages/vue",
+    "./packages/solid",
+    "./packages/svelte",
+    "./packages/angular",
+    "./packages/cli",
+    "./packages/registry",
+    "./packages/dtcg",
+    "./packages/design-sync",
+    "./packages/figma-plugin",
+    "./packages/penpot-plugin",
+    "./packages/sync-server",
+    "./packages/code-connect",
+    "./apps/docs",
+    "./apps/playground"
+  ],
+  "tasks": {
+    "build": "deno task build:tokens && deno task build:tailwind && deno task build:utils && deno task build:a11y && deno task build:icons",
+    "build:tokens": "cd packages/tokens && deno task build",
+    "build:tailwind": "cd packages/tailwind-preset && deno task build",
+    "build:utils": "cd packages/utils && deno task build",
+    "build:a11y": "cd packages/a11y && deno task build",
+    "build:icons": "cd packages/icons && deno task build",
+    "build:primitives": "cd packages/primitives && deno task build",
+    "check": "deno check packages/*/src/index.ts",
+    "test": "deno test packages/*/src/__tests__/ --allow-read --allow-env --allow-net",
+    "lint": "deno lint",
+    "fmt": "deno fmt",
+    "clean": "rm -rf packages/*/dist",
+    "cli": "deno run -A packages/cli/src/index.ts",
+    "docs:dev": "cd apps/docs && deno task dev",
+    "playground:dev": "cd apps/playground && deno task dev"
+  },
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["deno.window", "dom", "dom.iterable", "es2022"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
+  "fmt": {
+    "useTabs": false,
+    "lineWidth": 100,
+    "indentWidth": 2,
+    "singleQuote": true,
+    "proseWrap": "preserve",
+    "exclude": ["packages/*/src/generated/", "packages/cli/src/templates/", "apps/"]
+  },
+  "lint": {
+    "include": ["packages/"],
+    "exclude": ["packages/*/src/generated/", "packages/cli/src/templates/"],
+    "rules": {
+      "tags": ["recommended"],
+      "exclude": ["no-explicit-any"]
+    }
+  },
+  "imports": {
+    "@adhar-ui/tokens": "./packages/tokens/src/index.ts",
+    "@adhar-ui/tailwind-preset": "./packages/tailwind-preset/src/index.ts",
+    "@adhar-ui/utils": "./packages/utils/src/index.ts",
+    "@adhar-ui/a11y": "./packages/a11y/src/index.ts",
+    "@adhar-ui/icons": "./packages/icons/src/index.ts",
+    "@adhar-ui/primitives": "./packages/primitives/src/index.ts",
+    "@adhar-ui/registry": "./packages/registry/src/index.ts",
+    "@adhar-ui/dtcg": "./packages/dtcg/src/index.ts",
+    "@adhar-ui/design-sync": "./packages/design-sync/src/index.ts",
+    "@adhar-ui/design-sync/generator": "./packages/design-sync/src/generator/index.ts"
+  }
+}

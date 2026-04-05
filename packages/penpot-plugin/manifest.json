@@ -1,0 +1,8 @@
+{
+  "name": "Adhar UI",
+  "description": "Bidirectional design token and component sync for Adhar UI",
+  "host": "https://plugins.adhar.io/penpot/",
+  "code": "index.js",
+  "icon": "icon.svg",
+  "permissions": ["content:read", "content:write"]
+}

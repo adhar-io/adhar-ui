@@ -1,0 +1,9 @@
+{
+  "name": "@adhar-ui/dtcg",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "tasks": {
+    "check": "deno check src/index.ts",
+    "test": "deno test --allow-read"
+  }
+}

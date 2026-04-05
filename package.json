@@ -1,0 +1,21 @@
+{
+  "name": "adhar-ui",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Framework-agnostic design system and component library for the Adhar platform",
+  "type": "module",
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "check": "deno task check",
+    "lint": "deno task lint",
+    "test": "deno task test",
+    "fmt": "deno task fmt",
+    "build": "deno task build",
+    "cli": "deno task cli",
+    "publish:dry": "pnpm -r --filter './packages/*' publish --dry-run --no-git-checks",
+    "publish:npm": "pnpm -r --filter './packages/*' publish --access public --no-git-checks"
+  }
+}

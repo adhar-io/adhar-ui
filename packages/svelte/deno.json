@@ -1,0 +1,9 @@
+{
+  "name": "@adhar-ui/svelte",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "tasks": {
+    "build": "echo 'Svelte package - placeholder'",
+    "check": "deno check src/**/*.ts"
+  }
+}

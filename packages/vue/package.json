@@ -1,0 +1,19 @@
+{
+  "name": "@adhar-ui/vue",
+  "version": "0.1.0",
+  "description": "Vue 3 components compiled from Mitosis",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "files": ["src", "README.md"],
+  "keywords": ["design-system", "adhar-ui", "components", "tailwind"],
+  "author": "Adhar",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adhar-io/adhar-ui",
+    "directory": "packages/vue"
+  },
+  "publishConfig": { "access": "public" }
+}

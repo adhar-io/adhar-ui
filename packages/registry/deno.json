@@ -1,0 +1,9 @@
+{
+  "name": "@adhar-ui/registry",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "tasks": {
+    "build": "echo 'Registry build - JSON generation'",
+    "check": "deno check src/**/*.ts"
+  }
+}

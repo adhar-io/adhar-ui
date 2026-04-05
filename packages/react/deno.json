@@ -1,0 +1,13 @@
+{
+  "name": "@adhar-ui/react",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "imports": {
+    "react": "npm:@types/react@^19.2.0",
+    "react/jsx-runtime": "npm:@types/react@^19.2.0/jsx-runtime"
+  },
+  "tasks": {
+    "build": "deno run -A npm:tsup src/index.ts --format esm --dts --clean --out-dir dist --external react --external react-dom",
+    "check": "deno check src/index.ts"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "@adhar-ui/primitives",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "tasks": {
+    "build": "bash scripts/compile.sh",
+    "check": "deno check src/**/*.ts"
+  }
+}

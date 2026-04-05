@@ -1,0 +1,9 @@
+{
+  "name": "@adhar-ui/a11y",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "tasks": {
+    "build": "deno run -A npm:tsup src/index.ts --format esm --dts --clean --out-dir dist",
+    "check": "deno check src/**/*.ts"
+  }
+}

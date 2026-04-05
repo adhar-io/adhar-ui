@@ -1,0 +1,9 @@
+{
+  "name": "@adhar-ui/angular",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "tasks": {
+    "build": "echo 'Angular package - placeholder'",
+    "check": "deno check src/**/*.ts"
+  }
+}

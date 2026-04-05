@@ -1,0 +1,9 @@
+{
+  "name": "@adhar-ui/vue",
+  "version": "0.1.0",
+  "exports": "./src/index.ts",
+  "tasks": {
+    "build": "echo 'Vue package - placeholder'",
+    "check": "deno check src/**/*.ts"
+  }
+}

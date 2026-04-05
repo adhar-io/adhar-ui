@@ -1,0 +1,20 @@
+{
+  "name": "Adhar UI",
+  "id": "adhar-ui-figma-plugin",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "capabilities": ["codegen", "inspect"],
+  "codegenLanguages": [
+    { "label": "Adhar UI (React)", "value": "react" },
+    { "label": "Adhar UI (Vue)", "value": "vue" },
+    { "label": "Adhar UI (Solid)", "value": "solid" },
+    { "label": "Adhar UI (Svelte)", "value": "svelte" },
+    { "label": "Adhar UI (Angular)", "value": "angular" }
+  ],
+  "permissions": ["currentuser"],
+  "networkAccess": {
+    "allowedDomains": ["*.adhar.io"],
+    "reasoning": "Sync tokens with Adhar UI sync server"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/tapas-pc/Documents/Work/Adhar/AdharWS/**)",
+      "Bash(pnpm --version)",
+      "Bash(deno --version)",
+      "Bash(find packages/primitives/src/components -name '*.lite.tsx' -exec sed -i '' -e 's/  class\\\\?:/  className?:/g' -e 's/  class:/  className:/g' -e 's/class={props\\\\.class}/className={props.className}/g' -e 's/props\\\\.class/props.className/g' '{}' +)",
+      "Bash(find packages/primitives/src/components -name '*.lite.tsx' -exec sed -i '' 's/props\\\\.classNameName/props.className/g' {} +)",
+      "Bash(grep -rn 'class={props\\\\.' packages/primitives/src/components/**/*.lite.tsx)",
+      "Bash(find packages/primitives/src/components -name '*.lite.tsx' -exec sed -i '' 's/class={props\\\\./className={props./g' {} +)",
+      "Bash(grep -rn ' class=' packages/primitives/src/components/**/*.lite.tsx)",
+      "Bash(deno run:*)",
+      "Bash(chmod +x /Users/tapas-pc/Documents/Work/Adhar/AdharWS/adhar-ui/packages/primitives/scripts/compile.sh)",
+      "Bash(deno check:*)",
+      "Bash(deno lint:*)",
+      "Bash(find packages/*/src/generated -type f)",
+      "Bash(deno eval:*)",
+      "WebSearch",
+      "Bash(ls -d packages/*/deno.json)",
+      "Bash(sed -i '' 's/Tailwind CSS | v3 or v4/Tailwind CSS | v4/g' README.md)",
+      "Bash(sed -i '' 's/3\\\\.4 \\\\/ 4\\\\.x/4.x/g' README.md)",
+      "Bash(sed -i '' 's/| **Tailwind CSS** | 3.4 \\\\/ 4.x/| **Tailwind CSS** | 4.x/g' README.md)",
+      "Bash(sed -i '' 's/tailwindVersion: 3 | 4 | null/tailwindVersion: 4 | null/g' packages/cli/src/utils/detect-framework.ts)",
+      "Bash(sed -i '' 's/info\\\\.tailwindVersion = 3/info.tailwindVersion = 4/g' packages/cli/src/utils/detect-framework.ts)",
+      "Bash(echo \"Registry entries: $\\(deno eval 'import{getAllComponentNames}from\"./packages/registry/src/component-index.ts\";console.log\\(getAllComponentNames\\(\\).length\\)' 2>&1\\)\")",
+      "Bash(echo \"CLI templates: $\\(deno eval 'import{getTemplateCount}from\"./packages/cli/src/templates/index.ts\";console.log\\(getTemplateCount\\(\\)\\)' 2>&1\\)\")",
+      "Bash(echo \"Blocks: $\\(deno eval 'import{getBlocks}from\"./packages/registry/src/component-index.ts\";console.log\\(getBlocks\\(\\).length\\)' 2>&1\\)\")",
+      "Bash(sed -i '' 's/import { buildComponentMap, generateVariantCombinations, type ComponentVariantMap } from/import { buildComponentMap, generateVariantCombinations } from/' packages/figma-plugin/src/handlers/component-push.ts)",
+      "Bash(sed -i '' 's/function generateKitReadme\\(manifest: PenpotManifest, preset: string, variantCount: number\\)/function generateKitReadme\\(manifest: PenpotManifest, preset: string, _variantCount: number\\)/' packages/design-sync/src/generator/design-kit.ts)",
+      "Bash(sed -i '' 's/const { w, h, fontSize, px } = sStyle/const { w, h, fontSize, px: _px } = sStyle/' packages/design-sync/src/generator/svg-renderer.ts)",
+      "Bash(sed -i '' 's/Deno.serve\\({ port: PORT }, async \\(req: Request\\): Promise<Response> => {/Deno.serve\\({ port: PORT }, \\(req: Request\\): Response | Promise<Response> => {/' packages/sync-server/src/index.ts)",
+      "Bash(sed -i '' 's/import type { DTCGDocument, DTCGToken, DTCGTokenType } from/import type { DTCGToken, DTCGTokenType } from/' packages/dtcg/src/validators.ts)",
+      "Bash(grep -rn \"78 \" packages/*/README.md)",
+      "Bash(grep -rn \"v3\" packages/*/README.md)"
+    ]
+  }
+}
