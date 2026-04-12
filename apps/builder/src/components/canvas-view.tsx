@@ -1,0 +1,415 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import type { CanvasNode } from '../lib/builder-types.ts';
+import { isContainer } from '../lib/builder-types.ts';
+
+// ─── Types ──────────────────────────────────────────────────────────────────
+
+interface CanvasViewProps {
+  nodes: CanvasNode[];
+  selectedNodeIds: string[];
+  zoom: number;
+  devicePreview: 'desktop' | 'tablet' | 'mobile';
+  canvasBg: 'white' | 'dots' | 'dark';
+  pageName: string;
+  onSelect: (nodeId: string, shiftKey: boolean) => void;
+  onDeselect: () => void;
+  onUpdateText: (nodeId: string, text: string) => void;
+  onDropNew: (type: string, parentId?: string) => void;
+  onDropReorder: (sourceId: string, targetParentId: string | null, insertIndex: number) => void;
+  onContextMenu: (nodeId: string, x: number, y: number) => void;
+  onCopy: () => void;
+  onPaste: () => void;
+  onDuplicate: () => void;
+  onMoveUp: (nodeId: string) => void;
+  onMoveDown: (nodeId: string) => void;
+  onWrap: (nodeId: string) => void;
+  onDelete: (nodeId: string) => void;
+}
+
+const DEVICE_W = { desktop: 1280, tablet: 768, mobile: 375 } as const;
+
+// ─── Canvas View ────────────────────────────────────────────────────────────
+
+export function CanvasView({
+  nodes, selectedNodeIds, zoom, devicePreview, canvasBg, pageName,
+  onSelect, onDeselect, onUpdateText, onDropNew, onDropReorder,
+  onCopy, onPaste, onDuplicate, onMoveUp, onMoveDown, onWrap, onDelete,
+}: CanvasViewProps) {
+  const [ctx, setCtx] = useState<{ x: number; y: number; nodeId: string } | null>(null);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isPanning, setIsPanning] = useState(false);
+  const [panStart, setPanStart] = useState({ x: 0, y: 0, px: 0, py: 0 });
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
+
+  const deviceWidth = DEVICE_W[devicePreview];
+  const scale = zoom / 100;
+
+  // Pan with middle mouse or space+drag
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if (e.button === 1 || (e.button === 0 && e.altKey)) {
+      e.preventDefault();
+      setIsPanning(true);
+      setPanStart({ x: e.clientX, y: e.clientY, px: pan.x, py: pan.y });
+    }
+  }, [pan]);
+
+  useEffect(() => {
+    if (!isPanning) return;
+    const move = (e: MouseEvent) => setPan({ x: panStart.px + e.clientX - panStart.x, y: panStart.py + e.clientY - panStart.y });
+    const up = () => setIsPanning(false);
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+    return () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+  }, [isPanning, panStart]);
+
+  // Scroll to zoom
+  const handleWheel = useCallback((e: React.WheelEvent) => {
+    if (e.ctrlKey || e.metaKey) {
+      e.preventDefault();
+      // Handled by parent zoom control
+    }
+  }, []);
+
+  // Canvas background — uses CSS variables from globals.css
+  const bgStyle: React.CSSProperties = canvasBg === 'dark'
+    ? { background: 'hsl(var(--canvas-dark))' }
+    : canvasBg === 'dots'
+      ? { background: 'hsl(var(--canvas))', backgroundImage: 'radial-gradient(circle, hsl(var(--canvas-dot)) 0.8px, transparent 0.8px)', backgroundSize: `${20 * scale}px ${20 * scale}px` }
+      : { background: 'hsl(var(--canvas))' };
+
+  function handleCanvasClick(e: React.MouseEvent) {
+    if (e.target === e.currentTarget || (e.target as HTMLElement).dataset?.canvas) {
+      onDeselect();
+      setCtx(null);
+    }
+  }
+
+  function handleCanvasDrop(e: React.DragEvent) {
+    const type = e.dataTransfer.getData('adhar/type');
+    const moveId = e.dataTransfer.getData('adhar/move-id');
+    if (type) { e.preventDefault(); onDropNew(type); }
+    else if (moveId) { e.preventDefault(); onDropReorder(moveId, null, nodes.length); }
+  }
+
+  function doCtx(action: string) {
+    if (!ctx) return;
+    const { nodeId } = ctx;
+    setCtx(null);
+    switch (action) {
+      case 'copy': onCopy(); break;
+      case 'paste': onPaste(); break;
+      case 'duplicate': onDuplicate(); break;
+      case 'up': onMoveUp(nodeId); break;
+      case 'down': onMoveDown(nodeId); break;
+      case 'wrap': onWrap(nodeId); break;
+      case 'delete': onDelete(nodeId); break;
+    }
+  }
+
+  const selCount = selectedNodeIds.length;
+  const singleSelId = selCount === 1 ? selectedNodeIds[0] : null;
+
+  return (
+    <div className='flex-1 overflow-hidden relative' style={bgStyle}
+      onMouseDown={handleMouseDown} onWheel={handleWheel}
+      onClick={() => setCtx(null)} ref={canvasRef}>
+
+      {/* ── Horizontal Ruler (top) ── */}
+      <div className='absolute top-0 left-5 right-0 h-5 z-20 pointer-events-none overflow-hidden' style={{ background: 'hsl(var(--card) / 0.85)', backdropFilter: 'blur(4px)', borderBottom: '1px solid hsl(var(--border) / 0.3)' }}>
+        <svg className='absolute top-0 left-0 w-full h-full' style={{ transform: `translateX(${pan.x % (100 * scale)}px)` }}>
+          {Array.from({ length: 60 }, (_, i) => {
+            const major = i * 100 * scale;
+            const px = Math.round(i * 100 - (pan.x % (100 * scale)) / scale + (pan.x % (100 * scale)) / scale);
+            const label = Math.round(i * 100 - pan.x / scale);
+            return (
+              <g key={i}>
+                <line x1={major} y1={14} x2={major} y2={20} stroke='hsl(var(--muted-foreground))' strokeWidth={0.5} opacity={0.3} />
+                <text x={major + 3} y={12} fill='hsl(var(--muted-foreground))' fontSize={8} opacity={0.35} fontFamily='ui-monospace, monospace'>{label}</text>
+                {/* Minor ticks */}
+                {[1,2,3,4].map((t) => (
+                  <line key={t} x1={major + t * 20 * scale} y1={16} x2={major + t * 20 * scale} y2={20} stroke='hsl(var(--muted-foreground))' strokeWidth={0.5} opacity={0.15} />
+                ))}
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+
+      {/* ── Vertical Ruler (left) ── */}
+      <div className='absolute top-5 left-0 bottom-0 w-5 z-20 pointer-events-none overflow-hidden' style={{ background: 'hsl(var(--card) / 0.85)', backdropFilter: 'blur(4px)', borderRight: '1px solid hsl(var(--border) / 0.3)' }}>
+        <svg className='absolute top-0 left-0 w-full h-full' style={{ transform: `translateY(${pan.y % (100 * scale)}px)` }}>
+          {Array.from({ length: 60 }, (_, i) => {
+            const major = i * 100 * scale;
+            const label = Math.round(i * 100 - pan.y / scale);
+            return (
+              <g key={i}>
+                <line x1={14} y1={major} x2={20} y2={major} stroke='hsl(var(--muted-foreground))' strokeWidth={0.5} opacity={0.3} />
+                <text x={2} y={major + 10} fill='hsl(var(--muted-foreground))' fontSize={7} opacity={0.35} fontFamily='ui-monospace, monospace' style={{ writingMode: 'vertical-lr' } as any}>{label}</text>
+                {[1,2,3,4].map((t) => (
+                  <line key={t} x1={16} y1={major + t * 20 * scale} x2={20} y2={major + t * 20 * scale} stroke='hsl(var(--muted-foreground))' strokeWidth={0.5} opacity={0.15} />
+                ))}
+              </g>
+            );
+          })}
+        </svg>
+      </div>
+
+      {/* ── Ruler corner ── */}
+      <div className='absolute top-0 left-0 w-5 h-5 z-20 pointer-events-none' style={{ background: 'hsl(var(--card) / 0.85)', borderBottom: '1px solid hsl(var(--border) / 0.3)', borderRight: '1px solid hsl(var(--border) / 0.3)' }} />
+
+      {/* ── Artboard area ── */}
+      <div className='absolute inset-0 pt-5 pl-5' style={{ cursor: isPanning ? 'grabbing' : 'default' }}
+        onClick={handleCanvasClick}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleCanvasDrop}>
+
+        <div style={{ transform: `translate(${pan.x}px, ${pan.y}px)`, willChange: 'transform' }}>
+          {/* Artboard */}
+          <div className='relative' style={{ padding: '60px 80px' }}>
+            {/* Artboard label */}
+            <div className='absolute left-[80px] top-8 flex items-center gap-2' style={{ transform: `scale(${Math.max(0.7, 1 / scale)})`, transformOrigin: 'left center' }}>
+              <span className='text-[11px] font-medium text-muted-foreground/50'>{pageName}</span>
+              <span className='text-[10px] text-muted-foreground/30'>{deviceWidth}px</span>
+            </div>
+
+            {/* The actual artboard */}
+            <div
+              className={`relative rounded-lg ${canvasBg === 'dark' ? 'bg-muted text-foreground' : 'bg-background text-foreground'}`}
+              style={{
+                width: deviceWidth,
+                minHeight: 600,
+                transform: `scale(${scale})`,
+                transformOrigin: 'top left',
+                boxShadow: '0 0 0 1px hsl(var(--border) / 0.5), 0 4px 24px hsl(var(--foreground) / 0.06), 0 16px 56px hsl(var(--foreground) / 0.03)',
+              }}
+              data-canvas='true'
+              onClick={handleCanvasClick}>
+
+              {/* Artboard content */}
+              <div className='p-6 min-h-[600px]'>
+                {nodes.length === 0 ? (
+                  <div className='flex flex-col items-center justify-center h-[550px] rounded-xl'
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={handleCanvasDrop}>
+                    <div className='w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-border/30 text-muted-foreground/20 rounded-xl transition-colors'>
+                      <svg className='w-10 h-10 mb-3 opacity-40' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={1}>
+                        <rect x='3' y='3' width='18' height='18' rx='3' />
+                        <path d='M12 8v8M8 12h8' />
+                      </svg>
+                      <p className='text-xs font-medium'>Drop components here</p>
+                      <p className='text-xs mt-1 opacity-50'>Drag from the sidebar or use Insert menu</p>
+                    </div>
+                  </div>
+                ) : (
+                  nodes.map((node) => (
+                    <NodeView key={node.id} node={node} selectedNodeIds={selectedNodeIds} hoveredId={hoveredId}
+                      onSelect={onSelect} onUpdateText={onUpdateText}
+                      onDropNew={onDropNew} onDropReorder={onDropReorder}
+                      onHover={setHoveredId}
+                      onContextMenu={(nodeId, x, y) => setCtx({ nodeId, x, y })} />
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Context Menu ── */}
+      {ctx && (
+        <>
+          <div className='fixed inset-0 z-40' onClick={() => setCtx(null)} />
+          <div className='dropdown fixed w-48' style={{ left: ctx.x, top: ctx.y }}>
+            <CtxItem label='Copy' shortcut='⌘C' onClick={() => doCtx('copy')} />
+            <CtxItem label='Paste' shortcut='⌘V' onClick={() => doCtx('paste')} />
+            <CtxItem label='Duplicate' shortcut='⌘D' onClick={() => doCtx('duplicate')} />
+            <div className='dropdown-separator' />
+            <CtxItem label='Move Up' onClick={() => doCtx('up')} />
+            <CtxItem label='Move Down' onClick={() => doCtx('down')} />
+            <CtxItem label='Wrap in Container' onClick={() => doCtx('wrap')} />
+            <div className='dropdown-separator' />
+            <CtxItem label='Delete' shortcut='⌫' onClick={() => doCtx('delete')} destructive />
+          </div>
+        </>
+      )}
+
+    </div>
+  );
+}
+
+// ─── Context Menu Item ──────────────────────────────────────────────────────
+function CtxItem({ label, shortcut, onClick, destructive }: { label: string; shortcut?: string; onClick: () => void; destructive?: boolean }) {
+  return (
+    <button onClick={onClick} className={`dropdown-item ${destructive ? 'text-destructive' : ''}`}>
+      <span>{label}</span>
+      {shortcut && <kbd className='text-[10px] text-muted-foreground/40 font-mono'>{shortcut}</kbd>}
+    </button>
+  );
+}
+
+// ─── Node View ──────────────────────────────────────────────────────────────
+
+type DropPos = 'before' | 'after' | 'inside' | null;
+
+function NodeView({ node, selectedNodeIds, hoveredId, parentId, siblingIndex, onSelect, onUpdateText, onDropNew, onDropReorder, onHover, onContextMenu }: {
+  node: CanvasNode; selectedNodeIds: string[]; hoveredId: string | null;
+  parentId: string | null; siblingIndex: number;
+  onSelect: (nodeId: string, shiftKey: boolean) => void;
+  onUpdateText: (nodeId: string, text: string) => void;
+  onDropNew: (type: string, parentId?: string) => void;
+  onDropReorder: (sourceId: string, targetParentId: string | null, insertIndex: number) => void;
+  onHover: (nodeId: string | null) => void;
+  onContextMenu: (nodeId: string, x: number, y: number) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [dropPos, setDropPos] = useState<DropPos>(null);
+
+  const isSel = selectedNodeIds.includes(node.id);
+  const isHov = hoveredId === node.id && !isSel;
+  const isCont = isContainer(node.type);
+  const hasText = typeof node.props.children === 'string';
+
+  function handleDragStart(e: React.DragEvent) {
+    e.stopPropagation();
+    e.dataTransfer.setData('adhar/move-id', node.id);
+    e.dataTransfer.effectAllowed = 'move';
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    const hasMoveId = e.dataTransfer.types.includes('adhar/move-id');
+    const hasType = e.dataTransfer.types.includes('adhar/type');
+    if (!hasMoveId && !hasType) return;
+
+    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const y = e.clientY - rect.top;
+    const h = rect.height;
+
+    if (isCont) {
+      // For containers: top 8px = before, bottom 8px = after, middle = inside
+      const edge = Math.min(8, h * 0.15);
+      if (y < edge) setDropPos('before');
+      else if (y > h - edge) setDropPos('after');
+      else setDropPos('inside');
+    } else {
+      // For leaf nodes: top half = before, bottom half = after
+      setDropPos(y < h / 2 ? 'before' : 'after');
+    }
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    const type = e.dataTransfer.getData('adhar/type');
+    const moveId = e.dataTransfer.getData('adhar/move-id');
+    const pos = dropPos;
+    setDropPos(null);
+
+    if (pos === 'inside' && isCont) {
+      // Drop inside this container (append to end of children)
+      if (type) onDropNew(type, node.id);
+      else if (moveId && moveId !== node.id) onDropReorder(moveId, node.id, node.children.length);
+    } else if (pos === 'before') {
+      // Drop before this node within its parent
+      if (type) onDropNew(type, parentId || undefined);
+      else if (moveId && moveId !== node.id) onDropReorder(moveId, parentId, siblingIndex);
+    } else if (pos === 'after') {
+      // Drop after this node within its parent
+      if (type) onDropNew(type, parentId || undefined);
+      else if (moveId && moveId !== node.id) onDropReorder(moveId, parentId, siblingIndex + 1);
+    }
+  }
+
+  // Selection ring color/style
+  const ringCls = isSel
+    ? 'ring-2 ring-primary ring-offset-1'
+    : isHov
+      ? 'ring-1 ring-primary/30'
+      : '';
+
+  return (
+    <div draggable
+      onClick={(e) => { e.stopPropagation(); onSelect(node.id, e.shiftKey); }}
+      onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); onContextMenu(node.id, e.clientX, e.clientY); }}
+      onDoubleClick={(e) => { e.stopPropagation(); if (hasText) setEditing(true); }}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragLeave={() => setDropPos(null)}
+      onDrop={handleDrop}
+      onMouseEnter={() => onHover(node.id)}
+      onMouseLeave={() => onHover(null)}
+      className={`relative transition-shadow ${ringCls} ${dropPos === 'inside' ? 'ring-2 ring-primary/40 bg-primary/[0.03]' : ''}`}>
+
+      {/* Drop indicators — precise lines with dots at edges */}
+      {dropPos === 'before' && (
+        <div className='absolute -top-[1px] left-0 right-0 z-10 pointer-events-none flex items-center'>
+          <div className='w-1.5 h-1.5 rounded-full bg-primary shrink-0 -ml-[3px]' />
+          <div className='flex-1 h-[2px] bg-primary' />
+          <div className='w-1.5 h-1.5 rounded-full bg-primary shrink-0 -mr-[3px]' />
+        </div>
+      )}
+      {dropPos === 'after' && (
+        <div className='absolute -bottom-[1px] left-0 right-0 z-10 pointer-events-none flex items-center'>
+          <div className='w-1.5 h-1.5 rounded-full bg-primary shrink-0 -ml-[3px]' />
+          <div className='flex-1 h-[2px] bg-primary' />
+          <div className='w-1.5 h-1.5 rounded-full bg-primary shrink-0 -mr-[3px]' />
+        </div>
+      )}
+
+      {/* Selection label */}
+      {isSel && (
+        <div className='absolute -top-5 left-0 z-10 flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-primary text-primary-foreground text-[10px] font-semibold whitespace-nowrap shadow-sm'>
+          {node.type}
+          {node.children.length > 0 && <span className='opacity-60'>({node.children.length})</span>}
+        </div>
+      )}
+
+      {/* Hover label (subtle) */}
+      {isHov && !isSel && (
+        <div className='absolute -top-4 left-0 z-10 px-1 py-px rounded-md bg-muted text-muted-foreground text-[10px] font-medium whitespace-nowrap pointer-events-none'>
+          {node.type}
+        </div>
+      )}
+
+      {/* Node content */}
+      <div className={node.props.className || ''}>
+        {node.type === 'input' ? (
+          <input className={node.props.className} placeholder={node.props.placeholder} readOnly tabIndex={-1} />
+        ) : node.type === 'textarea' ? (
+          <textarea className={node.props.className} placeholder={node.props.placeholder} readOnly tabIndex={-1} />
+        ) : node.type === 'progress-bar' ? (
+          <div className={node.props.className}><div className='h-full bg-primary rounded-full' style={{ width: `${node.props['data-value'] || 66}%` }} /></div>
+        ) : node.type === 'separator' ? (
+          <div className={node.props.className} />
+        ) : (
+          <>
+            {hasText && !isCont && (
+              editing ? (
+                <span contentEditable suppressContentEditableWarning
+                  onBlur={(e) => { setEditing(false); onUpdateText(node.id, e.currentTarget.textContent || ''); }}
+                  onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); (e.target as HTMLElement).blur(); } }}
+                  className='outline-none ring-1 ring-primary/30 rounded-md px-0.5 min-w-[20px] inline-block'
+                  ref={(el: HTMLSpanElement | null) => el?.focus()}>
+                  {node.props.children}
+                </span>
+              ) : <span>{node.props.children}</span>
+            )}
+            {node.children.map((c) => (
+              <NodeView key={c.id} node={c} selectedNodeIds={selectedNodeIds} hoveredId={hoveredId}
+                onSelect={onSelect} onUpdateText={onUpdateText} onDropNew={onDropNew} onDropReorder={onDropReorder}
+                onHover={onHover} onContextMenu={onContextMenu} />
+            ))}
+            {isCont && node.children.length === 0 && (
+              <div className={`min-h-[48px] flex items-center justify-center text-[10px] border-2 border-dashed rounded-lg transition-colors ${dropPos === 'inside' ? 'border-primary/40 text-primary/40 bg-primary/[0.02]' : 'border-border/20 text-muted-foreground/15'}`}>
+                <svg className='w-3.5 h-3.5 mr-1 opacity-40' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={1.5}><path d='M12 5v14M5 12h14' /></svg>
+                Drop here
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

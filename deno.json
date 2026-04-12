@@ -21,6 +21,7 @@
     "./packages/sync-server",
     "./packages/code-connect",
     "./apps/docs",
+    "./apps/builder",
     "./apps/playground",
     "./apps/storybook"
   ],
@@ -39,6 +40,7 @@
     "clean": "rm -rf packages/*/dist",
     "cli": "deno run -A packages/cli/src/index.ts",
     "docs:dev": "cd apps/docs && deno task dev",
+    "builder:dev": "cd apps/builder && deno task dev",
     "playground:dev": "cd apps/playground && deno task dev",
     "storybook:dev": "cd apps/storybook && deno task dev"
   },

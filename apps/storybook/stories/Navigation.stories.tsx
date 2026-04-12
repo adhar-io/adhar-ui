@@ -1,84 +1,164 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
+
 const cn = (...c: (string | boolean | undefined)[]) => c.filter(Boolean).join(' ');
 
-export const TabsDefault: StoryObj = {
-  name: 'Tabs — Default',
-  render: () => {
-    const [t, st] = useState('account');
+const meta: Meta = { title: 'Components/Navigation' };
+export default meta;
+
+// ---------------------------------------------------------------------------
+// 1. Tabs
+// ---------------------------------------------------------------------------
+
+type TabsArgs = {
+  defaultTab: 'account' | 'password' | 'settings';
+  variant: 'default' | 'underline' | 'pills';
+};
+
+export const Tabs: StoryObj<TabsArgs> = {
+  name: 'Tabs',
+  args: {
+    defaultTab: 'account',
+    variant: 'default',
+  },
+  argTypes: {
+    defaultTab: {
+      control: 'select',
+      options: ['account', 'password', 'settings'],
+      description: 'Initially active tab',
+    },
+    variant: {
+      control: 'select',
+      options: ['default', 'underline', 'pills'],
+      description: 'Visual style of the tab bar',
+    },
+  },
+  render: (args) => {
+    const [active, setActive] = useState(args.defaultTab);
+
+    const wrapperStyles: Record<string, string> = {
+      default: 'inline-flex h-10 items-center justify-center rounded-md bg-neutral-100 p-1',
+      underline: 'inline-flex h-10 items-center justify-center border-b gap-2',
+      pills: 'inline-flex h-10 items-center justify-center gap-2',
+    };
+
+    const tabBase: Record<string, string> = {
+      default: 'rounded-sm px-3 py-1.5 text-sm font-medium transition-colors',
+      underline: 'px-3 py-1.5 text-sm font-medium border-b-2 border-transparent -mb-px transition-colors',
+      pills: 'rounded-full px-4 py-1.5 text-sm font-medium transition-colors',
+    };
+
+    const tabActive: Record<string, string> = {
+      default: 'bg-white text-black shadow-sm',
+      underline: 'border-b-2 border-black text-black',
+      pills: 'bg-black text-white',
+    };
+
+    const tabInactive = 'text-neutral-500 hover:text-black';
+
     return (
       <div>
-        <div className='inline-flex h-10 items-center justify-center rounded-md bg-muted p-1'>
-          {['account', 'password', 'settings'].map((v) => (
+        <div className={wrapperStyles[args.variant]}>
+          {(['account', 'password', 'settings'] as const).map((v) => (
             <button
               key={v}
-              onClick={() => st(v)}
+              onClick={() => setActive(v)}
               className={cn(
-                'rounded-sm px-3 py-1.5 text-sm font-medium',
-                t === v && 'bg-background text-foreground shadow-sm',
+                tabBase[args.variant],
+                active === v ? tabActive[args.variant] : tabInactive,
               )}
             >
               {v.charAt(0).toUpperCase() + v.slice(1)}
             </button>
           ))}
         </div>
-        <div className='mt-4 rounded-md border p-4 text-sm'>Content for {t}.</div>
+        <div className="mt-4 rounded-md border border-neutral-200 p-4 text-sm">
+          Content for <strong>{active}</strong>.
+        </div>
       </div>
     );
   },
 };
-export const TabsDisabled: StoryObj = {
-  name: 'Tabs — Disabled',
-  render: () => (
-    <div className='inline-flex h-10 items-center justify-center rounded-md bg-muted p-1'>
-      <button className='rounded-sm px-3 py-1.5 text-sm font-medium bg-background shadow-sm'>
-        Active
-      </button>
-      <button
-        disabled
-        className='rounded-sm px-3 py-1.5 text-sm font-medium text-muted-foreground opacity-50 cursor-not-allowed'
-      >
-        Disabled
-      </button>
-      <button className='rounded-sm px-3 py-1.5 text-sm font-medium text-muted-foreground'>
-        Other
-      </button>
-    </div>
-  ),
+
+// ---------------------------------------------------------------------------
+// 2. Accordion
+// ---------------------------------------------------------------------------
+
+type AccordionArgs = {
+  type: 'single' | 'multiple';
+  collapsible: boolean;
 };
 
-export const AccordionStory: StoryObj = {
+const accordionItems = [
+  { id: '1', q: 'Is it accessible?', a: 'Yes. It follows WAI-ARIA design patterns.' },
+  { id: '2', q: 'Is it styled?', a: 'Yes. Ships with default styles matching the design system.' },
+  { id: '3', q: 'Is it animated?', a: 'Yes. Uses CSS transitions for open/close.' },
+];
+
+export const Accordion: StoryObj<AccordionArgs> = {
   name: 'Accordion',
-  render: () => {
-    const [o, so] = useState<string | null>('1');
-    const items = [{ id: '1', q: 'Is it accessible?', a: 'Yes. WAI-ARIA compliant.' }, {
-      id: '2',
-      q: 'Is it styled?',
-      a: 'Yes. Matches the design system.',
-    }, { id: '3', q: 'Is it animated?', a: 'Yes. CSS transitions.' }];
+  args: {
+    type: 'single',
+    collapsible: true,
+  },
+  argTypes: {
+    type: {
+      control: 'select',
+      options: ['single', 'multiple'],
+      description: 'Allow one or many items open at a time',
+    },
+    collapsible: {
+      control: 'boolean',
+      description: 'Allow collapsing all items when type is single',
+    },
+  },
+  render: (args) => {
+    const [open, setOpen] = useState<Set<string>>(new Set(['1']));
+
+    const toggle = (id: string) => {
+      setOpen((prev) => {
+        const next = new Set(prev);
+        if (next.has(id)) {
+          if (args.type === 'single' && !args.collapsible) return prev;
+          next.delete(id);
+        } else {
+          if (args.type === 'single') {
+            next.clear();
+          }
+          next.add(id);
+        }
+        return next;
+      });
+    };
+
     return (
-      <div className='max-w-lg'>
-        {items.map((i) => (
-          <div key={i.id} className='border-b'>
+      <div className="max-w-lg">
+        {accordionItems.map((item) => (
+          <div key={item.id} className="border-b border-neutral-200">
             <button
-              className='flex w-full items-center justify-between py-4 text-sm font-medium hover:underline'
-              onClick={() => so(o === i.id ? null : i.id)}
+              className="flex w-full items-center justify-between py-4 text-sm font-medium hover:underline"
+              onClick={() => toggle(item.id)}
             >
-              {i.q}
+              {item.q}
               <svg
-                xmlns='http://www.w3.org/2000/svg'
-                width='16'
-                height='16'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeWidth='2'
-                className={cn('h-4 w-4 transition-transform', o === i.id && 'rotate-180')}
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                className={cn(
+                  'h-4 w-4 transition-transform duration-200',
+                  open.has(item.id) && 'rotate-180',
+                )}
               >
-                <path d='m6 9 6 6 6-6' />
+                <path d="m6 9 6 6 6-6" />
               </svg>
             </button>
-            {o === i.id && <p className='pb-4 text-sm text-muted-foreground'>{i.a}</p>}
+            {open.has(item.id) && (
+              <p className="pb-4 text-sm text-neutral-500">{item.a}</p>
+            )}
           </div>
         ))}
       </div>
@@ -86,37 +166,73 @@ export const AccordionStory: StoryObj = {
   },
 };
 
-export const DropdownMenuStory: StoryObj = {
+// ---------------------------------------------------------------------------
+// 3. Dropdown Menu
+// ---------------------------------------------------------------------------
+
+type DropdownMenuArgs = {
+  triggerLabel: string;
+  align: 'start' | 'center' | 'end';
+};
+
+export const DropdownMenu: StoryObj<DropdownMenuArgs> = {
   name: 'Dropdown Menu',
-  render: () => {
-    const [o, so] = useState(false);
+  args: {
+    triggerLabel: 'Options',
+    align: 'start',
+  },
+  argTypes: {
+    triggerLabel: {
+      control: 'text',
+      description: 'Label on the trigger button',
+    },
+    align: {
+      control: 'select',
+      options: ['start', 'center', 'end'],
+      description: 'Horizontal alignment of the dropdown panel',
+    },
+  },
+  render: (args) => {
+    const [open, setOpen] = useState(false);
+
+    const alignClass: Record<string, string> = {
+      start: 'left-0',
+      center: 'left-1/2 -translate-x-1/2',
+      end: 'right-0',
+    };
+
     return (
-      <div className='relative inline-block'>
+      <div className="relative inline-block">
         <button
-          onClick={() => so(!o)}
-          className='h-10 rounded-md border px-4 text-sm hover:bg-accent'
+          onClick={() => setOpen(!open)}
+          className="h-10 rounded-md border border-neutral-200 px-4 text-sm hover:bg-neutral-100"
         >
-          Menu ▾
+          {args.triggerLabel} ▾
         </button>
-        {o && (
+        {open && (
           <>
-            <div className='fixed inset-0' onClick={() => so(false)} />
-            <div className='absolute right-0 z-50 mt-2 min-w-[180px] rounded-md border bg-popover p-1 shadow-md'>
-              <div className='px-2 py-1.5 text-sm font-semibold'>Account</div>
-              <div className='-mx-1 my-1 h-px bg-muted' />
-              {['Profile', 'Settings', 'Billing'].map((i) => (
+            <div className="fixed inset-0" onClick={() => setOpen(false)} />
+            <div
+              className={cn(
+                'absolute z-50 mt-2 min-w-[180px] rounded-md border border-neutral-200 bg-white p-1 shadow-md',
+                alignClass[args.align],
+              )}
+            >
+              <div className="px-2 py-1.5 text-sm font-semibold">Account</div>
+              <div className="-mx-1 my-1 h-px bg-neutral-100" />
+              {['Profile', 'Settings', 'Billing'].map((item) => (
                 <div
-                  key={i}
-                  className='rounded-sm px-2 py-1.5 text-sm hover:bg-accent cursor-default'
-                  onClick={() => so(false)}
+                  key={item}
+                  className="cursor-default rounded-sm px-2 py-1.5 text-sm hover:bg-neutral-100"
+                  onClick={() => setOpen(false)}
                 >
-                  {i}
+                  {item}
                 </div>
               ))}
-              <div className='-mx-1 my-1 h-px bg-muted' />
+              <div className="-mx-1 my-1 h-px bg-neutral-100" />
               <div
-                className='rounded-sm px-2 py-1.5 text-sm text-destructive hover:bg-accent cursor-default'
-                onClick={() => so(false)}
+                className="cursor-default rounded-sm px-2 py-1.5 text-sm text-red-600 hover:bg-neutral-100"
+                onClick={() => setOpen(false)}
               >
                 Log out
               </div>
@@ -128,41 +244,46 @@ export const DropdownMenuStory: StoryObj = {
   },
 };
 
-export const ContextMenuStory: StoryObj = {
+// ---------------------------------------------------------------------------
+// 4. Context Menu (static demo)
+// ---------------------------------------------------------------------------
+
+export const ContextMenu: StoryObj = {
   name: 'Context Menu',
   render: () => {
-    const [m, sm] = useState<{ x: number; y: number } | null>(null);
+    const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
+
     return (
       <div>
         <div
-          className='flex h-40 items-center justify-center rounded-md border border-dashed text-sm text-muted-foreground'
+          className="flex h-40 items-center justify-center rounded-md border-2 border-dashed border-neutral-300 text-sm text-neutral-500"
           onContextMenu={(e) => {
             e.preventDefault();
-            sm({ x: e.clientX, y: e.clientY });
+            setMenu({ x: e.clientX, y: e.clientY });
           }}
         >
           Right-click here
         </div>
-        {m && (
+        {menu && (
           <>
-            <div className='fixed inset-0 z-40' onClick={() => sm(null)} />
+            <div className="fixed inset-0 z-40" onClick={() => setMenu(null)} />
             <div
-              className='fixed z-50 min-w-[160px] rounded-md border bg-popover p-1 shadow-md'
-              style={{ left: m.x, top: m.y }}
+              className="fixed z-50 min-w-[160px] rounded-md border border-neutral-200 bg-white p-1 shadow-md"
+              style={{ left: menu.x, top: menu.y }}
             >
-              {['Cut ⌘X', 'Copy ⌘C', 'Paste ⌘V'].map((i) => (
+              {['Cut ⌘X', 'Copy ⌘C', 'Paste ⌘V'].map((item) => (
                 <div
-                  key={i}
-                  className='rounded-sm px-2 py-1.5 text-sm hover:bg-accent cursor-default'
-                  onClick={() => sm(null)}
+                  key={item}
+                  className="cursor-default rounded-sm px-2 py-1.5 text-sm hover:bg-neutral-100"
+                  onClick={() => setMenu(null)}
                 >
-                  {i}
+                  {item}
                 </div>
               ))}
-              <div className='-mx-1 my-1 h-px bg-muted' />
+              <div className="-mx-1 my-1 h-px bg-neutral-100" />
               <div
-                className='rounded-sm px-2 py-1.5 text-sm text-destructive hover:bg-accent cursor-default'
-                onClick={() => sm(null)}
+                className="cursor-default rounded-sm px-2 py-1.5 text-sm text-red-600 hover:bg-neutral-100"
+                onClick={() => setMenu(null)}
               >
                 Delete
               </div>
@@ -174,111 +295,283 @@ export const ContextMenuStory: StoryObj = {
   },
 };
 
-export const MenubarStory: StoryObj = {
+// ---------------------------------------------------------------------------
+// 5. Menubar (static render)
+// ---------------------------------------------------------------------------
+
+export const Menubar: StoryObj = {
   name: 'Menubar',
-  render: () => (
-    <div className='flex h-10 items-center space-x-1 rounded-md border bg-background p-1'>
-      {['File', 'Edit', 'View', 'Help'].map((m) => (
-        <button key={m} className='rounded-sm px-3 py-1.5 text-sm font-medium hover:bg-accent'>
-          {m}
-        </button>
-      ))}
-    </div>
-  ),
-};
-
-export const NavigationMenuStory: StoryObj = {
-  name: 'Navigation Menu',
-  render: () => (
-    <nav className='flex items-center space-x-1'>
-      {['Home', 'Products', 'Pricing', 'About'].map((l) => (
-        <a
-          key={l}
-          href='#'
-          className='inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium hover:bg-accent'
-        >
-          {l}
-        </a>
-      ))}
-    </nav>
-  ),
-};
-
-export const BreadcrumbDefault: StoryObj = {
-  name: 'Breadcrumb — Default',
-  render: () => (
-    <nav>
-      <ol className='flex items-center gap-1.5 text-sm text-muted-foreground'>
-        <li>
-          <a href='#' className='hover:text-foreground'>Home</a>
-        </li>
-        <li>/</li>
-        <li>
-          <a href='#' className='hover:text-foreground'>Components</a>
-        </li>
-        <li>/</li>
-        <li className='text-foreground'>Breadcrumb</li>
-      </ol>
-    </nav>
-  ),
-};
-export const BreadcrumbEllipsis: StoryObj = {
-  name: 'Breadcrumb — Ellipsis',
-  render: () => (
-    <nav>
-      <ol className='flex items-center gap-1.5 text-sm text-muted-foreground'>
-        <li>
-          <a href='#' className='hover:text-foreground'>Home</a>
-        </li>
-        <li>/</li>
-        <li>⋯</li>
-        <li>/</li>
-        <li>
-          <a href='#' className='hover:text-foreground'>Settings</a>
-        </li>
-        <li>/</li>
-        <li className='text-foreground'>Profile</li>
-      </ol>
-    </nav>
-  ),
-};
-
-export const PaginationStory: StoryObj = {
-  name: 'Pagination',
   render: () => {
-    const [p, sp] = useState(3);
+    const [openMenu, setOpenMenu] = useState<string | null>(null);
+
+    const menus: Record<string, string[]> = {
+      File: ['New File', 'Open...', 'Save', 'Exit'],
+      Edit: ['Undo', 'Redo', 'Cut', 'Copy', 'Paste'],
+      View: ['Zoom In', 'Zoom Out', 'Full Screen'],
+    };
+
     return (
-      <nav className='flex justify-center'>
-        <ul className='flex items-center gap-1'>
+      <div className="relative flex h-10 items-center space-x-1 rounded-md border border-neutral-200 bg-white p-1">
+        {Object.keys(menus).map((label) => (
+          <div key={label} className="relative">
+            <button
+              className={cn(
+                'rounded-sm px-3 py-1.5 text-sm font-medium hover:bg-neutral-100',
+                openMenu === label && 'bg-neutral-100',
+              )}
+              onClick={() => setOpenMenu(openMenu === label ? null : label)}
+            >
+              {label}
+            </button>
+            {openMenu === label && (
+              <>
+                <div className="fixed inset-0 z-40" onClick={() => setOpenMenu(null)} />
+                <div className="absolute left-0 z-50 mt-1 min-w-[160px] rounded-md border border-neutral-200 bg-white p-1 shadow-md">
+                  {menus[label].map((item) => (
+                    <div
+                      key={item}
+                      className="cursor-default rounded-sm px-2 py-1.5 text-sm hover:bg-neutral-100"
+                      onClick={() => setOpenMenu(null)}
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  },
+};
+
+// ---------------------------------------------------------------------------
+// 6. Navigation Menu
+// ---------------------------------------------------------------------------
+
+type NavigationMenuArgs = {
+  orientation: 'horizontal' | 'vertical';
+};
+
+export const NavigationMenu: StoryObj<NavigationMenuArgs> = {
+  name: 'Navigation Menu',
+  args: {
+    orientation: 'horizontal',
+  },
+  argTypes: {
+    orientation: {
+      control: 'select',
+      options: ['horizontal', 'vertical'],
+      description: 'Layout direction of navigation links',
+    },
+  },
+  render: (args) => {
+    const links = ['Home', 'Products', 'Pricing', 'About'];
+    const isVertical = args.orientation === 'vertical';
+
+    return (
+      <nav
+        className={cn(
+          'flex gap-1',
+          isVertical ? 'flex-col w-48' : 'flex-row items-center',
+        )}
+      >
+        {links.map((label) => (
+          <a
+            key={label}
+            href="#"
+            onClick={(e) => e.preventDefault()}
+            className={cn(
+              'inline-flex items-center rounded-md px-4 py-2 text-sm font-medium hover:bg-neutral-100 transition-colors',
+              isVertical ? 'justify-start' : 'justify-center h-10',
+            )}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    );
+  },
+};
+
+// ---------------------------------------------------------------------------
+// 7. Breadcrumb
+// ---------------------------------------------------------------------------
+
+type BreadcrumbArgs = {
+  items: number;
+  showEllipsis: boolean;
+};
+
+const breadcrumbLabels = ['Home', 'Components', 'Navigation', 'Breadcrumb', 'Variants', 'Current'];
+
+export const Breadcrumb: StoryObj<BreadcrumbArgs> = {
+  name: 'Breadcrumb',
+  args: {
+    items: 3,
+    showEllipsis: false,
+  },
+  argTypes: {
+    items: {
+      control: { type: 'number', min: 3, max: 6, step: 1 },
+      description: 'Total number of breadcrumb segments',
+    },
+    showEllipsis: {
+      control: 'boolean',
+      description: 'Collapse middle items into an ellipsis',
+    },
+  },
+  render: (args) => {
+    const count = Math.min(Math.max(args.items, 3), 6);
+    const labels = breadcrumbLabels.slice(0, count);
+
+    const renderItems = () => {
+      if (args.showEllipsis && count > 3) {
+        const first = labels[0];
+        const last = labels[labels.length - 1];
+        const secondLast = labels[labels.length - 2];
+        return (
+          <>
+            <li>
+              <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-black">
+                {first}
+              </a>
+            </li>
+            <li className="text-neutral-300">/</li>
+            <li className="text-neutral-400">&#x22EF;</li>
+            <li className="text-neutral-300">/</li>
+            <li>
+              <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-black">
+                {secondLast}
+              </a>
+            </li>
+            <li className="text-neutral-300">/</li>
+            <li className="text-black font-medium">{last}</li>
+          </>
+        );
+      }
+
+      return labels.map((label, i) => {
+        const isLast = i === labels.length - 1;
+        return (
+          <React.Fragment key={label}>
+            {i > 0 && <li className="text-neutral-300">/</li>}
+            <li>
+              {isLast ? (
+                <span className="text-black font-medium">{label}</span>
+              ) : (
+                <a href="#" onClick={(e) => e.preventDefault()} className="hover:text-black">
+                  {label}
+                </a>
+              )}
+            </li>
+          </React.Fragment>
+        );
+      });
+    };
+
+    return (
+      <nav>
+        <ol className="flex items-center gap-1.5 text-sm text-neutral-500">
+          {renderItems()}
+        </ol>
+      </nav>
+    );
+  },
+};
+
+// ---------------------------------------------------------------------------
+// 8. Pagination
+// ---------------------------------------------------------------------------
+
+type PaginationArgs = {
+  totalPages: number;
+  currentPage: number;
+  showEdges: boolean;
+};
+
+export const Pagination: StoryObj<PaginationArgs> = {
+  name: 'Pagination',
+  args: {
+    totalPages: 10,
+    currentPage: 1,
+    showEdges: true,
+  },
+  argTypes: {
+    totalPages: {
+      control: { type: 'number', min: 1, max: 20, step: 1 },
+      description: 'Total number of pages',
+    },
+    currentPage: {
+      control: { type: 'number', min: 1, max: 20, step: 1 },
+      description: 'Currently active page',
+    },
+    showEdges: {
+      control: 'boolean',
+      description: 'Show first/last page buttons',
+    },
+  },
+  render: (args) => {
+    const [page, setPage] = useState(args.currentPage);
+    const total = Math.max(1, args.totalPages);
+    const current = Math.min(Math.max(1, page), total);
+
+    const getVisiblePages = (): (number | '...')[] => {
+      if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+      const pages: (number | '...')[] = [];
+      if (args.showEdges) pages.push(1);
+
+      let start = Math.max(args.showEdges ? 2 : 1, current - 1);
+      let end = Math.min(args.showEdges ? total - 1 : total, current + 1);
+
+      if (start > (args.showEdges ? 2 : 1)) pages.push('...');
+      for (let i = start; i <= end; i++) pages.push(i);
+      if (end < (args.showEdges ? total - 1 : total)) pages.push('...');
+
+      if (args.showEdges) pages.push(total);
+      return pages;
+    };
+
+    return (
+      <nav className="flex justify-center">
+        <ul className="flex items-center gap-1">
           <li>
             <button
-              onClick={() => sp(Math.max(1, p - 1))}
-              disabled={p === 1}
-              className='h-10 px-3 rounded-md text-sm hover:bg-accent disabled:opacity-50'
+              onClick={() => setPage(Math.max(1, current - 1))}
+              disabled={current === 1}
+              className="h-10 px-3 rounded-md text-sm hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              ← Prev
+              &larr; Prev
             </button>
           </li>
-          {[1, 2, 3, 4, 5].map((n) => (
-            <li key={n}>
-              <button
-                onClick={() => sp(n)}
-                className={cn(
-                  'h-10 w-10 rounded-md text-sm hover:bg-accent',
-                  p === n && 'border bg-background font-medium',
-                )}
-              >
-                {n}
-              </button>
-            </li>
-          ))}
+          {getVisiblePages().map((p, i) =>
+            p === '...' ? (
+              <li key={`ellipsis-${i}`} className="h-10 w-10 flex items-center justify-center text-sm text-neutral-400">
+                &#x22EF;
+              </li>
+            ) : (
+              <li key={p}>
+                <button
+                  onClick={() => setPage(p)}
+                  className={cn(
+                    'h-10 w-10 rounded-md text-sm hover:bg-neutral-100',
+                    current === p && 'border border-neutral-200 bg-white font-medium',
+                  )}
+                >
+                  {p}
+                </button>
+              </li>
+            ),
+          )}
           <li>
             <button
-              onClick={() => sp(Math.min(5, p + 1))}
-              disabled={p === 5}
-              className='h-10 px-3 rounded-md text-sm hover:bg-accent disabled:opacity-50'
+              onClick={() => setPage(Math.min(total, current + 1))}
+              disabled={current === total}
+              className="h-10 px-3 rounded-md text-sm hover:bg-neutral-100 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Next →
+              Next &rarr;
             </button>
           </li>
         </ul>
@@ -287,43 +580,85 @@ export const PaginationStory: StoryObj = {
   },
 };
 
-export const SidebarStory: StoryObj = {
+// ---------------------------------------------------------------------------
+// 9. Sidebar
+// ---------------------------------------------------------------------------
+
+type SidebarArgs = {
+  collapsed: boolean;
+  activeItem: 'home' | 'projects' | 'settings' | 'team' | 'inbox';
+};
+
+const sidebarItems: { key: SidebarArgs['activeItem']; label: string; icon: string }[] = [
+  { key: 'home', label: 'Home', icon: '⌂' },
+  { key: 'projects', label: 'Projects', icon: '▦' },
+  { key: 'inbox', label: 'Inbox', icon: '✉' },
+  { key: 'team', label: 'Team', icon: '⚑' },
+  { key: 'settings', label: 'Settings', icon: '⚙' },
+];
+
+export const Sidebar: StoryObj<SidebarArgs> = {
   name: 'Sidebar',
-  render: () => {
-    const [o, so] = useState(true);
-    const [a, sa] = useState('Dashboard');
+  args: {
+    collapsed: false,
+    activeItem: 'home',
+  },
+  argTypes: {
+    collapsed: {
+      control: 'boolean',
+      description: 'Whether the sidebar is collapsed to icon-only mode',
+    },
+    activeItem: {
+      control: 'select',
+      options: ['home', 'projects', 'settings', 'team', 'inbox'],
+      description: 'Currently active navigation item',
+    },
+  },
+  render: (args) => {
+    const [collapsed, setCollapsed] = useState(args.collapsed);
+    const [active, setActive] = useState(args.activeItem);
+
     return (
-      <div className='flex h-56 rounded-md border overflow-hidden'>
+      <div className="flex h-64 rounded-md border border-neutral-200 overflow-hidden">
         <aside
-          className={cn('flex flex-col border-r bg-muted/30 transition-all', o ? 'w-48' : 'w-12')}
+          className={cn(
+            'flex flex-col border-r border-neutral-200 bg-neutral-50 transition-all duration-200',
+            collapsed ? 'w-14' : 'w-52',
+          )}
         >
-          <div className='flex h-10 items-center justify-between border-b px-2'>
-            <button onClick={() => so(!o)} className='rounded p-1 hover:bg-accent text-sm'>
+          <div className="flex h-10 items-center justify-between border-b border-neutral-200 px-2">
+            {!collapsed && <span className="text-sm font-semibold px-1">App</span>}
+            <button
+              onClick={() => setCollapsed(!collapsed)}
+              className="rounded p-1 hover:bg-neutral-200 text-sm"
+            >
               ☰
             </button>
           </div>
-          {o && (
-            <div className='flex-1 p-2 space-y-0.5'>
-              {['Dashboard', 'Components', 'Settings'].map((i) => (
-                <button
-                  key={i}
-                  onClick={() => sa(i)}
-                  className={cn(
-                    'flex w-full rounded-md px-3 py-1.5 text-sm hover:bg-accent',
-                    a === i && 'bg-accent font-medium',
-                  )}
-                >
-                  {i}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="flex-1 p-2 space-y-0.5">
+            {sidebarItems.map((item) => (
+              <button
+                key={item.key}
+                onClick={() => setActive(item.key)}
+                title={collapsed ? item.label : undefined}
+                className={cn(
+                  'flex w-full items-center gap-2 rounded-md px-3 py-1.5 text-sm hover:bg-neutral-200 transition-colors',
+                  active === item.key && 'bg-neutral-200 font-medium',
+                )}
+              >
+                <span>{item.icon}</span>
+                {!collapsed && <span>{item.label}</span>}
+              </button>
+            ))}
+          </div>
         </aside>
-        <div className='flex-1 p-4 text-sm text-muted-foreground'>{a} content</div>
+        <div className="flex-1 p-4 text-sm text-neutral-500">
+          <span className="font-medium text-black">
+            {sidebarItems.find((i) => i.key === active)?.label}
+          </span>{' '}
+          content area
+        </div>
       </div>
     );
   },
 };
-
-const meta: Meta = { title: 'Components/Navigation' };
-export default meta;

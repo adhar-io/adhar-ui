@@ -227,6 +227,30 @@ All colors are HSL CSS custom properties (29 semantic tokens). Supports alpha co
 
 ---
 
+## Page Builder
+
+Visual drag-and-drop page builder for creating pages with Adhar UI components.
+
+```bash
+deno task builder:dev     # Start builder at localhost:5174
+deno task docs:dev        # Builder also available at localhost:5173/#/builder
+```
+
+**Features:**
+- Drag & drop 50+ components from the palette
+- AI-powered page generation (OpenAI / Anthropic / local templates)
+- Design / Code / Preview modes with responsive device switching
+- Monaco Editor for code view with full project file system
+- Live preview with Tailwind CSS and design tokens
+- 8 theme presets with live token editing
+- Property editor with layout, typography, and appearance controls
+- Undo/redo, copy/paste, keyboard shortcuts
+- Export to Penpot SVG, Figma JSON, framework code
+- Push to GitHub via REST API
+- API data source integration with response field mapping
+
+---
+
 ## Design Resources
 
 Downloadable design kits for Figma and Penpot:

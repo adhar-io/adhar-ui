@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run -A npm:vite@^7.1.12 --host",
+    "dev": "deno run -A npm:vite@^7.1.12 --host --port 5175",
     "build": "deno run -A npm:vite@^7.1.12 build",
     "preview": "deno run -A npm:vite@^7.1.12 preview"
   },

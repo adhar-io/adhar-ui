@@ -8,6 +8,7 @@ const topNavItems = [
   { label: 'Playground', href: '/playground', match: ['/playground'] },
   { label: 'Storybook', href: '/storybook', match: ['/storybook'] },
   { label: 'Blocks', href: '/blocks', match: ['/blocks'] },
+  { label: 'Builder', href: '/builder', match: ['/builder'] },
   { label: 'Guides', href: '/guides/accessibility', match: ['/guides'] },
 ];
 
@@ -36,6 +37,7 @@ const navSections = [
       { label: 'Playground', href: '/playground', icon: '▶️' },
       { label: 'Storybook', href: '/storybook', icon: '📖' },
       { label: 'Blocks', href: '/blocks', icon: '💡' },
+      { label: 'Page Builder', href: '/builder', icon: '⬡' },
     ],
   },
   {
@@ -347,6 +349,7 @@ export function SearchDialog({
     { label: 'Playground', href: '/playground', section: 'Interactive' },
     { label: 'Storybook', href: '/storybook', section: 'Interactive' },
     { label: 'Blocks', href: '/blocks', section: 'Interactive' },
+    { label: 'Page Builder', href: '/builder', section: 'Interactive' },
     { label: 'Changelog', href: '/changelog', section: 'Pages' },
     { label: 'Accessibility Guide', href: '/guides/accessibility', section: 'Guides' },
     { label: 'Design Sync Guide', href: '/guides/design-sync', section: 'Guides' },

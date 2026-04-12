@@ -314,200 +314,103 @@ export const IconMoon = (p: IconProps) => (
 export function HeroIllustration({ className = '' }: { className?: string }) {
   return (
     <div className={`relative ${className}`}>
-      <svg viewBox='0 0 420 340' fill='none' xmlns='http://www.w3.org/2000/svg' className='w-full h-auto'>
-        <defs>
-          {/* Glows */}
-          <radialGradient id='hero-glow' cx='50%' cy='45%' r='45%'>
-            <stop offset='0%' stopColor='hsl(var(--primary))' stopOpacity='0.2' />
-            <stop offset='60%' stopColor='hsl(var(--primary))' stopOpacity='0.05' />
-            <stop offset='100%' stopColor='hsl(var(--primary))' stopOpacity='0' />
-          </radialGradient>
-          <radialGradient id='hero-glow2' cx='50%' cy='50%' r='50%'>
-            <stop offset='0%' stopColor='hsl(234 89% 74%)' stopOpacity='0.12' />
-            <stop offset='100%' stopColor='hsl(234 89% 74%)' stopOpacity='0' />
-          </radialGradient>
-          <linearGradient id='hero-btn' x1='0%' y1='0%' x2='100%' y2='100%'>
-            <stop offset='0%' stopColor='hsl(var(--primary))' stopOpacity='0.9' />
-            <stop offset='100%' stopColor='hsl(260 80% 60%)' stopOpacity='0.7' />
-          </linearGradient>
-          <linearGradient id='hero-card-stroke' x1='0%' y1='0%' x2='100%' y2='100%'>
-            <stop offset='0%' stopColor='hsl(var(--primary))' stopOpacity='0.4' />
-            <stop offset='50%' stopColor='hsl(var(--border))' stopOpacity='0.6' />
-            <stop offset='100%' stopColor='hsl(260 80% 60%)' stopOpacity='0.3' />
-          </linearGradient>
-          {/* Orbit paths */}
-          <path id='hero-orbit1' d='M370,155 A160,65 0 1,1 50,155 A160,65 0 1,1 370,155' />
-          <path id='hero-orbit2' d='M355,155 A145,55 0 1,0 65,155 A145,55 0 1,0 355,155' />
-          {/* Glow filters */}
-          <filter id='hero-logo-glow'>
-            <feGaussianBlur stdDeviation='3' result='blur' />
-            <feMerge>
-              <feMergeNode in='blur' />
-              <feMergeNode in='SourceGraphic' />
-            </feMerge>
-          </filter>
-          <filter id='hero-card-shadow'>
-            <feDropShadow dx='0' dy='4' stdDeviation='8' floodColor='hsl(var(--primary))' floodOpacity='0.15' />
-          </filter>
-        </defs>
+      {/* Layered UI mockup — browser window with stacked component previews */}
+      <div className='relative w-full max-w-[460px] mx-auto'>
+        {/* Soft ambient glow behind the mockup */}
+        <div className='absolute inset-0 -inset-x-8 -inset-y-4 rounded-3xl bg-gradient-to-b from-primary/[0.07] via-primary/[0.03] to-transparent blur-2xl pointer-events-none' />
 
-        {/* Ambient glow layers */}
-        <circle cx='210' cy='155' r='150' fill='url(#hero-glow)'>
-          <animate attributeName='r' values='150;160;150' dur='6s' repeatCount='indefinite' />
-        </circle>
-        <circle cx='210' cy='155' r='110' fill='url(#hero-glow2)'>
-          <animate attributeName='r' values='110;120;110' dur='5s' repeatCount='indefinite' />
-        </circle>
+        {/* ─── Browser window ─── */}
+        <div className='relative rounded-xl border border-border/80 bg-card shadow-2xl shadow-primary/[0.06] overflow-hidden'>
+          {/* Title bar */}
+          <div className='flex items-center gap-2 px-4 py-2.5 bg-muted/40 border-b border-border/60'>
+            <div className='flex gap-1.5'>
+              <div className='w-[10px] h-[10px] rounded-full bg-[#FF5F57]/80' />
+              <div className='w-[10px] h-[10px] rounded-full bg-[#FEBC2E]/80' />
+              <div className='w-[10px] h-[10px] rounded-full bg-[#28C840]/80' />
+            </div>
+            <div className='flex-1 flex justify-center'>
+              <div className='px-6 py-0.5 rounded-md bg-background/60 border border-border/40 text-[10px] text-muted-foreground/60 font-mono'>
+                my-app / components / ui
+              </div>
+            </div>
+          </div>
 
-        {/* Orbit rings */}
-        <ellipse cx='210' cy='155' rx='160' ry='65' fill='none' stroke='hsl(var(--border))' strokeWidth='0.5' strokeDasharray='6 4' opacity='0.25'>
-          <animate attributeName='stroke-dashoffset' values='0;-20' dur='4s' repeatCount='indefinite' />
-        </ellipse>
-        <ellipse cx='210' cy='155' rx='120' ry='45' fill='none' stroke='hsl(var(--primary))' strokeWidth='0.4' strokeDasharray='3 6' opacity='0.15'>
-          <animate attributeName='stroke-dashoffset' values='0;18' dur='5s' repeatCount='indefinite' />
-        </ellipse>
+          {/* Content area — IDE-like layout */}
+          <div className='flex'>
+            {/* Mini sidebar */}
+            <div className='w-[52px] bg-muted/20 border-r border-border/40 py-3 flex flex-col items-center gap-2.5 shrink-0'>
+              {['bg-primary/60', 'bg-muted-foreground/20', 'bg-muted-foreground/20', 'bg-muted-foreground/15', 'bg-muted-foreground/10'].map((bg, i) => (
+                <div key={i} className={`w-5 h-5 rounded ${bg} ${i === 0 ? 'ring-1 ring-primary/30' : ''}`} />
+              ))}
+            </div>
 
-        {/* Floating code tokens */}
-        <g opacity='0.5'>
-          <text x='62' y='92' fill='hsl(var(--primary))' fontSize='22' fontFamily='monospace' fontWeight='bold'>
-            &lt;/&gt;
-            <animateTransform attributeName='transform' type='translate' values='0,0;0,-6;0,0' dur='3s' repeatCount='indefinite' />
-          </text>
-        </g>
-        <g opacity='0.35'>
-          <text x='310' y='78' fill='hsl(260 80% 60%)' fontSize='18' fontFamily='monospace' fontWeight='bold'>
-            &#123;&#125;
-            <animateTransform attributeName='transform' type='translate' values='0,0;0,-5;0,0' dur='4s' repeatCount='indefinite' />
-          </text>
-        </g>
-        <g opacity='0.25'>
-          <text x='340' y='210' fill='hsl(var(--primary))' fontSize='16' fontFamily='monospace'>
-            ()
-            <animateTransform attributeName='transform' type='translate' values='0,0;0,-4;0,0' dur='3.5s' repeatCount='indefinite' />
-          </text>
-        </g>
-        <g opacity='0.2'>
-          <text x='50' y='200' fill='hsl(260 80% 60%)' fontSize='14' fontFamily='monospace'>
-            [ ]
-            <animateTransform attributeName='transform' type='translate' values='0,0;0,-5;0,0' dur='4.5s' repeatCount='indefinite' />
-          </text>
-        </g>
+            {/* Main content */}
+            <div className='flex-1 p-4 space-y-3 min-h-[240px]'>
+              {/* Component preview: Button row */}
+              <div>
+                <div className='text-[9px] text-muted-foreground/50 font-mono mb-1.5 tracking-wide uppercase'>Button</div>
+                <div className='flex items-center gap-2 flex-wrap'>
+                  <div className='h-7 px-3.5 rounded-md bg-gradient-to-r from-primary to-primary/80 text-[10px] text-primary-foreground font-medium flex items-center shadow-sm'>Primary</div>
+                  <div className='h-7 px-3.5 rounded-md border border-border text-[10px] text-foreground/80 font-medium flex items-center'>Outline</div>
+                  <div className='h-7 px-3.5 rounded-md bg-secondary text-[10px] text-secondary-foreground/70 font-medium flex items-center'>Secondary</div>
+                  <div className='h-6 px-2.5 rounded text-[9px] text-muted-foreground/60 font-medium flex items-center hover:bg-muted/50'>Ghost</div>
+                </div>
+              </div>
 
-        {/* ─── Central component card ─── */}
-        <g filter='url(#hero-card-shadow)'>
-          <rect x='135' y='95' width='150' height='125' rx='14' fill='hsl(var(--card))' stroke='url(#hero-card-stroke)' strokeWidth='1.5'>
-            <animate attributeName='y' values='95;89;95' dur='5s' repeatCount='indefinite' />
-          </rect>
-          {/* Window dots */}
-          <circle cx='152' cy='111' r='3' fill='#FF5F57' opacity='0.7' />
-          <circle cx='163' cy='111' r='3' fill='#FEBC2E' opacity='0.7' />
-          <circle cx='174' cy='111' r='3' fill='#28C840' opacity='0.7' />
-          {/* Content lines */}
-          <rect x='152' y='125' width='55' height='5' rx='2.5' fill='hsl(var(--primary))' opacity='0.6' />
-          <rect x='152' y='136' width='110' height='3.5' rx='1.75' fill='hsl(var(--muted-foreground))' opacity='0.15' />
-          <rect x='152' y='145' width='85' height='3.5' rx='1.75' fill='hsl(var(--muted-foreground))' opacity='0.1' />
-          {/* Buttons */}
-          <rect x='152' y='162' width='52' height='22' rx='6' fill='url(#hero-btn)' />
-          <text x='163' y='177' fill='white' fontSize='8' fontWeight='600' fontFamily='system-ui'>Button</text>
-          <rect x='212' y='162' width='52' height='22' rx='6' fill='none' stroke='hsl(var(--border))' strokeWidth='1' />
-          <text x='220' y='177' fill='hsl(var(--muted-foreground))' fontSize='8' fontFamily='system-ui'>Outline</text>
-        </g>
+              {/* Component preview: Input */}
+              <div>
+                <div className='text-[9px] text-muted-foreground/50 font-mono mb-1.5 tracking-wide uppercase'>Input</div>
+                <div className='h-7 rounded-md border border-border/80 bg-background px-2.5 flex items-center'>
+                  <span className='text-[10px] text-muted-foreground/40'>Search components...</span>
+                </div>
+              </div>
 
-        {/* ─── Orbiting framework logos ─── */}
-        {/* React - orbits on outer ring, clockwise */}
-        <g filter='url(#hero-logo-glow)'>
-          <animateMotion dur='12s' repeatCount='indefinite'>
-            <mpath href='#hero-orbit1' />
-          </animateMotion>
-          <circle r='18' fill='hsl(var(--card))' stroke='#61DAFB' strokeWidth='1.2' opacity='0.95' />
-          <svg x='-10' y='-10' viewBox='0 0 24 24' width='20' height='20' fill='#61DAFB'>
-            <circle cx='12' cy='12' r='2.139' />
-            <ellipse cx='12' cy='12' rx='11' ry='4.2' fill='none' stroke='#61DAFB' strokeWidth='1' />
-            <ellipse cx='12' cy='12' rx='11' ry='4.2' fill='none' stroke='#61DAFB' strokeWidth='1' transform='rotate(60 12 12)' />
-            <ellipse cx='12' cy='12' rx='11' ry='4.2' fill='none' stroke='#61DAFB' strokeWidth='1' transform='rotate(120 12 12)' />
-          </svg>
-        </g>
+              {/* Component preview: Card with stats */}
+              <div>
+                <div className='text-[9px] text-muted-foreground/50 font-mono mb-1.5 tracking-wide uppercase'>Card</div>
+                <div className='grid grid-cols-3 gap-2'>
+                  {[
+                    { label: 'Components', val: '97' },
+                    { label: 'Frameworks', val: '5' },
+                    { label: 'Themes', val: '8' },
+                  ].map((s) => (
+                    <div key={s.label} className='rounded-lg border border-border/60 bg-card p-2.5 text-center'>
+                      <div className='text-sm font-bold text-foreground/90'>{s.val}</div>
+                      <div className='text-[8px] text-muted-foreground/50 mt-0.5'>{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-        {/* Vue - orbits on outer ring, offset */}
-        <g filter='url(#hero-logo-glow)'>
-          <animateMotion dur='12s' begin='-2.4s' repeatCount='indefinite'>
-            <mpath href='#hero-orbit1' />
-          </animateMotion>
-          <circle r='18' fill='hsl(var(--card))' stroke='#4FC08D' strokeWidth='1.2' opacity='0.95' />
-          <svg x='-10' y='-10' viewBox='0 0 24 24' width='20' height='20' fill='none'>
-            <path d='M2 3h4l6 10.2L18 3h4L12 21z' fill='#4FC08D' />
-            <path d='M7.2 3L12 10.9 16.8 3h-4L12 5 11.2 3z' fill='#35495E' />
-          </svg>
-        </g>
+              {/* Component preview: Badge + Toggle row */}
+              <div className='flex items-center gap-2'>
+                <div className='h-5 px-2 rounded-full bg-primary/10 text-[9px] text-primary font-medium flex items-center'>v0.1.0</div>
+                <div className='h-5 px-2 rounded-full bg-emerald-500/10 text-[9px] text-emerald-600 font-medium flex items-center'>Stable</div>
+                <div className='flex-1' />
+                <div className='w-7 h-4 rounded-full bg-primary/80 relative'>
+                  <div className='absolute right-0.5 top-0.5 w-3 h-3 rounded-full bg-white shadow-sm' />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        {/* Solid - orbits on outer ring, offset */}
-        <g filter='url(#hero-logo-glow)'>
-          <animateMotion dur='12s' begin='-4.8s' repeatCount='indefinite'>
-            <mpath href='#hero-orbit1' />
-          </animateMotion>
-          <circle r='18' fill='hsl(var(--card))' stroke='#4377BB' strokeWidth='1.2' opacity='0.95' />
-          <svg x='-10' y='-10' viewBox='0 0 128 128' width='20' height='20'>
-            <path fill='#76b3e1' d='M128 29.7S85.3-1.7 52.3 5.5l-2.4.8c-4.8 1.6-8.9 4-11.3 7.3l-1.6 2.4-12.1 20.9 20.9 4c8.9 5.7 20.1 8.1 30.6 5.7L128 29.7z' />
-            <path fill='#518ac8' d='m38.6 29.7-3.2.8C21.7 34.5 17.7 47.4 25 58.7c8 10.5 25 16.1 38.6 12.1l49.9-16.9S70.8 22.4 38.6 29.7z' />
-            <path fill='#315aa9' d='M104.7 65.9a36.2 36.2 0 0 0-38.7-12.1L16.1 69.9 0 98.1l90.2 15.3 16.1-29c3.2-5.6 2.4-12.1-1.6-18.5z' />
-            <path fill='#1a336b' d='M88.6 94.1a36.2 36.2 0 0 0-38.7-12.1L0 98.1s42.7 32.2 75.7 24.2l2.4-.8c13.7-4 18.5-16.9 10.5-27.4z' />
-          </svg>
-        </g>
-
-        {/* Svelte - orbits on inner ring, counter-clockwise */}
-        <g filter='url(#hero-logo-glow)'>
-          <animateMotion dur='10s' begin='-2s' repeatCount='indefinite'>
-            <mpath href='#hero-orbit2' />
-          </animateMotion>
-          <circle r='16' fill='hsl(var(--card))' stroke='#FF3E00' strokeWidth='1.2' opacity='0.95' />
-          <svg x='-9' y='-9' viewBox='0 0 24 24' width='18' height='18'>
-            <path d='M19.824 5.293a5.586 5.586 0 0 0-7.68-1.968L7.26 6.79a4.648 4.648 0 0 0-2.106 3.128 4.862 4.862 0 0 0 .48 3.392 4.607 4.607 0 0 0-.672 2.16 4.884 4.884 0 0 0 .84 3.744 5.586 5.586 0 0 0 7.68 1.968l4.884-3.465a4.648 4.648 0 0 0 2.106-3.128 4.861 4.861 0 0 0-.48-3.392 4.608 4.608 0 0 0 .672-2.16 4.884 4.884 0 0 0-.84-3.744z' fill='#FF3E00' />
-            <path d='M9.876 19.683a3.349 3.349 0 0 1-3.6-1.32 2.944 2.944 0 0 1-.504-2.256 2.54 2.54 0 0 1 .096-.408l.12-.336.312.216a5.6 5.6 0 0 0 1.704.84l.168.048-.024.168a.888.888 0 0 0 .168.576 1.02 1.02 0 0 0 1.092.408.94.94 0 0 0 .264-.12l4.86-3.465a.85.85 0 0 0 .384-.576.888.888 0 0 0-.156-.672 1.02 1.02 0 0 0-1.092-.408.94.94 0 0 0-.264.12l-1.86 1.32a3.094 3.094 0 0 1-.864.384 3.349 3.349 0 0 1-3.6-1.32 2.944 2.944 0 0 1-.504-2.256 2.792 2.792 0 0 1 1.272-1.896l4.86-3.465a3.094 3.094 0 0 1 .864-.384 3.349 3.349 0 0 1 3.6 1.32 2.944 2.944 0 0 1 .504 2.256 2.54 2.54 0 0 1-.096.408l-.12.336-.312-.216a5.6 5.6 0 0 0-1.704-.84l-.168-.048.024-.168a.888.888 0 0 0-.168-.576 1.02 1.02 0 0 0-1.092-.408.94.94 0 0 0-.264.12l-4.86 3.465a.85.85 0 0 0-.384.576.888.888 0 0 0 .156.672 1.02 1.02 0 0 0 1.092.408.94.94 0 0 0 .264-.12l1.86-1.32a3.094 3.094 0 0 1 .864-.384 3.349 3.349 0 0 1 3.6 1.32 2.944 2.944 0 0 1 .504 2.256 2.792 2.792 0 0 1-1.272 1.896l-4.86 3.465a3.094 3.094 0 0 1-.864.384z' fill='#fff' />
-          </svg>
-        </g>
-
-        {/* Angular - orbits on inner ring, counter-clockwise, offset */}
-        <g filter='url(#hero-logo-glow)'>
-          <animateMotion dur='10s' begin='-7s' repeatCount='indefinite'>
-            <mpath href='#hero-orbit2' />
-          </animateMotion>
-          <circle r='16' fill='hsl(var(--card))' stroke='#DD0031' strokeWidth='1.2' opacity='0.95' />
-          <svg x='-9' y='-9' viewBox='0 0 24 24' width='18' height='18'>
-            <path d='M12 2L2.7 5.5l1.4 12.2L12 22l7.9-4.3 1.4-12.2z' fill='#DD0031' />
-            <path d='M12 2v20l7.9-4.3 1.4-12.2z' fill='#C3002F' />
-            <path d='M12 2L6.5 14.4h2.1l1.1-2.7h4.6l1.1 2.7h2.1L12 2zm1.5 8h-3L12 6.3l1.5 3.7z' fill='#fff' />
-          </svg>
-        </g>
-
-        {/* Orbiting particle dots */}
-        <circle r='2.5' fill='hsl(var(--primary))' opacity='0.6'>
-          <animateMotion dur='8s' begin='-1s' repeatCount='indefinite'>
-            <mpath href='#hero-orbit1' />
-          </animateMotion>
-        </circle>
-        <circle r='2' fill='hsl(260 80% 60%)' opacity='0.5'>
-          <animateMotion dur='8s' begin='-5s' repeatCount='indefinite'>
-            <mpath href='#hero-orbit1' />
-          </animateMotion>
-        </circle>
-        <circle r='1.5' fill='hsl(var(--primary))' opacity='0.4'>
-          <animateMotion dur='10s' begin='-4s' repeatCount='indefinite'>
-            <mpath href='#hero-orbit2' />
-          </animateMotion>
-        </circle>
-
-        {/* Bottom tagline */}
-        <text x='210' y='310' textAnchor='middle' fill='hsl(var(--muted-foreground))' fontSize='10' fontWeight='500' fontFamily='system-ui' letterSpacing='2' opacity='0.6'>
-          ONE CODEBASE &middot; EVERY FRAMEWORK
-        </text>
-      </svg>
-
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-8px); }
-        }
-      `}</style>
+        {/* ─── Framework row beneath the window ─── */}
+        <div className='flex items-center justify-center gap-3 mt-4'>
+          {[
+            { name: 'React', color: '#61DAFB' },
+            { name: 'Vue', color: '#4FC08D' },
+            { name: 'Solid', color: '#4377BB' },
+            { name: 'Svelte', color: '#FF3E00' },
+            { name: 'Angular', color: '#DD0031' },
+          ].map((fw) => (
+            <div key={fw.name} className='flex items-center gap-1 px-2.5 py-1 rounded-full border border-border/50 bg-card/80 text-[9px] font-medium' style={{ color: fw.color, borderColor: `${fw.color}30` }}>
+              <div className='w-2 h-2 rounded-full' style={{ backgroundColor: fw.color, opacity: 0.7 }} />
+              {fw.name}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

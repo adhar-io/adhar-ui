@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "dev": "deno run -A npm:storybook@^8 dev -p 6006 --config-dir .storybook",
-    "build": "deno run -A npm:storybook@^8 build --config-dir .storybook"
+    "dev": "npx storybook dev -p 6006 --config-dir .storybook",
+    "build": "npx storybook build --config-dir .storybook"
   }
 }
