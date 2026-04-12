@@ -21,7 +21,8 @@
     "./packages/sync-server",
     "./packages/code-connect",
     "./apps/docs",
-    "./apps/playground"
+    "./apps/playground",
+    "./apps/storybook"
   ],
   "tasks": {
     "build": "deno task build:tokens && deno task build:tailwind && deno task build:utils && deno task build:a11y && deno task build:icons",
@@ -38,7 +39,8 @@
     "clean": "rm -rf packages/*/dist",
     "cli": "deno run -A packages/cli/src/index.ts",
     "docs:dev": "cd apps/docs && deno task dev",
-    "playground:dev": "cd apps/playground && deno task dev"
+    "playground:dev": "cd apps/playground && deno task dev",
+    "storybook:dev": "cd apps/storybook && deno task dev"
   },
   "compilerOptions": {
     "strict": true,

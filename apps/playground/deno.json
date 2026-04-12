@@ -1,10 +1,8 @@
 {
-  "name": "@adhar-ui/playground",
-  "version": "0.1.0",
   "tasks": {
-    "dev": "deno run -A npm:vite --host",
-    "build": "deno run -A npm:vite build",
-    "preview": "deno run -A npm:vite preview"
+    "dev": "deno run -A npm:vite@^7.1.12 --host",
+    "build": "deno run -A npm:vite@^7.1.12 build",
+    "preview": "deno run -A npm:vite@^7.1.12 preview"
   },
   "imports": {
     "react": "npm:react@^19.2.0",
@@ -12,12 +10,18 @@
     "react/jsx-runtime": "npm:react@^19.2.0/jsx-runtime",
     "class-variance-authority": "npm:class-variance-authority@^0.7.1",
     "clsx": "npm:clsx@^2.1.1",
-    "tailwind-merge": "npm:tailwind-merge@^2.6.0"
+    "tailwind-merge": "npm:tailwind-merge@^2.6.0",
+    "tailwindcss": "npm:tailwindcss@^3.4.0",
+    "autoprefixer": "npm:autoprefixer@^10.4.0",
+    "postcss": "npm:postcss@^8.4.0"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "lib": ["dom", "dom.iterable", "es2022"]
-  },
-  "nodeModulesDir": "auto"
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2022"
+    ]
+  }
 }

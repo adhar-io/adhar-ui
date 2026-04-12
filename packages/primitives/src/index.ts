@@ -14,12 +14,52 @@
  *   - @adhar-ui/angular
  */
 
-// Component style definitions (CVA variants) - usable by all frameworks
+// ─── Form Controls ──────────────────────────────────────────────────────
 export { buttonVariants } from './components/button/button.styles.ts';
+export { inputVariants, labelVariants as inputLabelVariants } from './components/input/input.styles.ts';
+export { textareaVariants } from './components/textarea/textarea.styles.ts';
+export { selectTriggerVariants, selectContentVariants, selectItemVariants } from './components/select/select.styles.ts';
+export { checkboxVariants } from './components/checkbox/checkbox.styles.ts';
+export { switchVariants, switchThumbVariants } from './components/switch/switch.styles.ts';
+export { labelVariants } from './components/label/label.styles.ts';
+
+// ─── Display ────────────────────────────────────────────────────────────
 export { badgeVariants } from './components/badge/badge.styles.ts';
-export { inputVariants } from './components/input/input.styles.ts';
-export { cardVariants } from './components/card/card.styles.ts';
-export { alertVariants } from './components/alert/alert.styles.ts';
+export { avatarVariants, avatarImageVariants, avatarFallbackVariants } from './components/avatar/avatar.styles.ts';
+export { progressVariants, progressIndicatorVariants } from './components/progress/progress.styles.ts';
 export { skeletonVariants } from './components/skeleton/skeleton.styles.ts';
+export { spinnerVariants } from './components/spinner/spinner.styles.ts';
 export { separatorVariants } from './components/separator/separator.styles.ts';
-export { avatarVariants } from './components/avatar/avatar.styles.ts';
+
+// ─── Layout & Composite ────────────────────────────────────────────────
+export { cardVariants, cardHeaderVariants, cardTitleVariants, cardDescriptionVariants, cardContentVariants, cardFooterVariants } from './components/card/card.styles.ts';
+export { tabsListVariants, tabsTriggerVariants, tabsContentVariants } from './components/tabs/tabs.styles.ts';
+export { accordionItemVariants, accordionTriggerVariants, accordionContentVariants } from './components/accordion/accordion.styles.ts';
+
+// ─── Feedback & Overlay ────────────────────────────────────────────────
+export { alertVariants, alertTitleVariants, alertDescriptionVariants } from './components/alert/alert.styles.ts';
+export { dialogOverlayVariants, dialogContentVariants, dialogHeaderVariants, dialogFooterVariants, dialogTitleVariants, dialogDescriptionVariants, dialogCloseVariants } from './components/dialog/dialog.styles.ts';
+export { toastVariants, toastTitleVariants, toastDescriptionVariants, toastCloseVariants } from './components/toast/toast.styles.ts';
+export { tooltipContentVariants } from './components/tooltip/tooltip.styles.ts';
+export { popoverContentVariants } from './components/popover/popover.styles.ts';
+export { sheetContentVariants, sheetOverlayVariants, sheetHeaderVariants, sheetFooterVariants, sheetTitleVariants, sheetDescriptionVariants } from './components/sheet/sheet.styles.ts';
+export { dropdownMenuContentVariants, dropdownMenuItemVariants, dropdownMenuSeparatorVariants, dropdownMenuLabelVariants, dropdownMenuShortcutVariants } from './components/dropdown-menu/dropdown-menu.styles.ts';
+
+// ─── Types ──────────────────────────────────────────────────────────────
+export type { ButtonProps } from './components/button/button.types.ts';
+export type { ButtonVariants } from './components/button/button.styles.ts';
+export type { InputVariants } from './components/input/input.styles.ts';
+export type { CardVariants } from './components/card/card.styles.ts';
+export type { AlertVariants } from './components/alert/alert.styles.ts';
+export type { BadgeVariants } from './components/badge/badge.styles.ts';
+export type { SkeletonVariants } from './components/skeleton/skeleton.styles.ts';
+export type { SeparatorVariants } from './components/separator/separator.styles.ts';
+export type { AvatarVariants } from './components/avatar/avatar.styles.ts';
+export type { SwitchVariants } from './components/switch/switch.styles.ts';
+export type { CheckboxVariants } from './components/checkbox/checkbox.styles.ts';
+export type { TextareaVariants } from './components/textarea/textarea.styles.ts';
+export type { ProgressVariants } from './components/progress/progress.styles.ts';
+export type { SpinnerVariants } from './components/spinner/spinner.styles.ts';
+export type { LabelVariants } from './components/label/label.styles.ts';
+export type { ToastVariants } from './components/toast/toast.styles.ts';
+export type { SheetVariants } from './components/sheet/sheet.styles.ts';

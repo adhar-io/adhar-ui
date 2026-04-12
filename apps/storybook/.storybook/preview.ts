@@ -1,4 +1,5 @@
 import type { Preview } from '@storybook/react';
+import React from 'react';
 import '../src/globals.css';
 
 const preview: Preview = {
@@ -10,19 +11,69 @@ const preview: Preview = {
       },
     },
     layout: 'centered',
+    backgrounds: { disable: true },
+    options: {
+      storySort: {
+        order: [
+          'Components',
+          [
+            'Form Controls',
+            'Display',
+            'Layout & Feedback',
+            'Navigation',
+            'Overlay',
+            'Composite',
+            'Enterprise',
+            'AI',
+          ],
+          'Blocks',
+        ],
+      },
+    },
   },
   globalTypes: {
     theme: {
       name: 'Theme',
       description: 'Global theme',
-      defaultValue: 'light',
       toolbar: {
         icon: 'circlehollow',
-        items: ['light', 'dark'],
-        showName: true,
+        items: [
+          { value: 'light', icon: 'sun', title: 'Light' },
+          { value: 'dark', icon: 'moon', title: 'Dark' },
+        ],
+        dynamicTitle: true,
       },
     },
   },
+  initialGlobals: {
+    theme: 'light',
+  },
+  decorators: [
+    (Story, context) => {
+      const theme = context.globals.theme || 'light';
+      const isDark = theme === 'dark';
+
+      // Apply theme to document for global CSS variables
+      React.useEffect(() => {
+        document.documentElement.classList.toggle('dark', isDark);
+        document.body.style.backgroundColor = isDark ? 'hsl(240 10% 3.9%)' : 'hsl(0 0% 100%)';
+        document.body.style.color = isDark ? 'hsl(0 0% 98%)' : 'hsl(240 10% 3.9%)';
+      }, [isDark]);
+
+      return React.createElement(
+        'div',
+        {
+          className: `${isDark ? 'dark' : ''} min-h-[200px] flex items-center justify-center p-6`,
+          style: {
+            backgroundColor: isDark ? 'hsl(240, 10%, 3.9%)' : 'hsl(0, 0%, 100%)',
+            color: isDark ? 'hsl(0, 0%, 98%)' : 'hsl(240, 10%, 3.9%)',
+            borderRadius: '8px',
+          },
+        },
+        React.createElement(Story),
+      );
+    },
+  ],
 };
 
 export default preview;
