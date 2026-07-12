@@ -5,9 +5,15 @@
  *
  * Blocks are installed via `adhar-ui add block-login` just like components.
  * They go into the same ui/ directory and can be customized freely.
+ *
+ * NEW BLOCKS go in their own file under ./blocks/ (one file per block) for
+ * easier maintenance — see ./blocks/index.ts. The two maps are merged at the
+ * bottom so consumers see a unified `blockTemplates` record.
  */
 
-export const blockTemplates: Record<string, string> = {
+import { newBlockTemplates } from './blocks/index.ts';
+
+const legacyBlockTemplates: Record<string, string> = {
   // ─── Authentication ───────────────────────────────────────────────────
 
   'block-login': `'use client'
@@ -557,7 +563,9 @@ export function TablePage({ title, description, searchPlaceholder, actions, chil
 }
 `,
 
-  'block-detail-page': `import { cn } from '@/lib/utils'
+  'block-detail-page': `'use client'
+import * as React from 'react'
+import { cn } from '@/lib/utils'
 
 export function DetailPage({ title, subtitle, status, actions, tabs, className }: { title: string; subtitle?: string; status?: { label: string; variant?: string }; actions?: React.ReactNode; tabs: { label: string; content: React.ReactNode }[]; className?: string }) {
   const [activeTab, setActiveTab] = React.useState(0)
@@ -749,7 +757,9 @@ export function ServerErrorPage({ onRetry, onGoHome, className }: { onRetry?: ()
 }
 `,
 
-  'block-maintenance': `import { cn } from '@/lib/utils'
+  'block-maintenance': `'use client'
+import * as React from 'react'
+import { cn } from '@/lib/utils'
 
 export function MaintenancePage({ estimatedTime, onNotify, className }: { estimatedTime?: string; onNotify?: (email: string) => void; className?: string }) {
   const [email, setEmail] = React.useState('')
@@ -764,4 +774,10 @@ export function MaintenancePage({ estimatedTime, onNotify, className }: { estima
   )
 }
 `,
+};
+
+/** Unified block templates: legacy inline blocks + new per-file blocks. */
+export const blockTemplates: Record<string, string> = {
+  ...legacyBlockTemplates,
+  ...newBlockTemplates,
 };

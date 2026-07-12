@@ -16,6 +16,8 @@ export type {
 export {
   componentIndex,
   getAllComponentNames,
+  getBlocks,
+  getBlocksByCategory,
   getComponent,
   getComponentsByCategory,
   getComponentsByTier,

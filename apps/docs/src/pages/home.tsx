@@ -17,11 +17,13 @@ import {
   NavIcon,
 } from '../components/icons.tsx';
 
+// Stat cards on the home page. We use icons + qualitative descriptions
+// instead of hardcoded counts so the copy never goes stale as the library grows.
 const stats = [
-  { label: 'Components', value: '127', desc: '91 components + 36 blocks' },
-  { label: 'Frameworks', value: '5', desc: 'React, Vue, Solid, Svelte, Angular' },
-  { label: 'Design Tokens', value: '29', desc: 'Semantic CSS variables' },
-  { label: 'CLI Commands', value: '12', desc: 'Full automation' },
+  { label: 'Components', icon: '◧', desc: 'Full primitive set + page blocks' },
+  { label: 'Frameworks', icon: '⬡', desc: 'React, Vue, Solid, Svelte, Angular' },
+  { label: 'Design Tokens', icon: '◉', desc: 'Semantic CSS variables, themeable' },
+  { label: 'CLI', icon: '⌨', desc: 'Add, init, build — all scripted' },
 ];
 
 const features = [
@@ -306,11 +308,13 @@ export function HomePage({ navigate }: { navigate: (path: string) => void }) {
         ]} />
       </div>
 
-      {/* Stats */}
+      {/* Stats — icon-led "what's in the box" tiles (no hardcoded counts to avoid staleness) */}
       <div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-        {stats.map((stat, i) => (
+        {stats.map((stat) => (
           <div key={stat.label} className='group text-center p-6 rounded-xl border border-border bg-card card-glow hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5'>
-            <div className='text-3xl font-bold stat-value mb-1'>{stat.value}</div>
+            <div className='inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary text-xl font-semibold mb-3 group-hover:scale-105 transition-transform'>
+              {stat.icon}
+            </div>
             <div className='text-sm font-semibold text-foreground'>{stat.label}</div>
             <div className='text-xs text-muted-foreground mt-1'>{stat.desc}</div>
           </div>
@@ -438,48 +442,83 @@ export function HomePage({ navigate }: { navigate: (path: string) => void }) {
           Interactive tools, examples, and resources to help you build faster.
         </p>
         <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-4'>
-          {[
-            {
-              icon: '⬡',
-              title: 'Playground',
-              desc: 'Try components live with multi-framework code tabs.',
-              route: '/playground',
-              color: 'from-cyan-500/10 to-cyan-500/5 border-cyan-500/20',
-            },
-            {
-              icon: '◈',
-              title: 'Storybook',
-              desc: 'Browse all component stories and visual states.',
-              route: '/storybook',
-              color: 'from-pink-500/10 to-pink-500/5 border-pink-500/20',
-            },
-            {
-              icon: '◧',
-              title: 'Blocks',
-              desc: 'Copy-paste real-world UI patterns and page layouts.',
-              route: '/blocks',
-              color: 'from-amber-500/10 to-amber-500/5 border-amber-500/20',
-            },
-            {
-              icon: '◉',
-              title: 'Changelog',
-              desc: 'Track new features, fixes, and releases.',
-              route: '/changelog',
-              color: 'from-emerald-500/10 to-emerald-500/5 border-emerald-500/20',
-            },
-          ].map((item) => (
-            <button
-              key={item.title}
-              onClick={() => navigate(item.route)}
-              className={`group rounded-xl border p-5 text-left bg-gradient-to-br ${item.color} hover:shadow-md transition-all`}
-            >
-              <NavIcon icon={item.icon} className='mb-3 text-primary w-6 h-6' />
-              <h3 className='font-semibold text-foreground mb-1 group-hover:text-primary transition-colors'>
-                {item.title}
-              </h3>
-              <p className='text-xs text-muted-foreground leading-relaxed'>{item.desc}</p>
-            </button>
-          ))}
+          {(() => {
+            const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+            const SB_URL = isLocal ? 'http://localhost:6006' : '/storybook/index.html';
+            const BD_URL = isLocal ? 'http://localhost:5174' : '/builder/index.html';
+            const items = [
+              {
+                icon: '◧',
+                title: 'Blocks',
+                desc: 'Copy-paste real-world UI patterns and page layouts.',
+                route: '/blocks',
+                color: 'from-amber-500/10 to-amber-500/5 border-amber-500/20',
+                external: false,
+              },
+              {
+                icon: '◉',
+                title: 'Changelog',
+                desc: 'Track new features, fixes, and releases.',
+                route: '/changelog',
+                color: 'from-emerald-500/10 to-emerald-500/5 border-emerald-500/20',
+                external: false,
+              },
+              {
+                icon: '◈',
+                title: 'Storybook',
+                desc: 'Tweak props live, browse every component variant, run a11y checks.',
+                route: SB_URL,
+                color: 'from-pink-500/10 to-pink-500/5 border-pink-500/20',
+                external: true,
+              },
+              {
+                icon: '⬡',
+                title: 'Page Builder',
+                desc: 'Drag-and-drop visual builder for full pages and apps.',
+                route: BD_URL,
+                color: 'from-cyan-500/10 to-cyan-500/5 border-cyan-500/20',
+                external: true,
+              },
+            ];
+            return items.map((item) => {
+              const inner = (
+                <>
+                  <div className='flex items-start justify-between mb-3'>
+                    <NavIcon icon={item.icon} className='text-primary w-6 h-6' />
+                    {item.external && (
+                      <svg className='w-3.5 h-3.5 text-muted-foreground/60 group-hover:text-foreground transition-colors' aria-hidden='true' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={2} strokeLinecap='round' strokeLinejoin='round'>
+                        <path d='M7 17L17 7' />
+                        <path d='M9 7h8v8' />
+                      </svg>
+                    )}
+                  </div>
+                  <h3 className='font-semibold text-foreground mb-1 group-hover:text-primary transition-colors'>
+                    {item.title}
+                  </h3>
+                  <p className='text-xs text-muted-foreground leading-relaxed'>{item.desc}</p>
+                </>
+              );
+              return item.external ? (
+                <a
+                  key={item.title}
+                  href={item.route}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className={`group rounded-xl border p-5 text-left bg-gradient-to-br ${item.color} hover:shadow-md transition-all`}
+                >
+                  {inner}
+                </a>
+              ) : (
+                <button
+                  key={item.title}
+                  onClick={() => navigate(item.route)}
+                  className={`group rounded-xl border p-5 text-left bg-gradient-to-br ${item.color} hover:shadow-md transition-all`}
+                >
+                  {inner}
+                </button>
+              );
+            });
+          })()}
         </div>
       </div>
 

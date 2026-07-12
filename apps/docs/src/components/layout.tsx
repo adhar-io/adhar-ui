@@ -2,14 +2,27 @@ import React, { useEffect, useRef, useState } from 'react';
 import { categories, components } from '../data/components.ts';
 import { IconMoon, IconSearch, IconSun, NavIcon } from './icons.tsx';
 
-const topNavItems = [
+// Standalone-app URLs. In dev they live on their own ports; in prod they ship
+// as static bundles under /storybook and /builder respectively.
+const isLocalHost = typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const STORYBOOK_URL = isLocalHost ? 'http://localhost:6006' : '/storybook/index.html';
+const BUILDER_URL = isLocalHost ? 'http://localhost:5174' : '/builder/index.html';
+
+interface TopNavItem {
+  label: string;
+  href: string;
+  match?: string[];
+  external?: boolean;
+}
+
+const topNavItems: TopNavItem[] = [
   { label: 'Docs', href: '/getting-started', match: ['/getting-started', '/theming', '/cli', '/'] },
   { label: 'Components', href: '/components/form-controls', match: ['/components'] },
-  { label: 'Playground', href: '/playground', match: ['/playground'] },
-  { label: 'Storybook', href: '/storybook', match: ['/storybook'] },
   { label: 'Blocks', href: '/blocks', match: ['/blocks'] },
-  { label: 'Builder', href: '/builder', match: ['/builder'] },
   { label: 'Guides', href: '/guides/accessibility', match: ['/guides'] },
+  { label: 'Storybook', href: STORYBOOK_URL, external: true },
+  { label: 'Builder', href: BUILDER_URL, external: true },
 ];
 
 const navSections = [
@@ -34,10 +47,9 @@ const navSections = [
   {
     title: 'INTERACTIVE',
     items: [
-      { label: 'Playground', href: '/playground', icon: '▶️' },
-      { label: 'Storybook', href: '/storybook', icon: '📖' },
       { label: 'Blocks', href: '/blocks', icon: '💡' },
-      { label: 'Page Builder', href: '/builder', icon: '⬡' },
+      { label: 'Storybook', href: STORYBOOK_URL, icon: '📖', external: true },
+      { label: 'Page Builder', href: BUILDER_URL, icon: '⬡', external: true },
     ],
   },
   {
@@ -80,7 +92,18 @@ export function Header({
   navigate: (path: string) => void;
 }) {
   return (
-    <header className='sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60'>
+    <header
+      className='sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 transition-shadow duration-200'
+      style={{
+        // Layered shadow: tight inset highlight on the bottom edge + soft scrim
+        // below so the header floats clearly over scrolled content without
+        // looking heavy. Tuned to read in both light and dark themes.
+        boxShadow:
+          '0 1px 0 hsl(var(--border) / 0.4), ' +
+          '0 4px 16px -4px hsl(var(--foreground) / 0.06), ' +
+          '0 12px 32px -12px hsl(var(--foreground) / 0.08)',
+      }}
+    >
       <div className='flex h-14 items-center px-4 lg:px-6 gap-3 min-w-0 overflow-hidden'>
         {/* Mobile hamburger */}
         <button
@@ -113,7 +136,35 @@ export function Header({
         {/* Top nav — desktop */}
         <nav className='hidden lg:flex items-center gap-0.5'>
           {topNavItems.map((item) => {
-            const active = item.match.some((m) => route === m || route.startsWith(m + '/'));
+            // External items (Storybook / Builder) open the standalone app in a new tab
+            if (item.external) {
+              return (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-all duration-150'
+                  title={`Open ${item.label} in a new tab`}
+                >
+                  {item.label}
+                  <svg
+                    className='w-3 h-3 opacity-60'
+                    aria-hidden='true'
+                    viewBox='0 0 24 24'
+                    fill='none'
+                    stroke='currentColor'
+                    strokeWidth={2}
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                  >
+                    <path d='M7 17L17 7' />
+                    <path d='M9 7h8v8' />
+                  </svg>
+                </a>
+              );
+            }
+            const active = (item.match || []).some((m) => route === m || route.startsWith(m + '/'));
             return (
               <button
                 key={item.label}
@@ -186,8 +237,23 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(
-    new Set(['GETTING STARTED', 'COMPONENTS', 'INTERACTIVE', 'RESOURCES']),
+    new Set(['GETTING STARTED', 'COMPONENTS', 'INTERACTIVE', 'RESOURCES', 'GUIDES', 'MORE']),
   );
+
+  // Whenever the route changes, ensure any section containing the active item
+  // is expanded — so clicking "Guides" in the header reveals + highlights the
+  // matching sub-item in the sidebar.
+  useEffect(() => {
+    setExpandedCategories((prev) => {
+      const next = new Set(prev);
+      for (const section of navSections) {
+        if (section.items.some((item: any) => isActive(item.href))) {
+          next.add(section.title);
+        }
+      }
+      return next;
+    });
+  }, [isActive]);
 
   const toggleSection = (title: string) => {
     setExpandedCategories((prev) => {
@@ -262,6 +328,25 @@ export function Sidebar({
               {expandedCategories.has(section.title) && (
                 <div className='mt-0.5 space-y-0.5 animate-fade-in'>
                   {section.items.map((item: any) => {
+                    if (item.external) {
+                      return (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='group/item flex items-center gap-2 w-full px-2.5 py-[6px] rounded-md text-[13px] text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                          title={`Open ${item.label} in a new tab`}
+                        >
+                          {item.icon && <NavIcon icon={item.icon} className='text-muted-foreground group-hover/item:text-foreground' />}
+                          <span className='flex-1 text-left truncate'>{item.label}</span>
+                          <svg className='w-3 h-3 opacity-50 group-hover/item:opacity-80' aria-hidden='true' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={2} strokeLinecap='round' strokeLinejoin='round'>
+                            <path d='M7 17L17 7' />
+                            <path d='M9 7h8v8' />
+                          </svg>
+                        </a>
+                      );
+                    }
                     const active = isActive(item.href);
                     return (
                       <button
@@ -346,10 +431,9 @@ export function SearchDialog({
     { label: 'Installation', href: '/getting-started', section: 'Pages' },
     { label: 'Theming', href: '/theming', section: 'Pages' },
     { label: 'CLI Reference', href: '/cli', section: 'Pages' },
-    { label: 'Playground', href: '/playground', section: 'Interactive' },
-    { label: 'Storybook', href: '/storybook', section: 'Interactive' },
+    { label: 'Storybook ↗', href: STORYBOOK_URL, section: 'Interactive', external: true },
     { label: 'Blocks', href: '/blocks', section: 'Interactive' },
-    { label: 'Page Builder', href: '/builder', section: 'Interactive' },
+    { label: 'Page Builder ↗', href: BUILDER_URL, section: 'Interactive', external: true },
     { label: 'Changelog', href: '/changelog', section: 'Pages' },
     { label: 'Accessibility Guide', href: '/guides/accessibility', section: 'Guides' },
     { label: 'Design Sync Guide', href: '/guides/design-sync', section: 'Guides' },
@@ -393,8 +477,12 @@ export function SearchDialog({
     setSelectedIndex(0);
   }, [query]);
 
-  const handleSelect = (href: string) => {
-    navigate(href);
+  const handleSelect = (href: string, external?: boolean) => {
+    if (external || /^https?:\/\//.test(href)) {
+      window.open(href, '_blank', 'noopener,noreferrer');
+    } else {
+      navigate(href);
+    }
     onClose();
   };
 
@@ -406,7 +494,8 @@ export function SearchDialog({
       e.preventDefault();
       setSelectedIndex((prev) => Math.max(prev - 1, 0));
     } else if (e.key === 'Enter' && allResults[selectedIndex]) {
-      handleSelect(allResults[selectedIndex].href);
+      const r: any = allResults[selectedIndex];
+      handleSelect(r.href, r.external);
     }
   };
 
@@ -479,7 +568,7 @@ export function SearchDialog({
                       return (
                         <button
                           key={item.href}
-                          onClick={() => handleSelect(item.href)}
+                          onClick={() => handleSelect(item.href, (item as any).external)}
                           onMouseEnter={() => setSelectedIndex(globalIndex)}
                           className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm transition-all duration-100 ${
                             globalIndex === selectedIndex
@@ -656,17 +745,32 @@ export function DocsLayout({
                   </h4>
                   <ul className='space-y-2'>
                     {[
-                      { label: 'Playground', href: '/playground' },
-                      { label: 'Storybook', href: '/storybook' },
-                      { label: 'Blocks', href: '/blocks' },
+                      { label: 'Blocks', href: '/blocks', external: false },
+                      { label: 'Storybook', href: STORYBOOK_URL, external: true },
+                      { label: 'Page Builder', href: BUILDER_URL, external: true },
                     ].map((l) => (
                       <li key={l.href}>
-                        <button
-                          onClick={() => navigate(l.href)}
-                          className='text-sm text-muted-foreground hover:text-foreground transition-colors'
-                        >
-                          {l.label}
-                        </button>
+                        {l.external ? (
+                          <a
+                            href={l.href}
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            className='inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors'
+                          >
+                            {l.label}
+                            <svg className='w-3 h-3 opacity-60' aria-hidden='true' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={2} strokeLinecap='round' strokeLinejoin='round'>
+                              <path d='M7 17L17 7' />
+                              <path d='M9 7h8v8' />
+                            </svg>
+                          </a>
+                        ) : (
+                          <button
+                            onClick={() => navigate(l.href)}
+                            className='text-sm text-muted-foreground hover:text-foreground transition-colors'
+                          >
+                            {l.label}
+                          </button>
+                        )}
                       </li>
                     ))}
                   </ul>

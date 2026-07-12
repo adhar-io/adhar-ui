@@ -243,6 +243,22 @@ function tokenize(code: string, patterns: [RegExp, string][]): React.ReactNode[]
   return nodes;
 }
 
+// Friendly label for the language pill in the header.
+const LANGUAGE_LABELS: Record<string, string> = {
+  tsx: 'TSX',
+  ts: 'TypeScript',
+  jsx: 'JSX',
+  js: 'JavaScript',
+  bash: 'Shell',
+  sh: 'Shell',
+  shell: 'Shell',
+  json: 'JSON',
+  css: 'CSS',
+  html: 'HTML',
+  vue: 'Vue',
+  svelte: 'Svelte',
+};
+
 export function CodeBlock({
   code,
   language = 'tsx',
@@ -259,50 +275,84 @@ export function CodeBlock({
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Insecure-context fallback
+      const ta = document.createElement('textarea');
+      ta.value = code;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* noop */ }
+      document.body.removeChild(ta);
+    }
   };
 
   const lines = code.split('\n');
+  const langLabel = LANGUAGE_LABELS[language.toLowerCase()] || language.toUpperCase();
+  const lineCount = lines.length;
+  // Reserve enough gutter width for the highest line number (avoid 3-digit truncation)
+  const gutterWidth = String(lineCount).length;
 
   return (
     <div
-      className={`code-block rounded-lg border border-border/60 overflow-hidden ${className}`}
+      className={`code-block group/code rounded-lg border border-border/60 overflow-hidden ${className}`}
     >
-      {/* Header bar */}
-      {filename && (
-        <div className='flex items-center justify-between border-b border-white/[0.06] px-3.5 py-2 bg-zinc-900'>
-          <div className='flex items-center gap-2.5'>
-            <div className='flex gap-1'>
-              <span className='w-2.5 h-2.5 rounded-full bg-zinc-700' />
-              <span className='w-2.5 h-2.5 rounded-full bg-zinc-700' />
-              <span className='w-2.5 h-2.5 rounded-full bg-zinc-700' />
-            </div>
-            <span className='text-[11px] text-zinc-500 font-mono'>{filename}</span>
-          </div>
-          <CopyButton copied={copied} onClick={handleCopy} />
+      {/* Header bar — always present so users can see lang + copy without hover */}
+      <div className='flex items-center justify-between border-b border-white/[0.06] px-3 py-1.5 bg-zinc-900'>
+        <div className='flex items-center gap-2 min-w-0'>
+          {filename ? (
+            <>
+              <div className='flex gap-1 shrink-0'>
+                <span className='w-2 h-2 rounded-full bg-zinc-700' />
+                <span className='w-2 h-2 rounded-full bg-zinc-700' />
+                <span className='w-2 h-2 rounded-full bg-zinc-700' />
+              </div>
+              <span className='text-[11px] text-zinc-400 font-mono truncate'>{filename}</span>
+            </>
+          ) : (
+            <span className='text-[10px] font-semibold tracking-wider uppercase text-zinc-500'>
+              {langLabel}
+            </span>
+          )}
         </div>
-      )}
-      <div className='relative group bg-zinc-950'>
-        {!filename && (
-          <div className='absolute right-2.5 top-2.5 opacity-0 group-hover:opacity-100 transition-opacity z-10'>
-            <CopyButton copied={copied} onClick={handleCopy} />
-          </div>
-        )}
-        <pre className='overflow-x-auto p-3.5 text-[12.5px] leading-[1.65]'>
-          <code>
-            {showLineNumbers
-              ? lines.map((line, i) => (
-                  <span key={i} className='table-row'>
-                    <span className='table-cell pr-4 text-right text-zinc-600 select-none w-8 text-xs font-mono'>
+        <CopyButton copied={copied} onClick={handleCopy} />
+      </div>
+
+      <div className='relative bg-zinc-950'>
+        <pre className='code-block-pre overflow-x-auto py-3.5 text-[12.5px] leading-[1.7]'>
+          <code className='block min-w-fit'>
+            {showLineNumbers ? (
+              <span className='flex'>
+                {/* Gutter: line numbers */}
+                <span
+                  aria-hidden='true'
+                  className='shrink-0 select-none text-right text-zinc-600 font-mono text-[11px] pr-4 pl-4 border-r border-white/[0.04]'
+                  style={{ minWidth: `calc(${gutterWidth}ch + 2rem)` }}
+                >
+                  {lines.map((_, i) => (
+                    <span key={i} className='block leading-[1.7]'>
                       {i + 1}
                     </span>
-                    <span className='table-cell'>{highlightCode(line, language)}</span>
-                    {'\n'}
-                  </span>
-                ))
-              : highlightCode(code, language)}
+                  ))}
+                </span>
+                {/* Content */}
+                <span className='block flex-1 px-4'>
+                  {lines.map((line, i) => (
+                    <span key={i} className='block leading-[1.7]'>
+                      {/* Render a non-breaking space for empty lines so line height stays consistent */}
+                      {line === '' ? ' ' : highlightCode(line, language)}
+                    </span>
+                  ))}
+                </span>
+              </span>
+            ) : (
+              <span className='block px-4'>{highlightCode(code, language)}</span>
+            )}
           </code>
         </pre>
       </div>

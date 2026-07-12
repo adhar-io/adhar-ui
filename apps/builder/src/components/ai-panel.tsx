@@ -69,8 +69,8 @@ export function AIPanel({
 
   const hasContent = activeNodes.length > 0;
 
-  const emptySuggestions = ['Landing page', 'Dashboard layout', 'Contact form', 'Blog post'];
-  const contentSuggestions = ['Add hero section', 'Add footer', 'Add sidebar', 'Add nav bar'];
+  const emptySuggestions = ['SaaS landing page', 'E-commerce storefront', 'Analytics dashboard', 'Portfolio site', 'Blog home', 'Pricing page', 'Login form'];
+  const contentSuggestions = ['Make it minimal', 'Make it bold', 'Add pricing section', 'Add testimonials', 'Add FAQ', 'Add footer', 'Regenerate'];
   const suggestions = hasContent ? contentSuggestions : emptySuggestions;
 
   function handleSuggestionClick(text: string) {
@@ -101,44 +101,21 @@ export function AIPanel({
 
   return (
     <div className="flex flex-col h-full">
-      {/* ── Provider selector ──────────────────────────────────────────── */}
-      <div className="flex rounded-md border border-border overflow-hidden mx-1 mb-2">
-        {PROVIDERS.map((p) => (
-          <button
-            key={p.id}
-            onClick={() => onSetProvider(p.id)}
-            className={`flex-1 text-xs py-1.5 font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring ${
-              aiProvider === p.id
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-background text-muted-foreground hover:bg-muted'
-            }`}
-          >
-            {p.label}
+      {/* ── Provider badge ─────────────────────────────────────────────── */}
+      <div className="flex items-center gap-2 px-3 py-2">
+        <span className='text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary font-medium'>
+          {aiProvider === 'anthropic' ? 'Claude' : aiProvider === 'openai' ? 'GPT' : 'Templates'}
+        </span>
+        {aiProvider !== 'local' && !aiApiKey && (
+          <span className='text-[10px] text-amber-500'>No API key — configure in Settings</span>
+        )}
+        <div className='flex-1' />
+        {aiMessages.length > 0 && (
+          <button onClick={() => { /* Could add clear history */ }} className='text-[10px] text-muted-foreground/40 hover:text-muted-foreground transition-colors'>
+            {aiMessages.length} messages
           </button>
-        ))}
+        )}
       </div>
-
-      {/* ── API key input ──────────────────────────────────────────────── */}
-      {aiProvider !== 'local' && (
-        <div className="px-1 mb-2">
-          <div className="relative">
-            <input
-              type={showApiKey ? 'text' : 'password'}
-              value={aiApiKey}
-              onChange={(e) => onSetApiKey(e.target.value)}
-              placeholder={`${aiProvider === 'anthropic' ? 'Anthropic' : 'OpenAI'} API Key`}
-              className="w-full text-xs px-2 py-1.5 pr-8 rounded-md border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-            />
-            <button
-              onClick={() => setShowApiKey(!showApiKey)}
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground text-xs"
-              title={showApiKey ? 'Hide key' : 'Show key'}
-            >
-              {showApiKey ? '◉' : '○'}
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* ── Message history ────────────────────────────────────────────── */}
       <div className="flex-1 overflow-y-auto px-1 space-y-2 min-h-0">
@@ -236,31 +213,76 @@ export function AIPanel({
       )}
 
       {/* ── Prompt input ───────────────────────────────────────────────── */}
-      <div className="px-1 pt-2 pb-1">
-        <div className="relative">
+      <div className="px-2 pt-2 pb-2">
+        <div className="rounded-xl border border-border bg-background overflow-hidden transition-all focus-within:ring-2 focus-within:ring-ring/20 focus-within:border-ring">
+          {/* Textarea */}
           <textarea
             ref={textareaRef}
+            data-ai-input
             value={aiPrompt}
             onChange={(e) => onSetPrompt(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={isActivePage ? 'Describe a component...' : 'Select a page first'}
+            placeholder={isActivePage ? 'Describe what to build...' : 'Select a page first'}
             disabled={!isActivePage || aiLoading}
-            rows={1}
-            className="w-full text-xs px-3 py-2 pr-9 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+            rows={2}
+            className="w-full text-xs px-3 pt-2.5 pb-1 bg-transparent text-foreground placeholder:text-muted-foreground/35 resize-none outline-none disabled:opacity-50 disabled:cursor-not-allowed"
           />
-          <button
-            onClick={onGenerate}
-            disabled={!aiPrompt.trim() || aiLoading || !isActivePage}
-            className="absolute right-1.5 bottom-1.5 p-1 rounded-md bg-primary text-primary-foreground disabled:opacity-30 hover:opacity-90 transition-opacity"
-            title="Send (Cmd+Enter)"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13" />
-              <polygon points="22 2 15 22 11 13 2 9 22 2" />
-            </svg>
-          </button>
+          {/* Action bar */}
+          <div className="flex items-center gap-1 px-2 pb-2">
+            {/* Image upload */}
+            <label className='btn-icon-sm !h-6 !w-6 !min-w-0 cursor-pointer' title='Attach image'>
+              <input type='file' accept='image/*' className='hidden' onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = () => { onSetPrompt(aiPrompt + `\n[Image: ${file.name}]`); };
+                  reader.readAsDataURL(file);
+                }
+                e.target.value = '';
+              }} />
+              <svg width={13} height={13} viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={1.5}><rect x='3' y='3' width='18' height='18' rx='2' /><circle cx='8.5' cy='8.5' r='1.5' /><path d='M21 15l-5-5L5 21' /></svg>
+            </label>
+            {/* Paste from clipboard */}
+            <button className='btn-icon-sm !h-6 !w-6 !min-w-0' title='Paste from clipboard' onClick={async () => {
+              try { const text = await navigator.clipboard.readText(); if (text) onSetPrompt(aiPrompt + (aiPrompt ? '\n' : '') + text); } catch {}
+            }}>
+              <svg width={13} height={13} viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={1.5}><path d='M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2M9 2h6v4H9z' /></svg>
+            </button>
+            {/* Code context */}
+            <button className='btn-icon-sm !h-6 !w-6 !min-w-0' title='Add code context' onClick={() => {
+              const ctx = `Current page has ${activeNodes.length} elements. Types: ${[...new Set(activeNodes.map(n => n.type))].join(', ')}`;
+              onSetPrompt(aiPrompt + (aiPrompt ? '\n\n' : '') + `[Context: ${ctx}]`);
+            }}>
+              <svg width={13} height={13} viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={1.5}><path d='M16 18l6-6-6-6M8 6l-6 6 6 6' /></svg>
+            </button>
+
+            <div className='flex-1' />
+
+            {/* Character count */}
+            {aiPrompt.length > 0 && (
+              <span className='text-[9px] text-muted-foreground/30 tabular-nums mr-1'>{aiPrompt.length}</span>
+            )}
+
+            {/* Send button */}
+            <button
+              onClick={onGenerate}
+              disabled={!aiPrompt.trim() || aiLoading || !isActivePage}
+              className="h-7 px-3 rounded-lg bg-primary text-primary-foreground text-xs font-medium flex items-center gap-1.5 disabled:opacity-30 hover:opacity-90 active:scale-[0.97] transition-all"
+              title="Generate (⌘↵)"
+            >
+              {aiLoading ? (
+                <div className='flex items-center gap-1'>
+                  {[0, 100, 200].map((d) => <div key={d} className='w-1 h-1 rounded-full bg-primary-foreground animate-bounce' style={{ animationDelay: `${d}ms` }} />)}
+                </div>
+              ) : (
+                <>
+                  <svg width={12} height={12} viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={2}><path d='M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.582a.5.5 0 0 1 0 .963L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z' /></svg>
+                  Generate
+                </>
+              )}
+            </button>
+          </div>
         </div>
-        <p className="text-[10px] text-muted-foreground/40 mt-0.5 text-right">Cmd+Enter to send</p>
       </div>
 
       {/* ── Smart suggestions ──────────────────────────────────────────── */}

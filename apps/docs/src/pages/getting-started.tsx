@@ -13,8 +13,8 @@ export function GettingStartedPage({ navigate }: { navigate: (path: string) => v
       <section>
         <h2 className='text-lg font-semibold text-foreground mb-3'>What is Adhar UI?</h2>
         <p className='text-sm text-muted-foreground leading-relaxed mb-4'>
-          Adhar UI is an open-source design system with <strong className='text-foreground'>98 components</strong> and{' '}
-          <strong className='text-foreground'>16 pre-composed blocks</strong>. Unlike traditional component libraries that install as npm packages,
+          Adhar UI is an open-source design system with a <strong className='text-foreground'>complete primitive library</strong> and a growing collection of{' '}
+          <strong className='text-foreground'>pre-composed page blocks</strong>. Unlike traditional component libraries that install as npm packages,
           Adhar UI copies component source code directly into your project. This means you own every line —
           read it, modify it, extend it, delete what you don't need.
         </p>
@@ -328,7 +328,7 @@ const buttonVariants = cva("inline-flex items-center ...", {
       <section>
         <h2 className='text-lg font-semibold text-foreground mb-3'>What's Included</h2>
         <p className='text-sm text-muted-foreground mb-4'>
-          98 components organized into three tiers:
+          Components are organized into three tiers:
         </p>
         <div className='grid sm:grid-cols-3 gap-3'>
           {[
@@ -393,12 +393,11 @@ const buttonVariants = cva("inline-flex items-center ...", {
         <h3 className='font-semibold text-foreground mb-4'>Next Steps</h3>
         <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-3'>
           {[
-            { label: 'Browse Components', href: '/components/form-controls', desc: 'Explore 98 components with live previews' },
-            { label: 'Theming Guide', href: '/theming', desc: 'Customize colors, fonts, and 8 presets' },
+            { label: 'Browse Components', href: '/components/form-controls', desc: 'Explore the full library with live previews' },
+            { label: 'Theming Guide', href: '/theming', desc: 'Customize colors, fonts, and built-in presets' },
             { label: 'CLI Reference', href: '/cli', desc: 'All commands with examples' },
-            { label: 'Playground', href: '/playground', desc: 'Try components interactively' },
-            { label: 'Storybook', href: '/storybook', desc: '98 stories with controls' },
-            { label: 'Blocks', href: '/blocks', desc: '16 copy-paste page sections' },
+            { label: 'Storybook', href: '/storybook', desc: 'Try components live with prop controls' },
+            { label: 'Blocks', href: '/blocks', desc: 'Copy-paste page sections' },
             { label: 'Design Resources', href: '/design-resources', desc: 'Figma & Penpot kits' },
             { label: 'Accessibility', href: '/guides/accessibility', desc: 'WCAG 2.1 AA compliance' },
           ].map((item) => (

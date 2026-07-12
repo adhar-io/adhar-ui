@@ -4,7 +4,6 @@ import { DocsLayout } from './components/layout.tsx';
 import { HomePage } from './pages/home.tsx';
 import { GettingStartedPage } from './pages/getting-started.tsx';
 import { ComponentDetailPage, ComponentsCategoryPage } from './pages/components-page.tsx';
-import { PlaygroundPage } from './pages/playground.tsx';
 import { ThemingPage } from './pages/theming.tsx';
 import { CLIPage } from './pages/cli.tsx';
 import { GuidesPage } from './pages/guides.tsx';
@@ -15,7 +14,7 @@ import { DesignResourcesPage } from './pages/design-resources.tsx';
 import { BuilderPage } from './pages/builder.tsx';
 
 // These routes render fullscreen without the DocsLayout wrapper
-const FULLSCREEN_ROUTES = ['/builder', '/playground', '/storybook'];
+const FULLSCREEN_ROUTES = ['/builder', '/storybook'];
 
 export function App() {
   const { route, navigate, isActive, segments } = useRoute();
@@ -34,10 +33,9 @@ export function App() {
     if (route === '/cli') {
       return <CLIPage />;
     }
-    if (route === '/playground') {
-      return <PlaygroundPage navigate={navigate} />;
-    }
-    if (route === '/storybook') {
+    if (route === '/storybook' || route === '/playground') {
+      // /playground retired — Storybook covers all interactive demos with controls.
+      // Old /playground links transparently render the Storybook embed.
       return <StorybookPage navigate={navigate} />;
     }
     if (route === '/blocks') {

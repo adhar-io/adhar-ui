@@ -173,10 +173,33 @@ pre code {
 
 .code-block pre {
   background: transparent;
+  margin: 0;
 }
 
 .code-block code {
   color: #abb2bf;
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+  font-feature-settings: 'liga' 0, 'calt' 0;
+}
+
+/* Custom scrollbar for the code-block <pre> — subtle, matches dark surface */
+.code-block-pre::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.code-block-pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+.code-block-pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+.code-block-pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+.code-block-pre {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
 }
 
 /* Keywords: import, export, const, function, return, etc. */
@@ -192,16 +215,16 @@ pre code {
 
 /* Comments */
 .syn-comment {
-  color: #5c6370;
+  color: #6b7380;
   font-style: italic;
 }
 
-/* JSX component tags: <Button, <Card */
+/* JSX COMPONENT tags: <Button, <Card — use a yellow-orange to distinguish from HTML */
 .syn-tag {
-  color: #e06c75;
+  color: #e5c07b;
 }
 
-/* HTML tags: <div, <span, </div>, /> */
+/* HTML tags: <div, <span, </div>, /> — classic red */
 .syn-tag-html {
   color: #e06c75;
 }
@@ -238,8 +261,8 @@ pre code {
 
 .dark .syn-keyword { color: #c98ceb; }
 .dark .syn-string { color: #a5d6a7; }
-.dark .syn-comment { color: #6b7380; }
-.dark .syn-tag { color: #ef8f96; }
+.dark .syn-comment { color: #7a8294; font-style: italic; }
+.dark .syn-tag { color: #f0cc7e; }
 .dark .syn-tag-html { color: #ef8f96; }
 .dark .syn-type { color: #f0cc7e; }
 .dark .syn-attr { color: #e0a870; }

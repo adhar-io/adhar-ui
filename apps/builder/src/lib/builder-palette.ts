@@ -132,6 +132,39 @@ export const builtinPalette: PaletteCategory[] = [
       { type: 'login-form', label: 'Login', icon: '▣', defaultProps: { className: 'max-w-sm mx-auto rounded-xl border border-border bg-card p-8' }, acceptsChildren: true },
     ],
   },
+  {
+    id: 'screens',
+    label: 'Screens',
+    icon: '📱',
+    items: [
+      { type: 'screen-mobile', label: 'Mobile', icon: '📱', defaultProps: { className: 'w-[375px] min-h-[812px] bg-background rounded-[2.5rem] border-[3px] border-zinc-800 shadow-2xl relative overflow-hidden', children: '' }, acceptsChildren: true },
+      { type: 'screen-tablet', label: 'Tablet', icon: '📲', defaultProps: { className: 'w-[768px] min-h-[1024px] bg-background rounded-[1.5rem] border-[3px] border-zinc-800 shadow-2xl relative overflow-hidden', children: '' }, acceptsChildren: true },
+      { type: 'screen-desktop', label: 'Desktop', icon: '🖥', defaultProps: { className: 'w-[1280px] min-h-[800px] bg-background rounded-lg border border-zinc-300 shadow-2xl relative overflow-hidden', children: '' }, acceptsChildren: true },
+      { type: 'frame', label: 'Frame', icon: '⬜', defaultProps: { className: 'w-[300px] h-[200px] bg-background rounded-lg border-2 border-dashed border-primary/20 p-3' }, acceptsChildren: true },
+    ],
+  },
+  {
+    id: 'architecture',
+    label: 'Architecture',
+    icon: '🔄',
+    items: [
+      { type: 'flow-step', label: 'Flow Step', icon: '⬡', defaultProps: { className: 'inline-flex items-center justify-center rounded-lg border-2 border-primary/40 bg-background px-6 py-4 text-sm font-medium', children: 'Step' } },
+      { type: 'data-model', label: 'Data Model', icon: '🗄', defaultProps: { className: 'rounded-md border border-border bg-card p-4 text-xs font-mono min-w-[200px]', children: 'Entity\n─────\nid: string\nname: string\ncreatedAt: Date' } },
+      { type: 'api-endpoint', label: 'API Endpoint', icon: '🌐', defaultProps: { className: 'rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-xs font-mono', children: 'GET /api/resource' } },
+      { type: 'note', label: 'Sticky Note', icon: '📌', defaultProps: { className: 'w-[200px] min-h-[150px] rounded bg-yellow-100 dark:bg-yellow-900/30 p-3 text-sm shadow-sm', children: 'Add note...' } },
+    ],
+  },
+  {
+    id: 'shapes',
+    label: 'Shapes',
+    icon: '⬜',
+    items: [
+      { type: 'shape-rect', label: 'Rectangle', icon: '⬜', defaultProps: { className: 'w-[120px] h-[80px] bg-muted' } },
+      { type: 'shape-rounded', label: 'Rounded Rect', icon: '⬜', defaultProps: { className: 'w-[120px] h-[80px] bg-muted rounded-xl' } },
+      { type: 'shape-circle', label: 'Circle', icon: '⭕', defaultProps: { className: 'w-[80px] h-[80px] bg-muted rounded-full' } },
+      { type: 'shape-line', label: 'Line', icon: '—', defaultProps: { className: 'w-[200px] h-[2px] bg-foreground' } },
+    ],
+  },
 ];
 
 // ─── Custom Component Storage ────────────────────────────────────────────────

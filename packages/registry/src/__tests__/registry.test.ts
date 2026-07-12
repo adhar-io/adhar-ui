@@ -18,8 +18,8 @@ import {
 
 // ─── Index Integrity ─────────────────────────────────────────────────
 
-Deno.test('registry has 127 total entries', () => {
-  assertEquals(componentIndex.length, 127);
+Deno.test('registry has 147 total entries', () => {
+  assertEquals(componentIndex.length, 147);
 });
 
 Deno.test('registry has 91 components (non-block)', () => {
@@ -27,8 +27,8 @@ Deno.test('registry has 91 components (non-block)', () => {
   assertEquals(nonBlocks.length, 91);
 });
 
-Deno.test('registry has 36 blocks', () => {
-  assertEquals(getBlocks().length, 36);
+Deno.test('registry has 56 blocks', () => {
+  assertEquals(getBlocks().length, 56);
 });
 
 Deno.test('no duplicate names', () => {
@@ -63,8 +63,8 @@ Deno.test('tier 2 has 12 components', () => {
   assertEquals(getComponentsByTier(2).length, 12);
 });
 
-Deno.test('tier 3 has 76 entries (40 components + 36 blocks)', () => {
-  assertEquals(getComponentsByTier(3).length, 76);
+Deno.test('tier 3 has 96 entries (40 components + 56 blocks)', () => {
+  assertEquals(getComponentsByTier(3).length, 96);
 });
 
 // ─── Lookups ─────────────────────────────────────────────────────────

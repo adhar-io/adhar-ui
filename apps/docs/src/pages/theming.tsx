@@ -205,7 +205,7 @@ export function ThemingPage({ navigate }: { navigate: (path: string) => void }) 
       <div>
         <h2 className='text-xl font-bold text-foreground mb-4'>Theme Presets</h2>
         <p className='text-muted-foreground mb-4'>
-          Choose from 4 built-in presets. Switch presets via the CLI or by editing your CSS
+          Choose from built-in presets. Switch presets via the CLI or by editing your CSS
           variables directly.
         </p>
 

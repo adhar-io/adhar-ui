@@ -24,6 +24,7 @@ interface CanvasViewProps {
   onMoveDown: (nodeId: string) => void;
   onWrap: (nodeId: string) => void;
   onDelete: (nodeId: string) => void;
+  onZoom?: (zoom: number) => void;
 }
 
 const DEVICE_W = { desktop: 1280, tablet: 768, mobile: 375 } as const;
@@ -33,7 +34,7 @@ const DEVICE_W = { desktop: 1280, tablet: 768, mobile: 375 } as const;
 export function CanvasView({
   nodes, selectedNodeIds, zoom, devicePreview, canvasBg, pageName,
   onSelect, onDeselect, onUpdateText, onDropNew, onDropReorder,
-  onCopy, onPaste, onDuplicate, onMoveUp, onMoveDown, onWrap, onDelete,
+  onCopy, onPaste, onDuplicate, onMoveUp, onMoveDown, onWrap, onDelete, onZoom,
 }: CanvasViewProps) {
   const [ctx, setCtx] = useState<{ x: number; y: number; nodeId: string } | null>(null);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -44,15 +45,30 @@ export function CanvasView({
 
   const deviceWidth = DEVICE_W[devicePreview];
   const scale = zoom / 100;
+  const [spaceHeld, setSpaceHeld] = useState(false);
 
-  // Pan with middle mouse or space+drag
+  // ── Space key for pan mode (like Figma) ──
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.code === 'Space' && !e.repeat && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || (e.target as HTMLElement)?.isContentEditable)) {
+        e.preventDefault();
+        setSpaceHeld(true);
+      }
+    };
+    const up = (e: KeyboardEvent) => { if (e.code === 'Space') setSpaceHeld(false); };
+    window.addEventListener('keydown', down);
+    window.addEventListener('keyup', up);
+    return () => { window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); };
+  }, []);
+
+  // ── Pan: Space+drag, Middle mouse, Alt+drag ──
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    if (e.button === 1 || (e.button === 0 && e.altKey)) {
+    if (e.button === 1 || (e.button === 0 && e.altKey) || (e.button === 0 && spaceHeld)) {
       e.preventDefault();
       setIsPanning(true);
       setPanStart({ x: e.clientX, y: e.clientY, px: pan.x, py: pan.y });
     }
-  }, [pan]);
+  }, [pan, spaceHeld]);
 
   useEffect(() => {
     if (!isPanning) return;
@@ -63,19 +79,27 @@ export function CanvasView({
     return () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
   }, [isPanning, panStart]);
 
-  // Scroll to zoom
+  // ── Scroll: regular scroll = pan, Ctrl/Cmd+scroll = zoom ──
   const handleWheel = useCallback((e: React.WheelEvent) => {
     if (e.ctrlKey || e.metaKey) {
+      // Pinch-to-zoom or Ctrl+scroll = zoom
       e.preventDefault();
-      // Handled by parent zoom control
+      if (onZoom) {
+        const delta = e.deltaY > 0 ? -5 : 5;
+        onZoom(Math.max(25, Math.min(200, zoom + delta)));
+      }
+    } else {
+      // Regular scroll = pan canvas
+      e.preventDefault();
+      setPan((p) => ({ x: p.x - e.deltaX, y: p.y - e.deltaY }));
     }
-  }, []);
+  }, [zoom, onZoom]);
 
   // Canvas background — uses CSS variables from globals.css
   const bgStyle: React.CSSProperties = canvasBg === 'dark'
     ? { background: 'hsl(var(--canvas-dark))' }
     : canvasBg === 'dots'
-      ? { background: 'hsl(var(--canvas))', backgroundImage: 'radial-gradient(circle, hsl(var(--canvas-dot)) 0.8px, transparent 0.8px)', backgroundSize: `${20 * scale}px ${20 * scale}px` }
+      ? { background: 'hsl(var(--canvas))', backgroundImage: 'radial-gradient(circle, hsl(var(--canvas-dot)) 0.8px, transparent 0.8px)', backgroundSize: `${20 * scale}px ${20 * scale}px`, backgroundPosition: `${pan.x}px ${pan.y}px` }
       : { background: 'hsl(var(--canvas))' };
 
   function handleCanvasClick(e: React.MouseEvent) {
@@ -159,7 +183,7 @@ export function CanvasView({
       <div className='absolute top-0 left-0 w-5 h-5 z-20 pointer-events-none' style={{ background: 'hsl(var(--card) / 0.85)', borderBottom: '1px solid hsl(var(--border) / 0.3)', borderRight: '1px solid hsl(var(--border) / 0.3)' }} />
 
       {/* ── Artboard area ── */}
-      <div className='absolute inset-0 pt-5 pl-5' style={{ cursor: isPanning ? 'grabbing' : 'default' }}
+      <div className='absolute inset-0 pt-5 pl-5' style={{ cursor: isPanning ? 'grabbing' : spaceHeld ? 'grab' : 'default' }}
         onClick={handleCanvasClick}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleCanvasDrop}>
@@ -202,8 +226,9 @@ export function CanvasView({
                     </div>
                   </div>
                 ) : (
-                  nodes.map((node) => (
+                  nodes.map((node, i) => (
                     <NodeView key={node.id} node={node} selectedNodeIds={selectedNodeIds} hoveredId={hoveredId}
+                      parentId={null} siblingIndex={i}
                       onSelect={onSelect} onUpdateText={onUpdateText}
                       onDropNew={onDropNew} onDropReorder={onDropReorder}
                       onHover={setHoveredId}
@@ -375,6 +400,39 @@ function NodeView({ node, selectedNodeIds, hoveredId, parentId, siblingIndex, on
 
       {/* Node content */}
       <div className={node.props.className || ''}>
+        {/* ── Device chrome for screen types ── */}
+        {node.type === 'screen-mobile' && (
+          <>
+            <div className='h-7 flex items-center justify-center'>
+              <div className='w-20 h-[5px] rounded-full bg-zinc-800' />
+            </div>
+            <div className='flex items-center justify-between px-5 py-1.5 text-[11px]'>
+              <span className='font-medium'>9:41</span>
+              <div className='flex items-center gap-1'>
+                <div className='w-4 h-2 border border-current rounded-sm'><div className='w-2/3 h-full bg-current rounded-sm' /></div>
+              </div>
+            </div>
+          </>
+        )}
+        {node.type === 'screen-desktop' && (
+          <div className='h-8 bg-zinc-100 dark:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-700 flex items-center px-3 gap-1.5 rounded-t-lg'>
+            <div className='w-3 h-3 rounded-full bg-red-400/80' />
+            <div className='w-3 h-3 rounded-full bg-yellow-400/80' />
+            <div className='w-3 h-3 rounded-full bg-green-400/80' />
+            <div className='flex-1 mx-8'>
+              <div className='h-5 rounded-md bg-white dark:bg-zinc-700 border border-zinc-200 dark:border-zinc-600 flex items-center px-2'>
+                <span className='text-[9px] text-muted-foreground/40 font-mono'>localhost:3000</span>
+              </div>
+            </div>
+          </div>
+        )}
+        {node.type === 'screen-tablet' && (
+          <div className='h-5 flex items-center justify-center'>
+            <div className='w-2 h-2 rounded-full bg-zinc-700' />
+          </div>
+        )}
+
+        {/* ── Standard content rendering ── */}
         {node.type === 'input' ? (
           <input className={node.props.className} placeholder={node.props.placeholder} readOnly tabIndex={-1} />
         ) : node.type === 'textarea' ? (
@@ -396,12 +454,31 @@ function NodeView({ node, selectedNodeIds, hoveredId, parentId, siblingIndex, on
                 </span>
               ) : <span>{node.props.children}</span>
             )}
-            {node.children.map((c) => (
+            {/* Screen content area */}
+            {node.type.startsWith('screen-') && (
+              <div className='p-4 min-h-[200px]'>
+                {node.children.length === 0 && (
+                  <div className='flex flex-col items-center justify-center h-full min-h-[200px] text-muted-foreground/20'>
+                    <span className='text-2xl mb-2'>{node.type === 'screen-mobile' ? '📱' : node.type === 'screen-tablet' ? '📲' : '🖥'}</span>
+                    <span className='text-xs'>Drop components here</span>
+                  </div>
+                )}
+                {node.children.map((c, ci) => (
+                  <NodeView key={c.id} node={c} selectedNodeIds={selectedNodeIds} hoveredId={hoveredId}
+                    parentId={node.id} siblingIndex={ci}
+                    onSelect={onSelect} onUpdateText={onUpdateText} onDropNew={onDropNew} onDropReorder={onDropReorder}
+                    onHover={onHover} onContextMenu={onContextMenu} />
+                ))}
+              </div>
+            )}
+            {/* Regular children rendering (non-screen) */}
+            {!node.type.startsWith('screen-') && node.children.map((c, ci) => (
               <NodeView key={c.id} node={c} selectedNodeIds={selectedNodeIds} hoveredId={hoveredId}
+                parentId={node.id} siblingIndex={ci}
                 onSelect={onSelect} onUpdateText={onUpdateText} onDropNew={onDropNew} onDropReorder={onDropReorder}
                 onHover={onHover} onContextMenu={onContextMenu} />
             ))}
-            {isCont && node.children.length === 0 && (
+            {isCont && !node.type.startsWith('screen-') && node.children.length === 0 && (
               <div className={`min-h-[48px] flex items-center justify-center text-[10px] border-2 border-dashed rounded-lg transition-colors ${dropPos === 'inside' ? 'border-primary/40 text-primary/40 bg-primary/[0.02]' : 'border-border/20 text-muted-foreground/15'}`}>
                 <svg className='w-3.5 h-3.5 mr-1 opacity-40' viewBox='0 0 24 24' fill='none' stroke='currentColor' strokeWidth={1.5}><path d='M12 5v14M5 12h14' /></svg>
                 Drop here

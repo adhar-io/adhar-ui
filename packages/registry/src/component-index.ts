@@ -1527,6 +1527,232 @@ const blocks: ComponentEntry[] = [
     devDependencies: [],
     registryDependencies: ['button', 'input'],
   },
+
+  // --- Marketing & Content (new) ---
+  {
+    name: 'block-stats-grid',
+    title: 'Stats Grid',
+    description:
+      'Section with KPI tiles — value, label, optional icon, description, and trend indicator. 2 / 3 / 4 column variants.',
+    tier: 3,
+    categories: ['block', 'marketing'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-team-grid',
+    title: 'Team Grid',
+    description:
+      'Team-members grid with avatar, name, role, optional bio, and social links. 2 / 3 / 4 column variants.',
+    tier: 3,
+    categories: ['block', 'marketing'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-blog-grid',
+    title: 'Blog Grid',
+    description:
+      'Blog landing page with featured post, recent-articles grid, category badges, and author/date metadata.',
+    tier: 3,
+    categories: ['block', 'marketing', 'content'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-newsletter',
+    title: 'Newsletter',
+    description:
+      'Email-capture section with heading, copy, validated input, async submit states (loading / success / error), and optional social-proof line.',
+    tier: 3,
+    categories: ['block', 'marketing'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-integrations',
+    title: 'Integrations Grid',
+    description:
+      'Showcase grid of partner / integration tiles with logo, name, description, and status badge (available / beta / coming-soon).',
+    tier: 3,
+    categories: ['block', 'marketing'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-comparison-table',
+    title: 'Plan Comparison Table',
+    description:
+      'Side-by-side comparison of pricing plans with grouped feature rows, popular-plan highlight, and per-plan CTA buttons.',
+    tier: 3,
+    categories: ['block', 'marketing', 'pricing'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-video-hero',
+    title: 'Video Hero',
+    description:
+      'Hero section with looping background video, overlay gradient, headline, subhead, and primary + secondary CTAs.',
+    tier: 3,
+    categories: ['block', 'marketing'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-banner-announcement',
+    title: 'Announcement Banner',
+    description:
+      'Top-of-page promo banner with message, optional CTA, dismiss button, and 4 visual variants (default / gradient / success / warning).',
+    tier: 3,
+    categories: ['block', 'marketing'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+
+  // --- Forms (new) ---
+  {
+    name: 'block-multistep-form',
+    title: 'Multi-Step Form',
+    description:
+      'Single-card multi-step wizard with progress bar, step counter, back / continue buttons, and per-step content slot.',
+    tier: 3,
+    categories: ['block', 'form'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-stepper-form',
+    title: 'Stepper Form',
+    description:
+      'Two-column wizard with sidebar stepper showing all steps + status, and main content area with back / continue navigation.',
+    tier: 3,
+    categories: ['block', 'form'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+
+  // --- App Pages (new) ---
+  {
+    name: 'block-billing-invoices',
+    title: 'Billing & Invoices',
+    description:
+      'Billing page with current-plan card, upgrade CTA, and invoice history table (date, amount, status, download).',
+    tier: 3,
+    categories: ['block', 'app', 'settings'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-notifications-center',
+    title: 'Notifications Center',
+    description:
+      'Inbox-style notifications page with all / unread filter tabs, unread badge, mark-as-read, dismiss, and per-notification action button.',
+    tier: 3,
+    categories: ['block', 'app'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-search-results',
+    title: 'Search Results',
+    description:
+      'Search results page with persistent search bar, filter chips, result count, snippet listing, and empty-state.',
+    tier: 3,
+    categories: ['block', 'app'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-profile',
+    title: 'Profile Page',
+    description:
+      'User profile with cover image, large avatar, name, role, bio, location / joined / socials row, stats grid, and recent activity list.',
+    tier: 3,
+    categories: ['block', 'app'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-onboarding',
+    title: 'Onboarding Flow',
+    description:
+      'Centered onboarding card with hero illustration slot, segmented progress dots, per-step title + description + custom content, skip and next buttons.',
+    tier: 3,
+    categories: ['block', 'app'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-timeline-page',
+    title: 'Timeline Page',
+    description:
+      'Vertical activity timeline with date-grouped events, sticky group headers, icon nodes on a guide line, and per-event title + description card.',
+    tier: 3,
+    categories: ['block', 'app'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-empty-state-page',
+    title: 'Empty State Page',
+    description:
+      'Full-page empty state with circular icon, heading, description, and primary + secondary CTAs.',
+    tier: 3,
+    categories: ['block', 'app'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-loading-page',
+    title: 'Loading Page',
+    description:
+      'Skeleton screen with header skeleton, three stat-card skeletons, and a list-row skeleton with configurable row count.',
+    tier: 3,
+    categories: ['block', 'app'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-tabs-page',
+    title: 'Tabs Page Layout',
+    description:
+      'Page shell with heading, optional header actions, horizontal tab bar with count badges, and active tab content.',
+    tier: 3,
+    categories: ['block', 'app', 'layout'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
+  {
+    name: 'block-card-grid',
+    title: 'Card Grid',
+    description:
+      'Generic responsive card grid with optional image, badge, title, description, metadata pairs, and CTA. Supports 2 / 3 / 4 columns and href / onClick / static items.',
+    tier: 3,
+    categories: ['block', 'app', 'layout'],
+    dependencies: [],
+    devDependencies: [],
+    registryDependencies: [],
+  },
 ];
 
 // ============================================================

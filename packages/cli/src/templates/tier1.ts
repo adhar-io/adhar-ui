@@ -13,25 +13,38 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
         destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+        success: 'bg-emerald-600 text-white hover:bg-emerald-700',
+        warning: 'bg-amber-500 text-white hover:bg-amber-600',
         outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-10 px-4 py-2',
-        sm: 'h-9 rounded-md px-3',
-        lg: 'h-11 rounded-md px-8',
+        xs: 'h-7 rounded px-2 text-xs',
+        sm: 'h-9 rounded-md px-3 text-sm',
+        default: 'h-10 px-4 py-2 text-sm',
+        lg: 'h-11 rounded-md px-8 text-base',
+        xl: 'h-12 rounded-lg px-10 text-base',
         icon: 'h-10 w-10',
+        'icon-sm': 'h-8 w-8',
+        'icon-lg': 'h-11 w-11',
+      },
+      density: {
+        normal: '',
+        compact: 'gap-1.5 [&_svg]:size-3.5',
+      },
+      fullWidth: {
+        true: 'w-full',
       },
     },
-    defaultVariants: { variant: 'default', size: 'default' },
+    defaultVariants: { variant: 'default', size: 'default', density: 'normal' },
   }
 )
 
@@ -39,11 +52,39 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  loading?: boolean
+  loadingText?: string
+  leftIcon?: React.ReactNode
+  rightIcon?: React.ReactNode
 }
 
+const Spinner = ({ className }: { className?: string }) => (
+  <svg
+    className={cn('animate-spin', className)}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.25" strokeWidth="4" />
+    <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+  </svg>
+)
+
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => (
-    <button className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
+  ({ className, variant, size, density, fullWidth, loading, loadingText, leftIcon, rightIcon, disabled, children, ...props }, ref) => (
+    <button
+      className={cn(buttonVariants({ variant, size, density, fullWidth, className }))}
+      ref={ref}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      data-loading={loading || undefined}
+      {...props}
+    >
+      {loading ? <Spinner /> : leftIcon}
+      {loading && loadingText ? loadingText : children}
+      {!loading && rightIcon}
+    </button>
   )
 )
 Button.displayName = 'Button'
@@ -52,24 +93,84 @@ export { Button, buttonVariants }
 `,
 
   'input': `import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
-const Input = React.forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
-  ({ className, type, ...props }, ref) => (
-    <input
-      type={type}
-      className={cn(
-        'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-        className
-      )}
-      ref={ref}
-      {...props}
-    />
-  )
+const inputVariants = cva(
+  'flex w-full rounded-md border bg-background ring-offset-background file:border-0 file:bg-transparent file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+  {
+    variants: {
+      size: {
+        sm: 'h-8 px-2.5 text-xs file:text-xs',
+        default: 'h-10 px-3 py-2 text-sm file:text-sm',
+        lg: 'h-11 px-4 text-base file:text-base',
+      },
+      state: {
+        default: 'border-input focus-visible:ring-ring',
+        error: 'border-destructive focus-visible:ring-destructive text-destructive placeholder:text-destructive/60',
+        success: 'border-emerald-500 focus-visible:ring-emerald-500',
+        warning: 'border-amber-500 focus-visible:ring-amber-500',
+      },
+    },
+    defaultVariants: { size: 'default', state: 'default' },
+  }
+)
+
+export interface InputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
+    VariantProps<typeof inputVariants> {
+  leftAdornment?: React.ReactNode
+  rightAdornment?: React.ReactNode
+  error?: string
+  hint?: string
+}
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, size, state, leftAdornment, rightAdornment, error, hint, id, ...props }, ref) => {
+    const resolvedState = error ? 'error' : state
+    // Always call useId — never conditionally (Rules of Hooks).
+    const generatedId = React.useId()
+    const inputId = id ?? generatedId
+    const descriptionId = (error || hint) ? \`\${inputId}-desc\` : undefined
+    const inputEl = (
+      <input
+        id={inputId}
+        type={type}
+        ref={ref}
+        aria-invalid={!!error || resolvedState === 'error' || undefined}
+        aria-describedby={descriptionId}
+        className={cn(
+          inputVariants({ size, state: resolvedState }),
+          leftAdornment && 'pl-9',
+          rightAdornment && 'pr-9',
+          className,
+        )}
+        {...props}
+      />
+    )
+    const wrapped = (leftAdornment || rightAdornment) ? (
+      <div className="relative">
+        {leftAdornment && <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground [&_svg]:size-4">{leftAdornment}</span>}
+        {inputEl}
+        {rightAdornment && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground [&_svg]:size-4">{rightAdornment}</span>}
+      </div>
+    ) : inputEl
+    if (!error && !hint) return wrapped
+    return (
+      <div className="space-y-1.5">
+        {wrapped}
+        {(error || hint) && (
+          <p id={descriptionId} className={cn('text-xs', error ? 'text-destructive' : 'text-muted-foreground')}>
+            {error || hint}
+          </p>
+        )}
+      </div>
+    )
+  }
 )
 Input.displayName = 'Input'
 
-export { Input }
+export { Input, inputVariants }
 `,
 
   'textarea': `import * as React from 'react'
@@ -360,7 +461,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'inline-flex items-center gap-1 border font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
@@ -368,46 +469,161 @@ const badgeVariants = cva(
         secondary: 'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
         destructive: 'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
         outline: 'text-foreground',
+        success: 'border-transparent bg-emerald-500/15 text-emerald-700 dark:text-emerald-400',
+        warning: 'border-transparent bg-amber-500/15 text-amber-700 dark:text-amber-400',
+        info: 'border-transparent bg-blue-500/15 text-blue-700 dark:text-blue-400',
+        soft: 'border-transparent bg-primary/10 text-primary',
+      },
+      size: {
+        sm: 'rounded px-1.5 py-0 text-[10px]',
+        default: 'rounded-full px-2.5 py-0.5 text-xs',
+        lg: 'rounded-full px-3 py-1 text-sm',
+      },
+      shape: {
+        rounded: '',
+        square: 'rounded-md',
+        pill: 'rounded-full',
       },
     },
-    defaultVariants: { variant: 'default' },
+    defaultVariants: { variant: 'default', size: 'default', shape: 'rounded' },
   }
 )
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {}
+export interface BadgeProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof badgeVariants> {
+  dot?: boolean
+  removable?: boolean
+  onRemove?: () => void
+}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant }), className)} {...props} />
+function Badge({ className, variant, size, shape, dot, removable, onRemove, children, ...props }: BadgeProps) {
+  return (
+    <div className={cn(badgeVariants({ variant, size, shape }), className)} {...props}>
+      {dot && <span className="h-1.5 w-1.5 rounded-full bg-current opacity-80" aria-hidden />}
+      {children}
+      {removable && (
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); onRemove?.() }}
+          className="ml-0.5 -mr-0.5 inline-flex h-3.5 w-3.5 items-center justify-center rounded-full opacity-60 hover:opacity-100 hover:bg-foreground/10"
+          aria-label="Remove"
+        >
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      )}
+    </div>
+  )
 }
 
 export { Badge, badgeVariants }
 `,
 
   'avatar': `import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
-const Avatar = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
-  ({ className, ...props }, ref) => (
-    <span ref={ref} className={cn('relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full', className)} {...props} />
-  )
+const avatarVariants = cva(
+  'relative flex shrink-0 overflow-hidden',
+  {
+    variants: {
+      size: {
+        xs: 'h-6 w-6 text-[10px]',
+        sm: 'h-8 w-8 text-xs',
+        default: 'h-10 w-10 text-sm',
+        lg: 'h-12 w-12 text-base',
+        xl: 'h-16 w-16 text-lg',
+        '2xl': 'h-24 w-24 text-2xl',
+      },
+      shape: {
+        circle: 'rounded-full',
+        rounded: 'rounded-xl',
+        square: 'rounded-md',
+      },
+    },
+    defaultVariants: { size: 'default', shape: 'circle' },
+  }
+)
+
+type AvatarStatus = 'online' | 'offline' | 'busy' | 'away'
+
+export interface AvatarProps
+  extends React.HTMLAttributes<HTMLSpanElement>,
+    VariantProps<typeof avatarVariants> {
+  status?: AvatarStatus
+}
+
+const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
+  ({ className, size, shape, status, children, ...props }, ref) => {
+    const statusColor = {
+      online: 'bg-emerald-500',
+      offline: 'bg-muted-foreground',
+      busy: 'bg-rose-500',
+      away: 'bg-amber-500',
+    }[status || 'offline']
+    return (
+      <span ref={ref} className={cn(avatarVariants({ size, shape }), className)} {...props}>
+        {children}
+        {status && (
+          <span
+            aria-label={\`Status: \${status}\`}
+            className={cn(
+              'absolute right-0 bottom-0 block rounded-full ring-2 ring-background',
+              statusColor,
+              size === 'xs' && 'h-1.5 w-1.5',
+              size === 'sm' && 'h-2 w-2',
+              (!size || size === 'default') && 'h-2.5 w-2.5',
+              size === 'lg' && 'h-3 w-3',
+              size === 'xl' && 'h-3.5 w-3.5',
+              size === '2xl' && 'h-4 w-4',
+            )}
+          />
+        )}
+      </span>
+    )
+  }
 )
 Avatar.displayName = 'Avatar'
 
 const AvatarImage = React.forwardRef<HTMLImageElement, React.ImgHTMLAttributes<HTMLImageElement>>(
-  ({ className, ...props }, ref) => (
-    <img ref={ref} className={cn('aspect-square h-full w-full', className)} {...props} />
-  )
+  ({ className, onError, ...props }, ref) => {
+    const [errored, setErrored] = React.useState(false)
+    if (errored || !props.src) return null
+    return (
+      <img
+        ref={ref}
+        className={cn('aspect-square h-full w-full object-cover', className)}
+        onError={(e) => { setErrored(true); onError?.(e) }}
+        {...props}
+      />
+    )
+  }
 )
 AvatarImage.displayName = 'AvatarImage'
 
-const AvatarFallback = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement>>(
-  ({ className, ...props }, ref) => (
-    <span ref={ref} className={cn('flex h-full w-full items-center justify-center rounded-full bg-muted', className)} {...props} />
-  )
+const AvatarFallback = React.forwardRef<HTMLSpanElement, React.HTMLAttributes<HTMLSpanElement> & { delayMs?: number }>(
+  ({ className, delayMs, children, ...props }, ref) => {
+    const [show, setShow] = React.useState(!delayMs)
+    React.useEffect(() => {
+      if (!delayMs) return
+      const t = setTimeout(() => setShow(true), delayMs)
+      return () => clearTimeout(t)
+    }, [delayMs])
+    if (!show) return null
+    return (
+      <span
+        ref={ref}
+        className={cn('flex h-full w-full items-center justify-center bg-gradient-to-br from-muted to-muted/60 font-semibold text-foreground/80', className)}
+        {...props}
+      >
+        {children}
+      </span>
+    )
+  }
 )
 AvatarFallback.displayName = 'AvatarFallback'
 
-export { Avatar, AvatarImage, AvatarFallback }
+export { Avatar, AvatarImage, AvatarFallback, avatarVariants }
 `,
 
   'separator': `import * as React from 'react'
@@ -486,19 +702,57 @@ export { AspectRatio }
   // ─── Layout ───────────────────────────────────────────────────────────
 
   'card': `import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
-const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('rounded-lg border bg-card text-card-foreground shadow-sm', className)} {...props} />
+const cardVariants = cva(
+  'border bg-card text-card-foreground transition-all',
+  {
+    variants: {
+      variant: {
+        default: 'shadow-sm',
+        outline: 'shadow-none',
+        elevated: 'shadow-md',
+        ghost: 'border-transparent shadow-none bg-transparent',
+        gradient: 'bg-gradient-to-br from-card to-card/60 shadow-sm',
+      },
+      radius: {
+        none: 'rounded-none',
+        sm: 'rounded-md',
+        default: 'rounded-lg',
+        lg: 'rounded-xl',
+        xl: 'rounded-2xl',
+      },
+      density: {
+        compact: '[--card-padding:1rem]',
+        default: '[--card-padding:1.5rem]',
+        spacious: '[--card-padding:2rem]',
+      },
+      interactive: {
+        true: 'cursor-pointer hover:shadow-md hover:border-primary/30 active:scale-[0.99]',
+      },
+    },
+    defaultVariants: { variant: 'default', radius: 'default', density: 'default' },
+  }
+)
+
+export interface CardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardVariants> {}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant, radius, density, interactive, ...props }, ref) => (
+    <div ref={ref} className={cn(cardVariants({ variant, radius, density, interactive }), className)} {...props} />
+  )
 )
 Card.displayName = 'Card'
 
 const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
+  ({ className, ...props }, ref) => <div ref={ref} className={cn('flex flex-col space-y-1.5 p-[var(--card-padding,1.5rem)]', className)} {...props} />
 )
 CardHeader.displayName = 'CardHeader'
 
-const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
+const CardTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
   ({ className, ...props }, ref) => <h3 ref={ref} className={cn('text-2xl font-semibold leading-none tracking-tight', className)} {...props} />
 )
 CardTitle.displayName = 'CardTitle'
@@ -509,16 +763,23 @@ const CardDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttribu
 CardDescription.displayName = 'CardDescription'
 
 const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('p-6 pt-0', className)} {...props} />
+  ({ className, ...props }, ref) => <div ref={ref} className={cn('p-[var(--card-padding,1.5rem)] pt-0', className)} {...props} />
 )
 CardContent.displayName = 'CardContent'
 
 const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('flex items-center p-6 pt-0', className)} {...props} />
+  ({ className, ...props }, ref) => <div ref={ref} className={cn('flex items-center p-[var(--card-padding,1.5rem)] pt-0', className)} {...props} />
 )
 CardFooter.displayName = 'CardFooter'
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
+const CardMedia = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { aspectRatio?: string }>(
+  ({ className, aspectRatio, style, ...props }, ref) => (
+    <div ref={ref} className={cn('relative w-full overflow-hidden bg-muted first:rounded-t-[inherit] last:rounded-b-[inherit]', className)} style={{ aspectRatio: aspectRatio || '16/9', ...style }} {...props} />
+  )
+)
+CardMedia.displayName = 'CardMedia'
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent, CardMedia, cardVariants }
 `,
 
   'scroll-area': `import * as React from 'react'
@@ -621,22 +882,73 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const alertVariants = cva(
-  'relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground',
-  { variants: { variant: { default: 'bg-background text-foreground', destructive: 'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive' } }, defaultVariants: { variant: 'default' } }
+  'relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4',
+  {
+    variants: {
+      variant: {
+        default: 'bg-background text-foreground [&>svg]:text-foreground',
+        destructive: 'border-destructive/50 bg-destructive/5 text-destructive dark:border-destructive [&>svg]:text-destructive',
+        success: 'border-emerald-500/40 bg-emerald-500/5 text-emerald-700 dark:text-emerald-400 [&>svg]:text-emerald-600',
+        warning: 'border-amber-500/40 bg-amber-500/5 text-amber-700 dark:text-amber-400 [&>svg]:text-amber-600',
+        info: 'border-blue-500/40 bg-blue-500/5 text-blue-700 dark:text-blue-400 [&>svg]:text-blue-600',
+      },
+      density: {
+        compact: 'p-3 text-xs',
+        default: 'p-4 text-sm',
+      },
+    },
+    defaultVariants: { variant: 'default', density: 'default' },
+  }
 )
 
-const Alert = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>>(
-  ({ className, variant, ...props }, ref) => <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props} />
+const defaultIcons: Record<string, React.ReactNode> = {
+  default: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+  destructive: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>,
+  success: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>,
+  warning: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+  info: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>,
+}
+
+export interface AlertProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof alertVariants> {
+  icon?: React.ReactNode | false
+  dismissible?: boolean
+  onDismiss?: () => void
+}
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
+  ({ className, variant, density, icon, dismissible, onDismiss, children, ...props }, ref) => {
+    const [open, setOpen] = React.useState(true)
+    if (!open) return null
+    const resolvedIcon = icon === false ? null : (icon ?? defaultIcons[variant || 'default'])
+    return (
+      <div ref={ref} role="alert" className={cn(alertVariants({ variant, density }), className)} {...props}>
+        {resolvedIcon}
+        {children}
+        {dismissible && (
+          <button
+            type="button"
+            onClick={() => { setOpen(false); onDismiss?.() }}
+            aria-label="Dismiss alert"
+            className="absolute right-2 top-2 inline-flex h-6 w-6 items-center justify-center rounded-md opacity-60 hover:opacity-100 hover:bg-foreground/10"
+          >
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        )}
+      </div>
+    )
+  }
 )
 Alert.displayName = 'Alert'
 
-const AlertTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
-  ({ className, ...props }, ref) => <h5 ref={ref} className={cn('mb-1 font-medium leading-none tracking-tight', className)} {...props} />
+const AlertTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(
+  ({ className, ...props }, ref) => <h5 ref={ref} className={cn('mb-1 font-semibold leading-none tracking-tight', className)} {...props} />
 )
 AlertTitle.displayName = 'AlertTitle'
 
 const AlertDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => <div ref={ref} className={cn('text-sm [&_p]:leading-relaxed', className)} {...props} />
+  ({ className, ...props }, ref) => <div ref={ref} className={cn('text-sm leading-relaxed opacity-90 [&_p]:leading-relaxed', className)} {...props} />
 )
 AlertDescription.displayName = 'AlertDescription'
 
@@ -717,32 +1029,114 @@ export { toast } from 'sonner'
   // ─── Overlay ──────────────────────────────────────────────────────────
 
   'dialog': `import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
-const DialogContext = React.createContext<{ open: boolean; setOpen: (v: boolean) => void }>({ open: false, setOpen: () => {} })
+interface DialogContextValue {
+  open: boolean
+  setOpen: (v: boolean) => void
+  closeOnOverlayClick: boolean
+  closeOnEsc: boolean
+}
+const DialogContext = React.createContext<DialogContextValue>({
+  open: false, setOpen: () => {}, closeOnOverlayClick: true, closeOnEsc: true,
+})
 
-function Dialog({ children, open: co, onOpenChange }: { children: React.ReactNode; open?: boolean; onOpenChange?: (v: boolean) => void }) {
-  const [io, sio] = React.useState(false)
-  return <DialogContext.Provider value={{ open: co ?? io, setOpen: onOpenChange ?? sio }}>{children}</DialogContext.Provider>
+interface DialogProps {
+  children: React.ReactNode
+  open?: boolean
+  onOpenChange?: (v: boolean) => void
+  defaultOpen?: boolean
+  closeOnOverlayClick?: boolean
+  closeOnEsc?: boolean
+}
+
+function Dialog({ children, open: co, onOpenChange, defaultOpen = false, closeOnOverlayClick = true, closeOnEsc = true }: DialogProps) {
+  const [io, sio] = React.useState(defaultOpen)
+  const open = co ?? io
+  const setOpen = onOpenChange ?? sio
+  // Escape to close
+  React.useEffect(() => {
+    if (!open || !closeOnEsc) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, closeOnEsc, setOpen])
+  // Body-scroll lock + focus restore
+  React.useEffect(() => {
+    if (!open) return
+    const prevOverflow = document.body.style.overflow
+    const prevFocus = document.activeElement as HTMLElement | null
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prevOverflow
+      // Restore focus to the trigger after dialog closes
+      if (prevFocus && typeof prevFocus.focus === 'function') prevFocus.focus()
+    }
+  }, [open])
+  return (
+    <DialogContext.Provider value={{ open, setOpen, closeOnOverlayClick, closeOnEsc }}>{children}</DialogContext.Provider>
+  )
 }
 
 const DialogTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
-  ({ onClick, ...props }, ref) => { const { setOpen } = React.useContext(DialogContext); return <button type="button" ref={ref} onClick={(e) => { setOpen(true); onClick?.(e) }} {...props} /> }
+  ({ onClick, ...props }, ref) => {
+    const { setOpen } = React.useContext(DialogContext)
+    return <button type="button" ref={ref} onClick={(e) => { setOpen(true); onClick?.(e) }} {...props} />
+  },
 )
 DialogTrigger.displayName = 'DialogTrigger'
 
-function DialogContent({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  const { open, setOpen } = React.useContext(DialogContext)
+const dialogContentVariants = cva(
+  'relative z-50 grid w-full gap-4 border bg-background shadow-lg animate-in fade-in-0 zoom-in-95 duration-200 sm:rounded-lg',
+  {
+    variants: {
+      size: {
+        sm: 'max-w-sm',
+        default: 'max-w-lg',
+        lg: 'max-w-2xl',
+        xl: 'max-w-4xl',
+        full: 'max-w-[calc(100vw-2rem)] h-[calc(100vh-2rem)]',
+      },
+      density: {
+        compact: 'p-4',
+        default: 'p-6',
+        spacious: 'p-8',
+      },
+    },
+    defaultVariants: { size: 'default', density: 'default' },
+  },
+)
+
+interface DialogContentProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof dialogContentVariants> {
+  hideCloseButton?: boolean
+  overlayClassName?: string
+}
+
+function DialogContent({ className, children, size, density, hideCloseButton, overlayClassName, ...props }: DialogContentProps) {
+  const { open, setOpen, closeOnOverlayClick } = React.useContext(DialogContext)
   if (!open) return null
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="fixed inset-0 bg-black/80 animate-in fade-in-0" onClick={() => setOpen(false)} />
-      <div className={cn('relative z-50 grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg animate-in fade-in-0 zoom-in-95 sm:rounded-lg', className)} {...props}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div
+        aria-hidden
+        className={cn('fixed inset-0 bg-black/80 animate-in fade-in-0', overlayClassName)}
+        onClick={() => closeOnOverlayClick && setOpen(false)}
+      />
+      <div role="dialog" aria-modal="true" className={cn(dialogContentVariants({ size, density }), className)} {...props}>
         {children}
-        <button type="button" className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2" onClick={() => setOpen(false)}>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-          <span className="sr-only">Close</span>
-        </button>
+        {!hideCloseButton && (
+          <button
+            type="button"
+            aria-label="Close dialog"
+            className="absolute right-4 top-4 inline-flex h-7 w-7 items-center justify-center rounded-md opacity-70 ring-offset-background transition-opacity hover:bg-accent hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            onClick={() => setOpen(false)}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        )}
       </div>
     </div>
   )
@@ -754,13 +1148,13 @@ function DialogClose({ onClick, ...props }: React.ButtonHTMLAttributes<HTMLButto
 }
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} {...props} />
-const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)} {...props} />
+const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => <div className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)} {...props} />
 const DialogTitle = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHeadingElement>>(({ className, ...props }, ref) => <h2 ref={ref} className={cn('text-lg font-semibold leading-none tracking-tight', className)} {...props} />)
 DialogTitle.displayName = 'DialogTitle'
 const DialogDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(({ className, ...props }, ref) => <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />)
 DialogDescription.displayName = 'DialogDescription'
 
-export { Dialog, DialogTrigger, DialogContent, DialogClose, DialogHeader, DialogFooter, DialogTitle, DialogDescription }
+export { Dialog, DialogTrigger, DialogContent, DialogClose, DialogHeader, DialogFooter, DialogTitle, DialogDescription, dialogContentVariants }
 `,
 
   'sheet': `import * as React from 'react'
@@ -771,7 +1165,23 @@ const SheetContext = React.createContext<{ open: boolean; setOpen: (v: boolean) 
 
 function Sheet({ children, open: co, onOpenChange }: { children: React.ReactNode; open?: boolean; onOpenChange?: (v: boolean) => void }) {
   const [io, sio] = React.useState(false)
-  return <SheetContext.Provider value={{ open: co ?? io, setOpen: onOpenChange ?? sio }}>{children}</SheetContext.Provider>
+  const open = co ?? io
+  const setOpen = onOpenChange ?? sio
+  // Escape to close + body-scroll lock + focus restore
+  React.useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
+    const prevOverflow = document.body.style.overflow
+    const prevFocus = document.activeElement as HTMLElement | null
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+      if (prevFocus && typeof prevFocus.focus === 'function') prevFocus.focus()
+    }
+  }, [open, setOpen])
+  return <SheetContext.Provider value={{ open, setOpen }}>{children}</SheetContext.Provider>
 }
 
 const SheetTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
@@ -898,41 +1308,154 @@ export { HoverCard, HoverCardTrigger, HoverCardContent }
   // ─── Navigation ───────────────────────────────────────────────────────
 
   'tabs': `import * as React from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
-interface TabsProps extends React.HTMLAttributes<HTMLDivElement> { defaultValue?: string; value?: string; onValueChange?: (v: string) => void }
-const TabsContext = React.createContext<{ value: string; setValue: (v: string) => void }>({ value: '', setValue: () => {} })
+type TabsVariant = 'pills' | 'underline' | 'segmented' | 'ghost'
+type TabsSize = 'sm' | 'default' | 'lg'
 
-function Tabs({ defaultValue = '', value: cv, onValueChange, children, className, ...props }: TabsProps) {
-  const [iv, siv] = React.useState(defaultValue)
-  return <TabsContext.Provider value={{ value: cv ?? iv, setValue: onValueChange ?? siv }}><div className={cn(className)} {...props}>{children}</div></TabsContext.Provider>
+interface TabsContextValue {
+  value: string
+  setValue: (v: string) => void
+  variant: TabsVariant
+  size: TabsSize
+  orientation: 'horizontal' | 'vertical'
+}
+const TabsContext = React.createContext<TabsContextValue>({
+  value: '', setValue: () => {}, variant: 'pills', size: 'default', orientation: 'horizontal',
+})
+
+interface TabsProps extends React.HTMLAttributes<HTMLDivElement> {
+  defaultValue?: string
+  value?: string
+  onValueChange?: (v: string) => void
+  variant?: TabsVariant
+  size?: TabsSize
+  orientation?: 'horizontal' | 'vertical'
 }
 
+function Tabs({ defaultValue = '', value: cv, onValueChange, variant = 'pills', size = 'default', orientation = 'horizontal', children, className, ...props }: TabsProps) {
+  const [iv, siv] = React.useState(defaultValue)
+  return (
+    <TabsContext.Provider value={{ value: cv ?? iv, setValue: onValueChange ?? siv, variant, size, orientation }}>
+      <div className={cn(orientation === 'vertical' && 'flex gap-4', className)} data-orientation={orientation} {...props}>
+        {children}
+      </div>
+    </TabsContext.Provider>
+  )
+}
+
+const tabsListVariants = cva('inline-flex items-center text-muted-foreground', {
+  variants: {
+    variant: {
+      pills: 'rounded-md bg-muted p-1 justify-center',
+      segmented: 'rounded-lg border bg-card p-0.5 justify-center',
+      underline: 'border-b border-border w-full justify-start gap-1',
+      ghost: 'gap-1 justify-start',
+    },
+    size: {
+      sm: 'h-8 text-xs',
+      default: 'h-10 text-sm',
+      lg: 'h-11 text-base',
+    },
+  },
+})
+
 const TabsList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, ...props }, ref) => <div ref={ref} role="tablist" className={cn('inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground', className)} {...props} />
+  ({ className, ...props }, ref) => {
+    const ctx = React.useContext(TabsContext)
+    return (
+      <div
+        ref={ref}
+        role="tablist"
+        aria-orientation={ctx.orientation}
+        className={cn(
+          tabsListVariants({ variant: ctx.variant, size: ctx.size }),
+          ctx.orientation === 'vertical' && 'flex-col h-auto items-stretch',
+          className,
+        )}
+        {...props}
+      />
+    )
+  }
 )
 TabsList.displayName = 'TabsList'
 
-const TabsTrigger = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & { value: string }>(
-  ({ className, value, onClick, ...props }, ref) => {
+const tabsTriggerVariants = cva(
+  'inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        pills: 'rounded-sm px-3 py-1.5 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm',
+        segmented: 'rounded-md px-3 py-1 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm',
+        underline: 'rounded-none border-b-2 border-transparent px-3 py-2 -mb-px hover:text-foreground data-[state=active]:border-primary data-[state=active]:text-foreground',
+        ghost: 'rounded-md px-3 py-1.5 hover:bg-accent hover:text-foreground data-[state=active]:bg-accent data-[state=active]:text-foreground',
+      },
+      size: {
+        sm: 'h-7 px-2 text-xs',
+        default: 'h-8 text-sm',
+        lg: 'h-10 text-base',
+      },
+    },
+  },
+)
+
+interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  value: string
+  icon?: React.ReactNode
+  count?: number
+}
+
+const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>(
+  ({ className, value, icon, count, onClick, children, ...props }, ref) => {
     const ctx = React.useContext(TabsContext)
-    return <button type="button" ref={ref} role="tab" aria-selected={ctx.value === value} data-state={ctx.value === value ? 'active' : 'inactive'}
-      className={cn('inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm', className)}
-      onClick={(e) => { ctx.setValue(value); onClick?.(e) }} {...props} />
-  }
+    const active = ctx.value === value
+    return (
+      <button
+        type="button"
+        ref={ref}
+        role="tab"
+        aria-selected={active}
+        data-state={active ? 'active' : 'inactive'}
+        className={cn(tabsTriggerVariants({ variant: ctx.variant, size: ctx.size }), className)}
+        onClick={(e) => { ctx.setValue(value); onClick?.(e) }}
+        {...props}
+      >
+        {icon}
+        {children}
+        {typeof count === 'number' && (
+          <span className={cn(
+            'inline-flex items-center justify-center h-4 min-w-4 px-1 rounded-full text-[10px] font-bold',
+            active ? 'bg-primary/20 text-primary' : 'bg-muted-foreground/15 text-muted-foreground',
+          )}>{count}</span>
+        )}
+      </button>
+    )
+  },
 )
 TabsTrigger.displayName = 'TabsTrigger'
 
-const TabsContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { value: string }>(
-  ({ className, value, ...props }, ref) => {
+const TabsContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement> & { value: string; forceMount?: boolean }>(
+  ({ className, value, forceMount, ...props }, ref) => {
     const ctx = React.useContext(TabsContext)
-    if (ctx.value !== value) return null
-    return <div ref={ref} role="tabpanel" tabIndex={0} className={cn('mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2', className)} {...props} />
-  }
+    const isActive = ctx.value === value
+    if (!isActive && !forceMount) return null
+    return (
+      <div
+        ref={ref}
+        role="tabpanel"
+        tabIndex={0}
+        hidden={!isActive}
+        data-state={isActive ? 'active' : 'inactive'}
+        className={cn('mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 flex-1', className)}
+        {...props}
+      />
+    )
+  },
 )
 TabsContent.displayName = 'TabsContent'
 
-export { Tabs, TabsList, TabsTrigger, TabsContent }
+export { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants, tabsTriggerVariants }
 `,
 
   'accordion': `import * as React from 'react'

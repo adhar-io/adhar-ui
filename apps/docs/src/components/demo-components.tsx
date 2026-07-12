@@ -1950,8 +1950,8 @@ export function DemoCarousel() {
   const [idx, setIdx] = useState(0);
   const slides = [
     { title: 'Modern Design', desc: 'Clean and minimal UI', color: 'from-blue-500/20 to-cyan-500/10' },
-    { title: 'Multi-Framework', desc: '5 frameworks supported', color: 'from-violet-500/20 to-pink-500/10' },
-    { title: 'Enterprise Ready', desc: '97 components included', color: 'from-amber-500/20 to-orange-500/10' },
+    { title: 'Multi-Framework', desc: 'Every major framework supported', color: 'from-violet-500/20 to-pink-500/10' },
+    { title: 'Enterprise Ready', desc: 'Production-grade components included', color: 'from-amber-500/20 to-orange-500/10' },
   ];
   return (
     <div className='w-full max-w-xs rounded-xl border border-border overflow-hidden bg-card'>
@@ -2830,8 +2830,8 @@ export function DemoRichTextEditor() {
         <h2 className='text-base font-bold mb-2'>Getting Started</h2>
         <p className='mb-2'>Welcome to <strong>Adhar UI</strong> — the open-source design system. This editor supports <em>rich text formatting</em>, lists, and code blocks.</p>
         <ul className='list-disc pl-5 mb-2 space-y-0.5'>
-          <li>98 components across 5 frameworks</li>
-          <li>8 theme presets with dark mode</li>
+          <li>A complete component library across every major framework</li>
+          <li>Curated theme presets with dark mode</li>
           <li>Full accessibility support</li>
         </ul>
         <blockquote className='border-l-2 border-primary/30 pl-3 italic text-muted-foreground text-xs'>

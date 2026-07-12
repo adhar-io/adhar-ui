@@ -1,11 +1,48 @@
 // ─── Shared Types & Utilities for the Builder ───────────────────────────────
 
+export interface NodeInteraction {
+  trigger: 'click' | 'hover' | 'focus';
+  action: 'navigate' | 'toggle-visibility' | 'open-url' | 'scroll-to' | 'show-overlay';
+  targetPageId?: string;   // for navigate
+  targetNodeId?: string;   // for toggle-visibility, scroll-to
+  url?: string;            // for open-url
+  transition?: 'none' | 'fade' | 'slide-left' | 'slide-right' | 'slide-up' | 'scale';
+  duration?: number;       // ms
+}
+
+export interface NodeComment {
+  id: string;
+  author: string;
+  text: string;
+  resolved: boolean;
+  timestamp: number;
+}
+
 export interface CanvasNode {
   id: string;
   type: string;
   props: Record<string, any>;
   children: CanvasNode[];
   style: Record<string, string>;
+  interactions?: NodeInteraction[];
+  hoverClassName?: string;
+  hidden?: boolean;
+  comments?: NodeComment[];
+  componentName?: string;
+  // Freeform positioning (used in freeform canvas mode)
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}
+
+export interface DesignVariant {
+  id: string;
+  label: string;
+  style: 'modern' | 'minimal' | 'playful' | 'enterprise' | 'bold' | 'editorial';
+  nodes: CanvasNode[];
+  prompt: string;
+  timestamp: number;
 }
 
 export interface ProjectFile {
@@ -17,6 +54,9 @@ export interface ProjectFile {
   content?: string;
   language?: string;
   expanded?: boolean;
+  variants?: DesignVariant[];
+  activeVariantId?: string;
+  lastPrompt?: string;
 }
 
 export interface AIMessage {
@@ -38,6 +78,7 @@ export interface AppState {
   theme: string;
   darkMode: boolean;
   showRuler: boolean;
+  canvasMode: 'layout' | 'freeform';
   canvasBg: 'white' | 'dots' | 'dark';
   aiPrompt: string;
   aiLoading: boolean;
@@ -46,8 +87,8 @@ export interface AppState {
   aiMessages: AIMessage[];
   aiModifyMode: boolean;
   paletteSearch: string;
-  leftPanel: 'components' | 'files';
-  rightPanel: 'outline' | 'properties' | 'theme' | 'ai';
+  leftPanel: 'components' | 'files' | 'apis' | 'workflows';
+  rightPanel: 'outline' | 'properties' | 'theme' | 'ai' | 'collaborate' | 'settings';
   history: CanvasNode[][];
   historyIndex: number;
   clipboard: CanvasNode | null;
@@ -64,6 +105,7 @@ export const genId = () => `n_${Date.now()}_${Math.random().toString(36).slice(2
 export const CONTAINER_TYPES = [
   'div', 'flex', 'flex-col', 'grid', 'grid-3', 'section', 'card', 'nav', 'footer', 'sidebar',
   'hero-section', 'feature-card', 'pricing-card', 'cta-section', 'login-form', 'stat-card',
+  'screen-mobile', 'screen-tablet', 'screen-desktop', 'frame',
 ];
 
 export function isContainer(type: string): boolean {
@@ -140,7 +182,7 @@ export function findParentFolder(files: ProjectFile[], fileId: string): ProjectF
 
 export function langFromName(name: string): string {
   const ext = name.split('.').pop()?.toLowerCase() || '';
-  const map: Record<string, string> = { tsx: 'tsx', ts: 'ts', jsx: 'jsx', js: 'js', css: 'css', json: 'json', html: 'html', md: 'text', txt: 'text', svg: 'html' };
+  const map: Record<string, string> = { tsx: 'tsx', ts: 'ts', jsx: 'jsx', js: 'js', css: 'css', json: 'json', html: 'html', md: 'text', txt: 'text', svg: 'html', mmd: 'mermaid', mermaid: 'mermaid', workflow: 'workflow', api: 'api' };
   return map[ext] || 'text';
 }
 
@@ -243,7 +285,7 @@ export function reIdNodes(node: CanvasNode): CanvasNode {
 export function fileIcon(f: ProjectFile): string {
   if (f.type === 'folder') return f.expanded ? '▾' : '▸';
   const ext = f.name.split('.').pop()?.toLowerCase() || '';
-  const icons: Record<string, string> = { tsx: '⚛', ts: 'TS', jsx: '⚛', js: 'JS', css: '#', json: '{}', html: '<>', svg: '◇', md: '¶', ico: '◆' };
+  const icons: Record<string, string> = { tsx: '⚛', ts: 'TS', jsx: '⚛', js: 'JS', css: '#', json: '{}', html: '<>', svg: '◇', md: '¶', ico: '◆', mmd: '◆', mermaid: '◆', workflow: '⑂', api: '🔌' };
   return icons[ext] || '□';
 }
 
@@ -264,6 +306,9 @@ export function defaultProject(): ProjectFile[] {
       ]},
       { id: 'f_components', name: 'components', type: 'folder', expanded: false, children: [
         { id: 'f_ui', name: 'ui', type: 'folder', expanded: false, children: [] },
+      ]},
+      { id: 'f_diagrams', name: 'diagrams', type: 'folder', expanded: false, children: [
+        { id: 'f_arch', name: 'architecture.mmd', type: 'file', language: 'mermaid', content: 'flowchart TD\n    Client[Browser] --> LB[Load Balancer]\n    LB --> API[API Server]\n    API --> DB[(Database)]\n    API --> Cache[(Redis Cache)]\n    API --> Queue[Message Queue]\n    Queue --> Worker[Worker Service]\n    Worker --> DB\n' },
       ]},
       { id: 'f_lib', name: 'lib', type: 'folder', expanded: false, children: [
         { id: 'f_utils', name: 'utils.ts', type: 'file', language: 'ts', content: 'import { clsx, type ClassValue } from "clsx";\nimport { twMerge } from "tailwind-merge";\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n' },

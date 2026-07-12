@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import type { CanvasNode, ProjectFile } from '../lib/builder-types';
-import { isContainer } from '../lib/builder-types';
+import type { CanvasNode, ProjectFile, NodeInteraction } from '../lib/builder-types';
+import { isContainer, genId } from '../lib/builder-types';
 import {
   parseClasses,
   buildClasses,
@@ -29,7 +29,8 @@ interface PropertiesPanelProps {
   activeFile: ProjectFile | null;
   activeFilePath: string;
   isActivePage: boolean;
-  onUpdateProp: (nodeId: string, key: string, value: string) => void;
+  pageFiles?: { id: string; name: string }[];
+  onUpdateProp: (nodeId: string, key: string, value: any) => void;
   onDelete: (nodeId: string) => void;
 }
 
@@ -79,9 +80,9 @@ function Section({
   );
 }
 
-function FieldLabel({ children }: { children: React.ReactNode }) {
+function FieldLabel({ children, className = '' }: { children: React.ReactNode; className?: string }) {
   return (
-    <label className="block text-[10px] font-medium text-muted-foreground mb-1">
+    <label className={`block text-[10px] font-medium text-muted-foreground mb-1 ${className}`}>
       {children}
     </label>
   );
@@ -571,7 +572,231 @@ export function PropertiesPanel({
         </div>
       </Section>
 
-      {/* ── 9. Advanced ────────────────────────────────────────────────────── */}
+      {/* ── 8b. Position (freeform mode) ──────────────────────────────────── */}
+      {(selectedNode.x !== undefined || selectedNode.y !== undefined) && (
+        <Section title="Position" defaultOpen={true}>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <FieldLabel>X</FieldLabel>
+              <input type="number" value={Math.round(selectedNode.x || 0)}
+                onChange={(e) => onUpdateProp(selectedNode.id, 'x', parseInt(e.target.value) || 0)}
+                className="input-sm text-[11px] tabular-nums" step={1} />
+            </div>
+            <div>
+              <FieldLabel>Y</FieldLabel>
+              <input type="number" value={Math.round(selectedNode.y || 0)}
+                onChange={(e) => onUpdateProp(selectedNode.id, 'y', parseInt(e.target.value) || 0)}
+                className="input-sm text-[11px] tabular-nums" step={1} />
+            </div>
+            <div>
+              <FieldLabel>W</FieldLabel>
+              <input type="number" value={Math.round(selectedNode.width || 0)}
+                onChange={(e) => onUpdateProp(selectedNode.id, 'width', parseInt(e.target.value) || 0)}
+                className="input-sm text-[11px] tabular-nums" step={1} min={10} />
+            </div>
+            <div>
+              <FieldLabel>H</FieldLabel>
+              <input type="number" value={Math.round(selectedNode.height || 0)}
+                onChange={(e) => onUpdateProp(selectedNode.id, 'height', parseInt(e.target.value) || 0)}
+                className="input-sm text-[11px] tabular-nums" step={1} min={10} />
+            </div>
+          </div>
+        </Section>
+      )}
+
+      {/* ── 9. Interactions / Prototyping ─────────────────────────────────── */}
+      <Section title="Interactions" defaultOpen={false}>
+        <div className="space-y-3">
+          {/* Hover class */}
+          <div>
+            <FieldLabel>Hover Style</FieldLabel>
+            <input
+              value={selectedNode.hoverClassName || ''}
+              onChange={(e) => onUpdateProp(selectedNode.id, 'hoverClassName', e.target.value)}
+              className="input-sm text-[10px] font-mono"
+              placeholder="e.g. scale-105 shadow-lg bg-accent"
+              spellCheck={false}
+            />
+            <p className="mt-0.5 text-[10px] text-muted-foreground/40">Tailwind classes applied on hover in Preview</p>
+          </div>
+
+          {/* Interactions list */}
+          <div>
+            <FieldLabel>On Click</FieldLabel>
+            <SmallSelect
+              value={selectedNode.interactions?.[0]?.action || ''}
+              onChange={(val) => {
+                const existing = selectedNode.interactions || [];
+                if (!val) {
+                  onUpdateProp(selectedNode.id, 'interactions', []);
+                  return;
+                }
+                const interaction: NodeInteraction = {
+                  trigger: 'click',
+                  action: val as NodeInteraction['action'],
+                  transition: 'fade',
+                  duration: 200,
+                };
+                onUpdateProp(selectedNode.id, 'interactions', [interaction, ...existing.slice(1)]);
+              }}
+              options={[
+                { value: '', label: 'None' },
+                { value: 'navigate', label: 'Navigate to page' },
+                { value: 'open-url', label: 'Open URL' },
+                { value: 'toggle-visibility', label: 'Toggle element' },
+                { value: 'scroll-to', label: 'Scroll to element' },
+                { value: 'show-overlay', label: 'Show overlay' },
+              ]}
+            />
+          </div>
+
+          {/* Action config */}
+          {selectedNode.interactions?.[0]?.action === 'navigate' && pageFiles && (
+            <div>
+              <FieldLabel>Target Page</FieldLabel>
+              <SmallSelect
+                value={selectedNode.interactions[0].targetPageId || ''}
+                onChange={(val) => {
+                  const ints = [...(selectedNode.interactions || [])];
+                  ints[0] = { ...ints[0], targetPageId: val };
+                  onUpdateProp(selectedNode.id, 'interactions', ints);
+                }}
+                options={[{ value: '', label: 'Select page...' }, ...(pageFiles || []).map((p) => ({ value: p.id, label: p.name }))]}
+              />
+            </div>
+          )}
+
+          {selectedNode.interactions?.[0]?.action === 'open-url' && (
+            <div>
+              <FieldLabel>URL</FieldLabel>
+              <input
+                value={selectedNode.interactions[0].url || ''}
+                onChange={(e) => {
+                  const ints = [...(selectedNode.interactions || [])];
+                  ints[0] = { ...ints[0], url: e.target.value };
+                  onUpdateProp(selectedNode.id, 'interactions', ints);
+                }}
+                className="input-sm text-[10px]"
+                placeholder="https://..."
+              />
+            </div>
+          )}
+
+          {selectedNode.interactions?.[0] && (
+            <div>
+              <FieldLabel>Transition</FieldLabel>
+              <div className="flex gap-1">
+                <SmallSelect
+                  value={selectedNode.interactions[0].transition || 'none'}
+                  onChange={(val) => {
+                    const ints = [...(selectedNode.interactions || [])];
+                    ints[0] = { ...ints[0], transition: val as NodeInteraction['transition'] };
+                    onUpdateProp(selectedNode.id, 'interactions', ints);
+                  }}
+                  options={[
+                    { value: 'none', label: 'None' },
+                    { value: 'fade', label: 'Fade' },
+                    { value: 'slide-left', label: 'Slide Left' },
+                    { value: 'slide-right', label: 'Slide Right' },
+                    { value: 'slide-up', label: 'Slide Up' },
+                    { value: 'scale', label: 'Scale' },
+                  ]}
+                />
+                <input
+                  type="number"
+                  value={selectedNode.interactions[0].duration || 200}
+                  onChange={(e) => {
+                    const ints = [...(selectedNode.interactions || [])];
+                    ints[0] = { ...ints[0], duration: parseInt(e.target.value) || 200 };
+                    onUpdateProp(selectedNode.id, 'interactions', ints);
+                  }}
+                  className="input-sm !w-16 text-[10px] tabular-nums text-center"
+                  min={0} max={2000} step={50}
+                />
+                <span className="text-[10px] text-muted-foreground/40 self-center">ms</span>
+              </div>
+            </div>
+          )}
+
+          {/* Visibility toggle for prototyping */}
+          <div className="flex items-center justify-between">
+            <FieldLabel className="!mb-0">Hidden in Preview</FieldLabel>
+            <button
+              onClick={() => onUpdateProp(selectedNode.id, 'hidden', !selectedNode.hidden)}
+              className={`w-8 h-[18px] rounded-full transition-colors ${selectedNode.hidden ? 'bg-primary' : 'bg-input'}`}
+            >
+              <div className={`w-3.5 h-3.5 rounded-full bg-background shadow-sm transition-transform ${selectedNode.hidden ? 'translate-x-[15px]' : 'translate-x-[2px]'}`} />
+            </button>
+          </div>
+        </div>
+      </Section>
+
+      {/* ── 10. Comments / Feedback ──────────────────────────────────────── */}
+      <Section title={`Comments${selectedNode.comments?.length ? ` (${selectedNode.comments.length})` : ''}`} defaultOpen={false}>
+        <div className="space-y-2">
+          {/* Existing comments */}
+          {(selectedNode.comments || []).map((comment) => (
+            <div key={comment.id} className={`rounded-lg border p-2 text-[10px] ${comment.resolved ? 'border-border/30 opacity-50' : 'border-primary/20 bg-primary/[0.02]'}`}>
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-semibold text-foreground">{comment.author}</span>
+                <div className="flex items-center gap-1">
+                  <span className="text-muted-foreground/40">{new Date(comment.timestamp).toLocaleDateString()}</span>
+                  <button
+                    onClick={() => {
+                      const updated = (selectedNode.comments || []).map((c) => c.id === comment.id ? { ...c, resolved: !c.resolved } : c);
+                      onUpdateProp(selectedNode.id, 'comments', updated);
+                    }}
+                    className="text-[9px] text-muted-foreground hover:text-foreground transition-colors"
+                    title={comment.resolved ? 'Unresolve' : 'Resolve'}
+                  >{comment.resolved ? '↩' : '✓'}</button>
+                  <button
+                    onClick={() => {
+                      const updated = (selectedNode.comments || []).filter((c) => c.id !== comment.id);
+                      onUpdateProp(selectedNode.id, 'comments', updated);
+                    }}
+                    className="text-[9px] text-destructive hover:text-destructive/80 transition-colors"
+                    title="Delete"
+                  >×</button>
+                </div>
+              </div>
+              <p className="text-muted-foreground leading-relaxed">{comment.text}</p>
+            </div>
+          ))}
+
+          {/* Add comment */}
+          <div className="flex gap-1.5">
+            <input
+              id={`comment-input-${selectedNode.id}`}
+              placeholder="Add a comment..."
+              className="input-sm text-[10px] flex-1"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && (e.target as HTMLInputElement).value.trim()) {
+                  const text = (e.target as HTMLInputElement).value.trim();
+                  const newComment = { id: `c_${Date.now()}`, author: 'You', text, resolved: false, timestamp: Date.now() };
+                  onUpdateProp(selectedNode.id, 'comments', [...(selectedNode.comments || []), newComment]);
+                  (e.target as HTMLInputElement).value = '';
+                }
+              }}
+            />
+            <button
+              onClick={() => {
+                const input = document.getElementById(`comment-input-${selectedNode.id}`) as HTMLInputElement;
+                if (input?.value.trim()) {
+                  const newComment = { id: `c_${Date.now()}`, author: 'You', text: input.value.trim(), resolved: false, timestamp: Date.now() };
+                  onUpdateProp(selectedNode.id, 'comments', [...(selectedNode.comments || []), newComment]);
+                  input.value = '';
+                }
+              }}
+              className="btn-icon-sm !h-7 !w-7"
+              title="Add comment"
+            >
+              <svg width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" /></svg>
+            </button>
+          </div>
+        </div>
+      </Section>
+
+      {/* ── 11. Advanced ───────────────────────────────────────────────────── */}
       <Section title="Advanced" defaultOpen={false}>
         <div>
           <FieldLabel>Raw className</FieldLabel>
