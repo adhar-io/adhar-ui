@@ -8,6 +8,11 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-a11y',
   ],
+  staticDirs: ['../public'],
+  managerHead: (head) => `
+    ${head}
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  `,
   framework: {
     name: '@storybook/react-vite',
     options: {},

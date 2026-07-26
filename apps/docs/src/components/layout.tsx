@@ -122,9 +122,11 @@ export function Header({
           onClick={(e) => { e.preventDefault(); navigate('/'); }}
           className='flex items-center gap-2.5 shrink-0 group'
         >
-          <div className='w-7 h-7 rounded-lg btn-gradient flex items-center justify-center shadow-sm group-hover:shadow-md group-hover:shadow-primary/25 transition-all'>
-            <span className='text-white font-bold text-sm'>A</span>
-          </div>
+          <img
+            src='/branding/symbol-color.svg'
+            alt='Adhar'
+            className='w-7 h-7 group-hover:scale-105 transition-transform'
+          />
           <span className='font-semibold text-foreground hidden sm:inline'>Adhar UI</span>
           <span className='hidden sm:inline text-[10px] px-1.5 py-0.5 rounded-md bg-primary/10 text-primary font-semibold'>
             v0.1.0
@@ -292,9 +294,7 @@ export function Sidebar({
               handleNav('/');
             }}
           >
-            <div className='w-8 h-8 rounded-lg btn-gradient flex items-center justify-center shadow-sm'>
-              <span className='text-white font-bold text-base'>A</span>
-            </div>
+            <img src='/branding/symbol-color.svg' alt='Adhar' className='w-8 h-8' />
             <div>
               <span className='font-bold text-foreground text-base'>Adhar UI</span>
               <span className='ml-2 text-[10px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-medium'>

@@ -614,18 +614,23 @@ export function HeroIllustration({ className = '' }: { className?: string }) {
             className='absolute inset-0 rounded-[28px] pointer-events-none'
             style={{ background: 'linear-gradient(180deg, hsl(0 0% 100% / 0.22) 0%, transparent 55%)' }}
           />
-          {/* Adhar mark */}
+          {/* Adhar mark — brand hexagon symbol */}
           <svg
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='2'
-            strokeLinejoin='round'
-            strokeLinecap='round'
+            viewBox='110 40 260 260'
             className='w-12 h-12 text-primary-foreground relative z-10'
           >
-            <path d='M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z' fill='currentColor' fillOpacity='0.22' />
-            <path d='M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z' />
+            <g fill='currentColor' stroke='currentColor' strokeWidth='6' strokeLinejoin='round'>
+              <polygon points='240,50 297.16,83 297.16,149 240,182 182.84,149 182.84,83' />
+              <polygon points='177.65,158 234.81,191 234.81,257 177.65,290 120.49,257 120.49,191' />
+              <polygon points='302.35,158 359.51,191 359.51,257 302.35,290 245.19,257 245.19,191' />
+            </g>
+            <path
+              d='M 240,102 L 281,219 L 240,192 L 199,219 Z'
+              fill='hsl(var(--primary))'
+              stroke='hsl(var(--primary))'
+              strokeWidth='3'
+              strokeLinejoin='round'
+            />
           </svg>
           {/* Brand label INSIDE the card */}
           <div className='relative z-10 text-center leading-none'>
