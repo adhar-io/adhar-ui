@@ -866,7 +866,7 @@ export function App() {
       {/* ── Left Activity Bar ── */}
       <div className='w-12 bg-card border-r border-border flex flex-col items-center pt-3 pb-2 gap-1.5 shrink-0'>
         {/* Logo */}
-        <img src='/branding/symbol-color.svg' alt='Adhar' className='w-8 h-8 mb-3' />
+        <img src={`${import.meta.env.BASE_URL}branding/symbol-color.svg`} alt='Adhar' className='w-8 h-8 mb-3' />
 
         {activityItems.map((item) => (
           <button key={item.id} title={item.label}
@@ -1191,7 +1191,7 @@ export function App() {
         {!activeFile && (
           <div className='flex-1 flex flex-col items-center justify-center animate-fade-in' style={{ background: 'hsl(var(--canvas))' }}>
             <div className='w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/15 via-primary/8 to-transparent flex items-center justify-center mb-6'>
-              <img src='/branding/symbol-color.svg' alt='Adhar' className='w-10 h-10' />
+              <img src={`${import.meta.env.BASE_URL}branding/symbol-color.svg`} alt='Adhar' className='w-10 h-10' />
             </div>
             <h2 className='text-xl font-semibold text-foreground mb-1.5 tracking-tight'>Adhar UI Builder</h2>
             <p className='text-xs text-muted-foreground/70 mb-8'>Visual page builder for the Adhar UI design system</p>

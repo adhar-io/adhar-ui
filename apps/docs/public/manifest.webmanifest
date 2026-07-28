@@ -1,0 +1,24 @@
+{
+  "name": "Adhar UI — Design System",
+  "short_name": "Adhar UI",
+  "description": "Framework-agnostic design system and component library. Own your components. Ship to any framework.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#6366f1",
+  "background_color": "#0f172a",
+  "icons": [
+    {
+      "src": "/branding/symbol-color.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/branding/adhar-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

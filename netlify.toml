@@ -1,0 +1,62 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Netlify config for Adhar UI — a single site assembled from three apps:
+#   /            docs       (flagship marketing + documentation)
+#   /builder/    builder    (visual page builder)
+#   /storybook/  storybook  (component workshop)
+# ─────────────────────────────────────────────────────────────────────────────
+
+[build]
+  command = "bash scripts/netlify-build.sh"
+  publish = "dist"
+
+[build.environment]
+  DENO_VERSION = "v2.6.0"
+  NODE_VERSION = "20"
+  # Deno caches npm deps here; keeps CI installs quiet.
+  NPM_FLAGS = "--no-audit --no-fund"
+
+# ── SPA fallbacks ────────────────────────────────────────────────────────────
+# Existing files are always served first (force = false, the default), so real
+# assets under /builder and /storybook are untouched. These only catch unknown
+# paths and route them to the owning app's entry document.
+[[redirects]]
+  from = "/builder/*"
+  to = "/builder/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/storybook/*"
+  to = "/storybook/index.html"
+  status = 200
+
+# Docs uses hash routing, so the root document handles every remaining path.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ── Security headers (all routes) ────────────────────────────────────────────
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    X-XSS-Protection = "1; mode=block"
+
+# ── Long-lived caching for fingerprinted build assets ────────────────────────
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/builder/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/branding/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
