@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { useLocalProxy } from '../../../../runtime.ts';
-'use client';
-import * as React from 'react';
+import { useLocalProxy } from "../../../../runtime.ts";
+"use client";
+import * as React from "react";
 
 export interface SwitchProps {
   checked?: boolean;
@@ -10,7 +10,7 @@ export interface SwitchProps {
   id?: string;
   className?: string;
   thumbClass?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
   onChange?: (checked: boolean) => void;
 }
 
@@ -23,11 +23,11 @@ function Switch(props: SwitchProps) {
 
   return (
     <button
-      type='button'
-      role='switch'
+      type="button"
+      role="switch"
       id={props.id}
       aria-checked={state.isChecked}
-      aria-label={props['aria-label']}
+      aria-label={props["aria-label"]}
       disabled={props.disabled}
       onClick={(event) => state.handleClick()}
       onKeyDown={(event) => state.handleKeyDown(event)}

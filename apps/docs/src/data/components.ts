@@ -438,19 +438,37 @@ export const components: ComponentData[] = [
     dependencies: [],
     importCode: `import { Slider } from "@/components/ui/slider"`,
     props: [
-      { name: 'value', type: 'number[]', default: '[50]', description: 'Current value(s)' },
-      {
-        name: 'onValueChange',
-        type: '(values: number[]) => void',
-        default: '-',
-        description: 'Value change handler',
-      },
+      { name: 'value', type: 'number', default: '-', description: 'Current value (controlled)' },
       { name: 'min', type: 'number', default: '0', description: 'Minimum value' },
       { name: 'max', type: 'number', default: '100', description: 'Maximum value' },
       { name: 'step', type: 'number', default: '1', description: 'Step increment' },
+      { name: 'size', type: `"sm" | "default" | "lg"`, default: '"default"', description: 'Track and thumb size' },
+      { name: 'disabled', type: 'boolean', default: 'false', description: 'Disables the slider' },
+      {
+        name: 'aria-valuetext',
+        type: 'string',
+        default: '-',
+        description: 'Human-readable value announced by screen readers (e.g. "$40")',
+      },
+      {
+        name: 'onInput',
+        type: '(value: number) => void',
+        default: '-',
+        description: 'Fires continuously while dragging',
+      },
+      {
+        name: 'onChange',
+        type: '(value: number) => void',
+        default: '-',
+        description: 'Fires when the value is committed (drag end / keyboard)',
+      },
     ],
     examples: [
-      { title: 'Default', code: `<Slider defaultValue={[50]} max={100} step={1} />` },
+      { title: 'Default', code: `<Slider value={50} min={0} max={100} step={1} aria-label="Volume" />` },
+      {
+        title: 'Controlled',
+        code: `const [vol, setVol] = useState(40)\n<Slider value={vol} onInput={setVol} aria-valuetext={vol + "%"} aria-label="Volume" />`,
+      },
     ],
     related: ['input', 'progress'],
   },
@@ -577,7 +595,7 @@ export const components: ComponentData[] = [
     name: 'Badge',
     slug: 'badge',
     description:
-      'A compact inline label for status indicators, categories, tags, or metadata. Supports semantic variants (default, secondary, destructive, outline) and sizes (sm, default, lg). Great for notification counts, status tags, version labels, and feature flags.',
+      'A compact inline label for status indicators, categories, tags, or metadata. Supports semantic variants (default, secondary, destructive, outline, success, warning, info), sizes (sm, default, lg), and an optional leading status dot. Great for notification counts, status tags, version labels, and feature flags.',
     category: 'display',
     tier: 1,
     frameworks: ['react', 'vue', 'solid', 'svelte', 'angular'],
@@ -586,9 +604,27 @@ export const components: ComponentData[] = [
     props: [
       {
         name: 'variant',
-        type: `"default" | "secondary" | "destructive" | "outline"`,
+        type: `"default" | "secondary" | "destructive" | "outline" | "success" | "warning" | "info"`,
         default: '"default"',
-        description: 'Visual style',
+        description: 'Visual style — includes semantic success/warning/info tones',
+      },
+      {
+        name: 'size',
+        type: `"sm" | "default" | "lg"`,
+        default: '"default"',
+        description: 'Badge size',
+      },
+      {
+        name: 'dot',
+        type: 'boolean',
+        default: 'false',
+        description: 'Renders a small leading status dot inheriting the text color',
+      },
+      {
+        name: 'role',
+        type: 'string',
+        default: '-',
+        description: 'Set "status" only for live, dynamic counters so screen readers announce changes',
       },
       {
         name: 'className',
@@ -612,7 +648,18 @@ export const components: ComponentData[] = [
   <Badge variant="secondary">Secondary</Badge>
   <Badge variant="destructive">Destructive</Badge>
   <Badge variant="outline">Outline</Badge>
+  <Badge variant="success">Success</Badge>
+  <Badge variant="warning">Warning</Badge>
+  <Badge variant="info">Info</Badge>
 </div>`,
+      },
+      {
+        title: 'With status dot',
+        code: `<Badge variant="success" dot>Online</Badge>`,
+      },
+      {
+        title: 'Live notification count',
+        code: `<Badge role="status" aria-label="3 unread messages">3</Badge>`,
       },
     ],
     related: ['button'],

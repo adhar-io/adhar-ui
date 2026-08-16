@@ -10,6 +10,9 @@
   "keywords": ["design-system", "adhar-ui", "components", "tailwind"],
   "author": "Adhar",
   "license": "Apache-2.0",
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/adhar-io/adhar-ui",

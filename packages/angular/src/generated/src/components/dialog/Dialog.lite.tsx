@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface DialogProps {
   open?: boolean;
@@ -13,7 +13,7 @@ export interface DialogProps {
 }
 
 @Component({
-  selector: 'dialog',
+  selector: "dialog",
   template: `
     <div>
       <ng-container *ngIf="open"
@@ -44,10 +44,7 @@ export interface DialogProps {
   imports: [CommonModule],
 })
 export default class Dialog {
-  @Input()
-  open!: DialogProps['open'];
-  @Input()
-  overlayClass!: DialogProps['overlayClass'];
-  @Input()
-  contentClass!: DialogProps['contentClass'];
+  @Input() open!: DialogProps["open"];
+  @Input() overlayClass!: DialogProps["overlayClass"];
+  @Input() contentClass!: DialogProps["contentClass"];
 }

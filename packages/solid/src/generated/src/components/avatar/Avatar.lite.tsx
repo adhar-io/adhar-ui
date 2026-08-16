@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Show } from 'solid-js';
+import { Show } from "solid-js";
 
 export interface AvatarProps {
   src?: string;
@@ -12,11 +12,11 @@ export interface AvatarProps {
 
 function Avatar(props: AvatarProps) {
   return (
-    <span class={props.className} role='img' aria-label={props.alt}>
+    <span class={props.className} role="img" aria-label={props.alt}>
       <Show
         fallback={
-          <span class={props.fallbackClass} aria-hidden='true'>
-            {props.fallback || '?'}
+          <span class={props.fallbackClass} aria-hidden="true">
+            {props.fallback || "?"}
           </span>
         }
         when={showImage}
@@ -24,7 +24,7 @@ function Avatar(props: AvatarProps) {
         <img
           class={props.imageClass}
           src={props.src}
-          alt={props.alt || ''}
+          alt={props.alt || ""}
           onError={(event) => handleError()}
         />
       </Show>

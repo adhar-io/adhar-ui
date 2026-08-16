@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface ToastProps {
   open?: boolean;
-  variant?: 'default' | 'destructive' | 'success';
+  variant?: "default" | "destructive" | "success";
   className?: string;
   titleClass?: string;
   descriptionClass?: string;
@@ -18,7 +18,7 @@ export interface ToastProps {
 }
 
 @Component({
-  selector: 'toast',
+  selector: "toast",
   template: `
     <div>
       <ng-container *ngIf="isOpen"
@@ -62,18 +62,11 @@ export interface ToastProps {
   imports: [CommonModule],
 })
 export default class Toast {
-  @Input()
-  className!: ToastProps['className'];
-  @Input()
-  title!: ToastProps['title'];
-  @Input()
-  titleClass!: ToastProps['titleClass'];
-  @Input()
-  description!: ToastProps['description'];
-  @Input()
-  descriptionClass!: ToastProps['descriptionClass'];
-  @Input()
-  onClose!: ToastProps['onClose'];
-  @Input()
-  closeClass!: ToastProps['closeClass'];
+  @Input() className!: ToastProps["className"];
+  @Input() title!: ToastProps["title"];
+  @Input() titleClass!: ToastProps["titleClass"];
+  @Input() description!: ToastProps["description"];
+  @Input() descriptionClass!: ToastProps["descriptionClass"];
+  @Input() onClose!: ToastProps["onClose"];
+  @Input() closeClass!: ToastProps["closeClass"];
 }

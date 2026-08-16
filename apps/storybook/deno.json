@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "dev": "npx storybook dev -p 6006 --config-dir .storybook",
-    "build": "npx storybook build --config-dir .storybook"
+    "//": "Storybook is npm-managed. Delegate to its own node_modules (run `npm install` in this folder once) instead of Deno's npx, which resolves a conflicting Storybook core from the shared workspace tree.",
+    "dev": "npm run dev",
+    "build": "npm run build"
   }
 }

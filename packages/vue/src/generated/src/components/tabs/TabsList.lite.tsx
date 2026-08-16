@@ -1,3 +1,4 @@
+// @ts-nocheck
 <template>
   <div role="tablist" :class="props.className"><slot /></div>
 </template>

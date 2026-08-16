@@ -1,3 +1,4 @@
+// @ts-nocheck
 <template>
   <div aria-hidden="true" role="presentation" :class="props.className"></div>
 </template>

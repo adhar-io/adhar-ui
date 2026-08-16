@@ -4,7 +4,9 @@ export interface SkeletonProps {
 }
 
 function Skeleton(props: SkeletonProps) {
-  return <div class={props.className} aria-hidden='true' role='presentation'></div>;
+  return (
+    <div class={props.className} aria-hidden="true" role="presentation"></div>
+  );
 }
 
 export default Skeleton;

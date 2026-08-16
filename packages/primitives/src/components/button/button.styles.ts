@@ -33,6 +33,11 @@ export const buttonVariants = cva(
         lg: 'h-11 rounded-md px-8 text-base',
         xl: 'h-12 rounded-lg px-10 text-base',
         icon: 'h-10 w-10 p-0',
+        'icon-sm': 'h-9 w-9 p-0',
+        'icon-lg': 'h-11 w-11 p-0',
+      },
+      fullWidth: {
+        true: 'w-full',
       },
     },
     defaultVariants: {

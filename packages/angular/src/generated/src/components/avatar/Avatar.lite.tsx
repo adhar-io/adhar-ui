@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface AvatarProps {
   src?: string;
@@ -13,7 +13,7 @@ export interface AvatarProps {
 }
 
 @Component({
-  selector: 'avatar',
+  selector: "avatar",
   template: `
     <span role="img" [attr.aria-label]="alt" [class]="className"
       ><ng-container *ngIf="showImage"
@@ -42,16 +42,10 @@ export interface AvatarProps {
   imports: [CommonModule],
 })
 export default class Avatar {
-  @Input()
-  alt!: AvatarProps['alt'];
-  @Input()
-  className!: AvatarProps['className'];
-  @Input()
-  fallbackClass!: AvatarProps['fallbackClass'];
-  @Input()
-  fallback!: AvatarProps['fallback'];
-  @Input()
-  src!: AvatarProps['src'];
-  @Input()
-  imageClass!: AvatarProps['imageClass'];
+  @Input() alt!: AvatarProps["alt"];
+  @Input() className!: AvatarProps["className"];
+  @Input() fallbackClass!: AvatarProps["fallbackClass"];
+  @Input() fallback!: AvatarProps["fallback"];
+  @Input() src!: AvatarProps["src"];
+  @Input() imageClass!: AvatarProps["imageClass"];
 }

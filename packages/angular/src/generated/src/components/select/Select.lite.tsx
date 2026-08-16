@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface SelectProps {
   value?: string;
@@ -11,13 +11,13 @@ export interface SelectProps {
   id?: string;
   className?: string;
   placeholder?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
   onChange?: (event: any) => void;
   children?: any;
 }
 
 @Component({
-  selector: 'select',
+  selector: "select",
   template: `
     <select
       [attr.value]="value"
@@ -43,18 +43,11 @@ export interface SelectProps {
   imports: [CommonModule],
 })
 export default class Select {
-  @Input()
-  value!: SelectProps['value'];
-  @Input()
-  disabled!: SelectProps['disabled'];
-  @Input()
-  required!: SelectProps['required'];
-  @Input()
-  name!: SelectProps['name'];
-  @Input()
-  id!: SelectProps['id'];
-  @Input()
-  onChange!: SelectProps['onChange'];
-  @Input()
-  className!: SelectProps['className'];
+  @Input() value!: SelectProps["value"];
+  @Input() disabled!: SelectProps["disabled"];
+  @Input() required!: SelectProps["required"];
+  @Input() name!: SelectProps["name"];
+  @Input() id!: SelectProps["id"];
+  @Input() onChange!: SelectProps["onChange"];
+  @Input() className!: SelectProps["className"];
 }

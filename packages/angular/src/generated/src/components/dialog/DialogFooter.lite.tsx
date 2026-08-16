@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface DialogFooterProps {
   className?: string;
@@ -9,7 +9,7 @@ export interface DialogFooterProps {
 }
 
 @Component({
-  selector: 'dialog-footer',
+  selector: "dialog-footer",
   template: ` <div [class]="className"><ng-content></ng-content></div> `,
   styles: [
     `
@@ -22,6 +22,5 @@ export interface DialogFooterProps {
   imports: [CommonModule],
 })
 export default class DialogFooter {
-  @Input()
-  className!: DialogFooterProps['className'];
+  @Input() className!: DialogFooterProps["className"];
 }

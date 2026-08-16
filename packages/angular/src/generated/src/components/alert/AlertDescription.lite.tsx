@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface AlertDescriptionProps {
   className?: string;
@@ -9,7 +9,7 @@ export interface AlertDescriptionProps {
 }
 
 @Component({
-  selector: 'alert-description',
+  selector: "alert-description",
   template: ` <div [class]="className"><ng-content></ng-content></div> `,
   styles: [
     `
@@ -22,6 +22,5 @@ export interface AlertDescriptionProps {
   imports: [CommonModule],
 })
 export default class AlertDescription {
-  @Input()
-  className!: AlertDescriptionProps['className'];
+  @Input() className!: AlertDescriptionProps["className"];
 }

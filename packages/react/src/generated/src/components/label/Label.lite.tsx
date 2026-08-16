@@ -1,15 +1,16 @@
 // @ts-nocheck
-import * as React from 'react';
+import * as React from "react";
 
 export interface LabelProps {
-  for?: string;
+  /** ID of the form control this label is bound to (compiles to `for` per framework) */
+  htmlFor?: string;
   className?: string;
   children?: any;
 }
 
 function Label(props: LabelProps) {
   return (
-    <label htmlFor={props.for} className={props.className}>
+    <label htmlFor={props.htmlFor} className={props.className}>
       {props.children}
     </label>
   );

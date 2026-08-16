@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { useLocalProxy } from '../../../../runtime.ts';
-'use client';
-import * as React from 'react';
+import { useLocalProxy } from "../../../../runtime.ts";
+"use client";
+import * as React from "react";
 
 export interface TooltipProps {
   content: string;
-  side?: 'top' | 'right' | 'bottom' | 'left';
+  side?: "top" | "right" | "bottom" | "left";
   className?: string;
   triggerClass?: string;
   contentClass?: string;
@@ -25,8 +25,8 @@ function Tooltip(props: TooltipProps) {
   return (
     <div
       style={{
-        position: 'relative',
-        display: 'inline-block',
+        position: "relative",
+        display: "inline-block",
       }}
       className={props.className}
     >
@@ -35,18 +35,16 @@ function Tooltip(props: TooltipProps) {
         onMouseLeave={(event) => state.handleMouseLeave()}
         onFocus={(event) => state.handleFocus()}
         onBlur={(event) => state.handleBlur()}
-        aria-describedby={state.visible ? 'tooltip-content' : undefined}
+        aria-describedby={state.visible ? "tooltip-content" : undefined}
         className={props.triggerClass}
       >
         {props.children}
       </div>
-      {state.visible
-        ? (
-          <div id='tooltip-content' role='tooltip' className={props.contentClass}>
-            {props.content}
-          </div>
-        )
-        : null}
+      {state.visible ? (
+        <div id="tooltip-content" role="tooltip" className={props.contentClass}>
+          {props.content}
+        </div>
+      ) : null}
     </div>
   );
 }

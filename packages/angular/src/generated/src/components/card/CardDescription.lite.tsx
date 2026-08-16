@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface CardDescriptionProps {
   className?: string;
@@ -9,7 +9,7 @@ export interface CardDescriptionProps {
 }
 
 @Component({
-  selector: 'card-description',
+  selector: "card-description",
   template: ` <p [class]="className"><ng-content></ng-content></p> `,
   styles: [
     `
@@ -22,6 +22,5 @@ export interface CardDescriptionProps {
   imports: [CommonModule],
 })
 export default class CardDescription {
-  @Input()
-  className!: CardDescriptionProps['className'];
+  @Input() className!: CardDescriptionProps["className"];
 }

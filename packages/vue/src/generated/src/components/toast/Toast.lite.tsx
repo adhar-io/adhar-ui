@@ -1,3 +1,4 @@
+// @ts-nocheck
 <template>
   <div>
     <template v-if="state.isOpen">

@@ -1,14 +1,14 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface DropdownMenuSeparatorProps {
   className?: string;
 }
 
 @Component({
-  selector: 'dropdown-menu-separator',
+  selector: "dropdown-menu-separator",
   template: ` <div role="separator" [class]="className"></div> `,
   styles: [
     `
@@ -21,6 +21,5 @@ export interface DropdownMenuSeparatorProps {
   imports: [CommonModule],
 })
 export default class DropdownMenuSeparator {
-  @Input()
-  className!: DropdownMenuSeparatorProps['className'];
+  @Input() className!: DropdownMenuSeparatorProps["className"];
 }

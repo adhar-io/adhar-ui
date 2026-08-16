@@ -1,5 +1,5 @@
 // @ts-nocheck
-import * as React from 'react';
+import * as React from "react";
 
 export interface TabsListProps {
   className?: string;
@@ -8,7 +8,7 @@ export interface TabsListProps {
 
 function TabsList(props: TabsListProps) {
   return (
-    <div role='tablist' className={props.className}>
+    <div role="tablist" className={props.className}>
       {props.children}
     </div>
   );

@@ -7,7 +7,7 @@ export interface SelectProps {
   id?: string;
   className?: string;
   placeholder?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
   onChange?: (event: any) => void;
   children?: any;
 }
@@ -21,7 +21,7 @@ function Select(props: SelectProps) {
       required={props.required}
       name={props.name}
       id={props.id}
-      aria-label={props['aria-label']}
+      aria-label={props["aria-label"]}
       onChange={(event) => props.onChange?.(event)}
     >
       {props.children}

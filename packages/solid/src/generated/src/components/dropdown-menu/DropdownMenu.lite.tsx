@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Show } from 'solid-js';
+import { Show } from "solid-js";
 
 export interface DropdownMenuProps {
   open?: boolean;
@@ -16,14 +16,14 @@ function DropdownMenu(props: DropdownMenuProps) {
     <div
       class={props.className}
       style={{
-        position: 'relative',
-        display: 'inline-block',
+        position: "relative",
+        display: "inline-block",
       }}
     >
       <button
         class={props.triggerClass}
-        type='button'
-        aria-haspopup='menu'
+        type="button"
+        aria-haspopup="menu"
         aria-expanded={isOpen}
         onClick={(event) => toggle()}
       >
@@ -32,7 +32,7 @@ function DropdownMenu(props: DropdownMenuProps) {
       <Show when={isOpen}>
         <div
           class={props.contentClass}
-          role='menu'
+          role="menu"
           onKeyDown={(event) => handleKeyDown(event)}
           tabIndex={-1}
         >

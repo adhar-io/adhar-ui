@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface DropdownMenuItemProps {
   disabled?: boolean;
@@ -11,7 +11,7 @@ export interface DropdownMenuItemProps {
 }
 
 @Component({
-  selector: 'dropdown-menu-item',
+  selector: "dropdown-menu-item",
   template: `
     <div
       role="menuitem"
@@ -44,10 +44,7 @@ export interface DropdownMenuItemProps {
   imports: [CommonModule],
 })
 export default class DropdownMenuItem {
-  @Input()
-  disabled!: DropdownMenuItemProps['disabled'];
-  @Input()
-  onClick!: DropdownMenuItemProps['onClick'];
-  @Input()
-  className!: DropdownMenuItemProps['className'];
+  @Input() disabled!: DropdownMenuItemProps["disabled"];
+  @Input() onClick!: DropdownMenuItemProps["onClick"];
+  @Input() className!: DropdownMenuItemProps["className"];
 }

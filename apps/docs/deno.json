@@ -1,17 +1,16 @@
 {
   "tasks": {
-    "dev": "deno run -A npm:vite@^7.1.12 --host",
-    "build": "deno run -A npm:vite@^7.1.12 build",
-    "preview": "deno run -A npm:vite@^7.1.12 preview"
+    "dev": "deno run -A npm:vite@^8.0.0 --host",
+    "build": "deno run -A npm:vite@^8.0.0 build",
+    "preview": "deno run -A npm:vite@^8.0.0 preview"
   },
   "imports": {
     "react": "npm:react@^19.2.0",
     "react-dom": "npm:react-dom@^19.2.0",
     "react/jsx-runtime": "npm:react@^19.2.0/jsx-runtime",
     "@monaco-editor/react": "npm:@monaco-editor/react@^4.7.0",
-    "tailwindcss": "npm:tailwindcss@^3.4.0",
-    "autoprefixer": "npm:autoprefixer@^10.4.0",
-    "postcss": "npm:postcss@^8.4.0"
+    "tailwindcss": "npm:tailwindcss@^4.1.0",
+    "@tailwindcss/vite": "npm:@tailwindcss/vite@^4.1.0"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

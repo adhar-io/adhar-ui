@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { Show } from 'solid-js';
+import { Show } from "solid-js";
 
 export interface TooltipProps {
   content: string;
-  side?: 'top' | 'right' | 'bottom' | 'left';
+  side?: "top" | "right" | "bottom" | "left";
   className?: string;
   triggerClass?: string;
   contentClass?: string;
@@ -16,8 +16,8 @@ function Tooltip(props: TooltipProps) {
     <div
       class={props.className}
       style={{
-        position: 'relative',
-        display: 'inline-block',
+        position: "relative",
+        display: "inline-block",
       }}
     >
       <div
@@ -26,12 +26,12 @@ function Tooltip(props: TooltipProps) {
         onMouseLeave={(event) => handleMouseLeave()}
         onFocus={(event) => handleFocus()}
         onBlur={(event) => handleBlur()}
-        aria-describedby={visible ? 'tooltip-content' : undefined}
+        aria-describedby={visible ? "tooltip-content" : undefined}
       >
         {props.children}
       </div>
       <Show when={visible}>
-        <div class={props.contentClass} id='tooltip-content' role='tooltip'>
+        <div class={props.contentClass} id="tooltip-content" role="tooltip">
           {props.content}
         </div>
       </Show>

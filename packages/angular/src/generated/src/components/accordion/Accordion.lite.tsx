@@ -1,16 +1,16 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface AccordionProps {
-  type?: 'single' | 'multiple';
+  type?: "single" | "multiple";
   className?: string;
   children?: any;
 }
 
 @Component({
-  selector: 'accordion',
+  selector: "accordion",
   template: `
     <div [attr.data-type]="type || 'single'" [class]="className">
       <ng-content></ng-content>
@@ -27,8 +27,6 @@ export interface AccordionProps {
   imports: [CommonModule],
 })
 export default class Accordion {
-  @Input()
-  type!: AccordionProps['type'];
-  @Input()
-  className!: AccordionProps['className'];
+  @Input() type!: AccordionProps["type"];
+  @Input() className!: AccordionProps["className"];
 }

@@ -1,3 +1,4 @@
+// @ts-nocheck
 <template>
   <div role="alert" :class="props.className"><slot /></div>
 </template>

@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { useLocalProxy } from '../../../../runtime.ts';
-'use client';
-import * as React from 'react';
+import { useLocalProxy } from "../../../../runtime.ts";
+"use client";
+import * as React from "react";
 
 export interface TabsProps {
   defaultValue?: string;

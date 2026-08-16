@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface CheckboxProps {
   checked?: boolean;
@@ -11,12 +11,12 @@ export interface CheckboxProps {
   id?: string;
   value?: string;
   className?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
   onChange?: (checked: boolean) => void;
 }
 
 @Component({
-  selector: 'checkbox',
+  selector: "checkbox",
   template: `
     <input
       type="checkbox"
@@ -44,16 +44,10 @@ export interface CheckboxProps {
   imports: [CommonModule],
 })
 export default class Checkbox {
-  @Input()
-  disabled!: CheckboxProps['disabled'];
-  @Input()
-  required!: CheckboxProps['required'];
-  @Input()
-  name!: CheckboxProps['name'];
-  @Input()
-  id!: CheckboxProps['id'];
-  @Input()
-  value!: CheckboxProps['value'];
-  @Input()
-  className!: CheckboxProps['className'];
+  @Input() disabled!: CheckboxProps["disabled"];
+  @Input() required!: CheckboxProps["required"];
+  @Input() name!: CheckboxProps["name"];
+  @Input() id!: CheckboxProps["id"];
+  @Input() value!: CheckboxProps["value"];
+  @Input() className!: CheckboxProps["className"];
 }

@@ -9,9 +9,9 @@ export interface TextareaProps {
   name?: string;
   id?: string;
   className?: string;
-  'aria-label'?: string;
-  'aria-describedby'?: string;
-  'aria-invalid'?: boolean;
+  "aria-label"?: string;
+  "aria-describedby"?: string;
+  "aria-invalid"?: boolean;
   onChange?: (event: any) => void;
   onFocus?: (event: any) => void;
   onBlur?: (event: any) => void;
@@ -29,14 +29,13 @@ function Textarea(props: TextareaProps) {
       rows={props.rows || 3}
       name={props.name}
       id={props.id}
-      aria-label={props['aria-label']}
-      aria-describedby={props['aria-describedby']}
-      aria-invalid={props['aria-invalid']}
+      aria-label={props["aria-label"]}
+      aria-describedby={props["aria-describedby"]}
+      aria-invalid={props["aria-invalid"]}
       onChange={(event) => props.onChange?.(event)}
       onFocus={(event) => props.onFocus?.(event)}
       onBlur={(event) => props.onBlur?.(event)}
-    >
-    </textarea>
+    ></textarea>
   );
 }
 

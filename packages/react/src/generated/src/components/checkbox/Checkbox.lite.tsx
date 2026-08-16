@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { useLocalProxy } from '../../../../runtime.ts';
-'use client';
-import * as React from 'react';
+import { useLocalProxy } from "../../../../runtime.ts";
+"use client";
+import * as React from "react";
 
 export interface CheckboxProps {
   checked?: boolean;
@@ -11,7 +11,7 @@ export interface CheckboxProps {
   id?: string;
   value?: string;
   className?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
   onChange?: (checked: boolean) => void;
 }
 
@@ -20,8 +20,8 @@ function Checkbox(props: CheckboxProps) {
 
   return (
     <input
-      type='checkbox'
-      role='checkbox'
+      type="checkbox"
+      role="checkbox"
       checked={state.isChecked}
       disabled={props.disabled}
       required={props.required}
@@ -29,7 +29,7 @@ function Checkbox(props: CheckboxProps) {
       id={props.id}
       value={props.value}
       aria-checked={state.isChecked}
-      aria-label={props['aria-label']}
+      aria-label={props["aria-label"]}
       onChange={(event) => state.handleChange(event)}
       className={props.className}
     />

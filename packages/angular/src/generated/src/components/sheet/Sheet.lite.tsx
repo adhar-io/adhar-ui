@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface SheetProps {
   open?: boolean;
-  side?: 'top' | 'right' | 'bottom' | 'left';
+  side?: "top" | "right" | "bottom" | "left";
   className?: string;
   overlayClass?: string;
   contentClass?: string;
@@ -14,7 +14,7 @@ export interface SheetProps {
 }
 
 @Component({
-  selector: 'sheet',
+  selector: "sheet",
   template: `
     <div>
       <ng-container *ngIf="open"
@@ -70,14 +70,9 @@ export interface SheetProps {
   imports: [CommonModule],
 })
 export default class Sheet {
-  @Input()
-  open!: SheetProps['open'];
-  @Input()
-  overlayClass!: SheetProps['overlayClass'];
-  @Input()
-  side!: SheetProps['side'];
-  @Input()
-  contentClass!: SheetProps['contentClass'];
-  @Input()
-  onClose!: SheetProps['onClose'];
+  @Input() open!: SheetProps["open"];
+  @Input() overlayClass!: SheetProps["overlayClass"];
+  @Input() side!: SheetProps["side"];
+  @Input() contentClass!: SheetProps["contentClass"];
+  @Input() onClose!: SheetProps["onClose"];
 }

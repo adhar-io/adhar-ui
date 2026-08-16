@@ -1,5 +1,5 @@
 // @ts-nocheck
-import * as React from 'react';
+import * as React from "react";
 
 export interface AccordionContentProps {
   open?: boolean;
@@ -10,11 +10,11 @@ export interface AccordionContentProps {
 function AccordionContent(props: AccordionContentProps) {
   return (
     <div
-      role='region'
+      role="region"
       hidden={!props.open}
       style={{
-        overflow: 'hidden',
-        transition: 'height 0.2s ease-out',
+        overflow: "hidden",
+        transition: "height 0.2s ease-out",
       }}
       className={props.className}
     >

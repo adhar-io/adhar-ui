@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface DialogTitleProps {
   className?: string;
@@ -9,7 +9,7 @@ export interface DialogTitleProps {
 }
 
 @Component({
-  selector: 'dialog-title',
+  selector: "dialog-title",
   template: ` <h2 [class]="className"><ng-content></ng-content></h2> `,
   styles: [
     `
@@ -22,6 +22,5 @@ export interface DialogTitleProps {
   imports: [CommonModule],
 })
 export default class DialogTitle {
-  @Input()
-  className!: DialogTitleProps['className'];
+  @Input() className!: DialogTitleProps["className"];
 }

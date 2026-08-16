@@ -28,5 +28,27 @@ export { cardVariants } from '../../primitives/src/components/card/card.styles.t
 export { alertVariants } from '../../primitives/src/components/alert/alert.styles.ts';
 
 // -- Accessibility and icon utilities --
+// -- Extended component style variants --
+export {
+  breadcrumbEllipsisVariants,
+  breadcrumbItemVariants,
+  breadcrumbLinkVariants,
+  breadcrumbListVariants,
+  breadcrumbPageVariants,
+  breadcrumbSeparatorVariants,
+  kbdVariants,
+  paginationContentVariants,
+  paginationEllipsisVariants,
+  paginationItemVariants,
+  paginationLinkVariants,
+  paginationVariants,
+  radioGroupIndicatorVariants,
+  radioGroupItemVariants,
+  radioGroupVariants,
+  sliderVariants,
+  toggleGroupVariants,
+  toggleVariants,
+} from '@adhar-ui/primitives';
+
 export { announce, createFocusTrap, createRovingTabIndex, skipNavClasses } from '@adhar-ui/a11y';
 export { getIcon, hasIcon, registerIcon, registerIcons, renderIconSvg } from '@adhar-ui/icons';

@@ -16,31 +16,43 @@ function Button({
   size = 'default',
   children = 'Click me',
   disabled = false,
+  loading = false,
+  fullWidth = false,
 }: {
   variant?: string;
   size?: string;
   children?: string;
   disabled?: boolean;
+  loading?: boolean;
+  fullWidth?: boolean;
 }) {
   const variants: Record<string, string> = {
-    default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-    destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-    outline: 'border border-input bg-background hover:bg-accent',
-    secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-    ghost: 'hover:bg-accent',
+    default: 'bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 active:bg-primary/80',
+    destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+    outline: 'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+    secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
+    ghost: 'hover:bg-accent hover:text-accent-foreground',
     link: 'text-primary underline-offset-4 hover:underline',
   };
   const sizes: Record<string, string> = {
+    xs: 'h-7 rounded px-2 text-xs gap-1',
+    sm: 'h-9 rounded-md px-3 text-xs',
     default: 'h-10 px-4 py-2',
-    sm: 'h-9 rounded-md px-3',
-    lg: 'h-11 rounded-md px-8',
-    icon: 'h-10 w-10',
+    lg: 'h-11 rounded-md px-8 text-base',
+    xl: 'h-12 rounded-lg px-10 text-base',
+    icon: 'h-10 w-10 p-0',
+    'icon-sm': 'h-9 w-9 p-0',
+    'icon-lg': 'h-11 w-11 p-0',
   };
   return (
     <button
-      disabled={disabled}
-      className={cn(btnBase, variants[variant] || '', sizes[size] || '')}
+      disabled={disabled || loading}
+      aria-busy={loading || undefined}
+      className={cn(btnBase, variants[variant] || '', sizes[size] || '', fullWidth && 'w-full')}
     >
+      {loading && (
+        <span className='inline-block size-4 shrink-0 rounded-full border-2 border-current border-t-transparent animate-spin motion-reduce:animate-none' />
+      )}
       {children}
     </button>
   );
@@ -49,12 +61,14 @@ function Button({
 export const ButtonStory: StoryObj<typeof Button> = {
   name: 'Button',
   render: (args) => <Button {...args} />,
-  args: { variant: 'default', size: 'default', children: 'Click me', disabled: false },
+  args: { variant: 'default', size: 'default', children: 'Click me', disabled: false, loading: false, fullWidth: false },
   argTypes: {
     variant: { control: 'select', options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'] },
-    size: { control: 'select', options: ['default', 'sm', 'lg', 'icon'] },
+    size: { control: 'select', options: ['xs', 'sm', 'default', 'lg', 'xl', 'icon', 'icon-sm', 'icon-lg'] },
     children: { control: 'text' },
     disabled: { control: 'boolean' },
+    loading: { control: 'boolean' },
+    fullWidth: { control: 'boolean' },
   },
 };
 

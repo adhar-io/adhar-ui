@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Show } from 'solid-js';
+import { Show } from "solid-js";
 
 export interface DialogProps {
   open?: boolean;
@@ -21,8 +21,8 @@ function Dialog(props: DialogProps) {
         >
           <div
             class={props.contentClass}
-            role='dialog'
-            aria-modal='true'
+            role="dialog"
+            aria-modal="true"
             tabIndex={-1}
           >
             {props.children}

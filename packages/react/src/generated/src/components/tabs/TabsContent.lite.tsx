@@ -1,5 +1,5 @@
 // @ts-nocheck
-import * as React from 'react';
+import * as React from "react";
 
 export interface TabsContentProps {
   value: string;
@@ -11,7 +11,7 @@ export interface TabsContentProps {
 function TabsContent(props: TabsContentProps) {
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       data-value={props.value}
       hidden={!props.active}
       tabIndex={0}

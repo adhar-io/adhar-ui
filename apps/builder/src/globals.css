@@ -1,6 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+/* ── Tailwind v4 compatibility ──────────────────────────────────────────
+   Restore v3 default scales so existing utility class names render
+   identically without repo-wide renames, and keep v3 border defaults. */
+@theme {
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --radius-sm: 0.125rem;
+  --blur-sm: 4px;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: hsl(var(--border));
+  }
+}
 
 /* ─── Design System ───────────────────────────────────────────── */
 
@@ -147,7 +165,8 @@
 
   /* Dropdown popover */
   .dropdown {
-    @apply absolute rounded-xl py-1.5 z-[100] animate-scale-in min-w-[180px];
+    @apply absolute rounded-xl py-1.5 z-[100] min-w-[180px];
+    animation: scale-in 0.15s ease-out;
     background: hsl(var(--popover));
     border: 1px solid hsl(var(--border) / 0.8);
     box-shadow: 0 12px 40px hsl(var(--foreground) / 0.1), 0 4px 12px hsl(var(--foreground) / 0.05);

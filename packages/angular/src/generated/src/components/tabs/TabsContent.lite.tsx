@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface TabsContentProps {
   value: string;
@@ -11,7 +11,7 @@ export interface TabsContentProps {
 }
 
 @Component({
-  selector: 'tabs-content',
+  selector: "tabs-content",
   template: `
     <div
       role="tabpanel"
@@ -34,10 +34,7 @@ export interface TabsContentProps {
   imports: [CommonModule],
 })
 export default class TabsContent {
-  @Input()
-  value!: TabsContentProps['value'];
-  @Input()
-  active!: TabsContentProps['active'];
-  @Input()
-  className!: TabsContentProps['className'];
+  @Input() value!: TabsContentProps["value"];
+  @Input() active!: TabsContentProps["active"];
+  @Input() className!: TabsContentProps["className"];
 }

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Show } from 'solid-js';
+import { Show } from "solid-js";
 
 export interface TabsContentProps {
   value: string;
@@ -12,7 +12,7 @@ function TabsContent(props: TabsContentProps) {
   return (
     <div
       class={props.className}
-      role='tabpanel'
+      role="tabpanel"
       data-value={props.value}
       hidden={!props.active}
       tabIndex={0}

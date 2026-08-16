@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface AccordionContentProps {
   open?: boolean;
@@ -10,7 +10,7 @@ export interface AccordionContentProps {
 }
 
 @Component({
-  selector: 'accordion-content',
+  selector: "accordion-content",
   template: `
     <div
       role="region"
@@ -35,8 +35,6 @@ export interface AccordionContentProps {
   imports: [CommonModule],
 })
 export default class AccordionContent {
-  @Input()
-  open!: AccordionContentProps['open'];
-  @Input()
-  className!: AccordionContentProps['className'];
+  @Input() open!: AccordionContentProps["open"];
+  @Input() className!: AccordionContentProps["className"];
 }

@@ -4,7 +4,7 @@ export interface DropdownMenuSeparatorProps {
 }
 
 function DropdownMenuSeparator(props: DropdownMenuSeparatorProps) {
-  return <div class={props.className} role='separator'></div>;
+  return <div class={props.className} role="separator"></div>;
 }
 
 export default DropdownMenuSeparator;

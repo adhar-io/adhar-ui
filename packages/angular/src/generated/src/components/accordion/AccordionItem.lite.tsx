@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface AccordionItemProps {
   value: string;
@@ -10,7 +10,7 @@ export interface AccordionItemProps {
 }
 
 @Component({
-  selector: 'accordion-item',
+  selector: "accordion-item",
   template: `
     <div [attr.data-value]="value" [class]="className">
       <ng-content></ng-content>
@@ -27,8 +27,6 @@ export interface AccordionItemProps {
   imports: [CommonModule],
 })
 export default class AccordionItem {
-  @Input()
-  value!: AccordionItemProps['value'];
-  @Input()
-  className!: AccordionItemProps['className'];
+  @Input() value!: AccordionItemProps["value"];
+  @Input() className!: AccordionItemProps["className"];
 }

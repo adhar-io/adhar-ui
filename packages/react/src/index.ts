@@ -127,6 +127,79 @@ export type { DropdownMenuProps } from './generated/src/components/dropdown-menu
 export { default as DropdownMenuItem } from './generated/src/components/dropdown-menu/DropdownMenuItem.lite.tsx';
 export { default as DropdownMenuSeparator } from './generated/src/components/dropdown-menu/DropdownMenuSeparator.lite.tsx';
 
+// ─── Extended: Form Controls ────────────────────────────────────────────
+export {
+  radioGroupIndicatorVariants,
+  radioGroupItemVariants,
+  radioGroupVariants,
+  sliderVariants,
+  toggleGroupVariants,
+  toggleVariants,
+} from '@adhar-ui/primitives';
+export type {
+  RadioGroupItemVariants,
+  RadioGroupVariants,
+  SliderVariants,
+  ToggleGroupVariants,
+  ToggleVariants,
+} from '@adhar-ui/primitives';
+
+export { default as RadioGroup } from './generated/src/components/radio-group/RadioGroup.lite.tsx';
+export type { RadioGroupProps } from './generated/src/components/radio-group/RadioGroup.lite.tsx';
+export { default as RadioGroupItem } from './generated/src/components/radio-group/RadioGroupItem.lite.tsx';
+export type { RadioGroupItemProps } from './generated/src/components/radio-group/RadioGroupItem.lite.tsx';
+
+export { default as Slider } from './generated/src/components/slider/Slider.lite.tsx';
+export type { SliderProps } from './generated/src/components/slider/Slider.lite.tsx';
+
+export { default as Toggle } from './generated/src/components/toggle/Toggle.lite.tsx';
+export type { ToggleProps } from './generated/src/components/toggle/Toggle.lite.tsx';
+
+export { default as ToggleGroup } from './generated/src/components/toggle-group/ToggleGroup.lite.tsx';
+export type { ToggleGroupProps } from './generated/src/components/toggle-group/ToggleGroup.lite.tsx';
+export { default as ToggleGroupItem } from './generated/src/components/toggle-group/ToggleGroupItem.lite.tsx';
+export type { ToggleGroupItemProps } from './generated/src/components/toggle-group/ToggleGroupItem.lite.tsx';
+
+// ─── Extended: Navigation ───────────────────────────────────────────────
+export {
+  breadcrumbEllipsisVariants,
+  breadcrumbItemVariants,
+  breadcrumbLinkVariants,
+  breadcrumbListVariants,
+  breadcrumbPageVariants,
+  breadcrumbSeparatorVariants,
+  paginationContentVariants,
+  paginationEllipsisVariants,
+  paginationItemVariants,
+  paginationLinkVariants,
+  paginationVariants,
+} from '@adhar-ui/primitives';
+export type { PaginationLinkVariants } from '@adhar-ui/primitives';
+
+export { default as Breadcrumb } from './generated/src/components/breadcrumb/Breadcrumb.lite.tsx';
+export type { BreadcrumbProps } from './generated/src/components/breadcrumb/Breadcrumb.lite.tsx';
+export { default as BreadcrumbList } from './generated/src/components/breadcrumb/BreadcrumbList.lite.tsx';
+export { default as BreadcrumbItem } from './generated/src/components/breadcrumb/BreadcrumbItem.lite.tsx';
+export { default as BreadcrumbLink } from './generated/src/components/breadcrumb/BreadcrumbLink.lite.tsx';
+export { default as BreadcrumbPage } from './generated/src/components/breadcrumb/BreadcrumbPage.lite.tsx';
+export { default as BreadcrumbSeparator } from './generated/src/components/breadcrumb/BreadcrumbSeparator.lite.tsx';
+export { default as BreadcrumbEllipsis } from './generated/src/components/breadcrumb/BreadcrumbEllipsis.lite.tsx';
+
+export { default as Pagination } from './generated/src/components/pagination/Pagination.lite.tsx';
+export type { PaginationProps } from './generated/src/components/pagination/Pagination.lite.tsx';
+export { default as PaginationContent } from './generated/src/components/pagination/PaginationContent.lite.tsx';
+export { default as PaginationItem } from './generated/src/components/pagination/PaginationItem.lite.tsx';
+export { default as PaginationLink } from './generated/src/components/pagination/PaginationLink.lite.tsx';
+export { default as PaginationPrevious } from './generated/src/components/pagination/PaginationPrevious.lite.tsx';
+export { default as PaginationNext } from './generated/src/components/pagination/PaginationNext.lite.tsx';
+export { default as PaginationEllipsis } from './generated/src/components/pagination/PaginationEllipsis.lite.tsx';
+
+// ─── Extended: Display ──────────────────────────────────────────────────
+export { kbdVariants } from '@adhar-ui/primitives';
+export type { KbdVariants } from '@adhar-ui/primitives';
+export { default as Kbd } from './generated/src/components/kbd/Kbd.lite.tsx';
+export type { KbdProps } from './generated/src/components/kbd/Kbd.lite.tsx';
+
 // -- Accessibility utilities --
 export { announce, createFocusTrap, createRovingTabIndex, skipNavClasses } from '@adhar-ui/a11y';
 

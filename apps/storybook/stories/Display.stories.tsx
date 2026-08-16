@@ -15,22 +15,37 @@ const badgeVariantClasses: Record<string, string> = {
   secondary: 'border-transparent bg-secondary text-secondary-foreground',
   destructive: 'border-transparent bg-destructive text-destructive-foreground',
   outline: 'text-foreground',
+  success: 'border-transparent bg-green-500/15 text-green-700 dark:text-green-400',
+  warning: 'border-transparent bg-yellow-500/15 text-yellow-700 dark:text-yellow-400',
+  info: 'border-transparent bg-blue-500/15 text-blue-700 dark:text-blue-400',
+};
+
+const badgeSizeClasses: Record<string, string> = {
+  sm: 'px-2 py-px text-[10px]',
+  default: 'px-2.5 py-0.5 text-xs',
+  lg: 'px-3 py-1 text-sm',
 };
 
 function Badge({
   variant = 'default',
+  size = 'default',
   children = 'Badge',
+  dot = false,
 }: {
   variant?: string;
+  size?: string;
   children?: string;
+  dot?: boolean;
 }) {
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold',
+        'inline-flex items-center rounded-full border font-semibold leading-none',
+        badgeSizeClasses[size] ?? badgeSizeClasses.default,
         badgeVariantClasses[variant] ?? badgeVariantClasses.default,
       )}
     >
+      {dot && <span className='mr-1 inline-block size-1.5 rounded-full bg-current opacity-70' />}
       {children}
     </span>
   );
@@ -39,12 +54,14 @@ function Badge({
 export const BadgeStory: StoryObj<typeof Badge> = {
   name: 'Badge',
   render: (args) => <Badge {...args} />,
-  args: { variant: 'default', children: 'Badge' },
+  args: { variant: 'default', size: 'default', children: 'Badge', dot: false },
   argTypes: {
     variant: {
       control: 'select',
-      options: ['default', 'secondary', 'destructive', 'outline'],
+      options: ['default', 'secondary', 'destructive', 'outline', 'success', 'warning', 'info'],
     },
+    size: { control: 'select', options: ['sm', 'default', 'lg'] },
+    dot: { control: 'boolean' },
     children: { control: 'text' },
   },
 };

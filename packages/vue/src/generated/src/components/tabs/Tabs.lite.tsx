@@ -1,3 +1,4 @@
+// @ts-nocheck
 <template>
   <div :data-active-tab="state.activeTab" :class="props.className">
     <slot />

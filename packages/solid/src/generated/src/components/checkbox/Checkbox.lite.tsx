@@ -7,7 +7,7 @@ export interface CheckboxProps {
   id?: string;
   value?: string;
   className?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
   onChange?: (checked: boolean) => void;
 }
 
@@ -15,8 +15,8 @@ function Checkbox(props: CheckboxProps) {
   return (
     <input
       class={props.className}
-      type='checkbox'
-      role='checkbox'
+      type="checkbox"
+      role="checkbox"
       checked={isChecked}
       disabled={props.disabled}
       required={props.required}
@@ -24,7 +24,7 @@ function Checkbox(props: CheckboxProps) {
       id={props.id}
       value={props.value}
       aria-checked={isChecked}
-      aria-label={props['aria-label']}
+      aria-label={props["aria-label"]}
       onInput={(event) => handleChange(event)}
     />
   );

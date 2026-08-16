@@ -16,7 +16,7 @@ for target in "${TARGETS[@]}"; do
   echo "Compiling to $target..."
   rm -rf "$OUT_DIR"
   find src/components -name '*.lite.tsx' -print0 | xargs -0 \
-    deno run -A npm:@builder.io/mitosis-cli compile -t "$target" --force --out-dir "$OUT_DIR" --
+    deno run -A npm:@builder.io/mitosis-cli@0.14.0 compile -t "$target" --force --out-dir "$OUT_DIR" --
 
   # Post-process: add @ts-nocheck to all generated files
   find "$OUT_DIR" -name '*.tsx' -o -name '*.ts' | while read f; do
@@ -29,11 +29,14 @@ for target in "${TARGETS[@]}"; do
   if [ "$target" = "react" ]; then
     grep -rl 'useLocalProxy' "$OUT_DIR" | while read f; do
       if ! grep -q 'import.*useLocalProxy.*runtime' "$f"; then
-        # Calculate relative path to runtime.ts from the file
-        DEPTH=$(echo "$f" | sed "s|$OUT_DIR/||" | tr '/' '\n' | wc -l)
+        # runtime.ts lives at <target>/src/runtime.ts; OUT_DIR is <target>/src/generated.
+        # Count directory levels the file sits below OUT_DIR, then add one more
+        # to climb from OUT_DIR up to <target>/src.
+        REL="${f#"$OUT_DIR"/}"
+        DIRS=$(dirname "$REL" | tr '/' '\n' | wc -l | tr -d ' ')
         REL_PREFIX=""
-        for ((i=0; i<DEPTH; i++)); do REL_PREFIX="../$REL_PREFIX"; done
-        sed -i '' "2s|^|import { useLocalProxy } from \"${REL_PREFIX}../../runtime.ts\";\n|" "$f"
+        for ((i=0; i<DIRS+1; i++)); do REL_PREFIX="../$REL_PREFIX"; done
+        sed -i '' "2s|^|import { useLocalProxy } from \"${REL_PREFIX}runtime.ts\";\n|" "$f"
       fi
     done
   fi

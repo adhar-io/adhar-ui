@@ -6,7 +6,7 @@ export interface TabsListProps {
 
 function TabsList(props: TabsListProps) {
   return (
-    <div class={props.className} role='tablist'>
+    <div class={props.className} role="tablist">
       {props.children}
     </div>
   );

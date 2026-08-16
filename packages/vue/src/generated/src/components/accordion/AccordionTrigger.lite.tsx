@@ -1,3 +1,4 @@
+// @ts-nocheck
 <template>
   <button
     type="button"

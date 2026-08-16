@@ -1,18 +1,18 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface ProgressProps {
   value?: number;
   max?: number;
   className?: string;
   indicatorClass?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
 }
 
 @Component({
-  selector: 'progress',
+  selector: "progress",
   template: `
     <div
       role="progressbar"
@@ -41,12 +41,8 @@ export interface ProgressProps {
   imports: [CommonModule],
 })
 export default class Progress {
-  @Input()
-  value!: ProgressProps['value'];
-  @Input()
-  max!: ProgressProps['max'];
-  @Input()
-  className!: ProgressProps['className'];
-  @Input()
-  indicatorClass!: ProgressProps['indicatorClass'];
+  @Input() value!: ProgressProps["value"];
+  @Input() max!: ProgressProps["max"];
+  @Input() className!: ProgressProps["className"];
+  @Input() indicatorClass!: ProgressProps["indicatorClass"];
 }

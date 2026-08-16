@@ -10,7 +10,7 @@ function DropdownMenuItem(props: DropdownMenuItemProps) {
   return (
     <div
       class={props.className}
-      role='menuitem'
+      role="menuitem"
       tabIndex={props.disabled ? -1 : 0}
       aria-disabled={props.disabled}
       onClick={(event) => {
@@ -19,7 +19,7 @@ function DropdownMenuItem(props: DropdownMenuItemProps) {
         }
       }}
       onKeyDown={(event) => {
-        if ((event.key === 'Enter' || event.key === ' ') && !props.disabled) {
+        if ((event.key === "Enter" || event.key === " ") && !props.disabled) {
           event.preventDefault();
           props.onClick?.();
         }

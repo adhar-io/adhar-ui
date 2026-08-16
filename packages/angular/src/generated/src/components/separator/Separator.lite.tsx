@@ -1,15 +1,15 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface SeparatorProps {
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: "horizontal" | "vertical";
   className?: string;
 }
 
 @Component({
-  selector: 'separator',
+  selector: "separator",
   template: `
     <div
       role="separator"
@@ -28,8 +28,6 @@ export interface SeparatorProps {
   imports: [CommonModule],
 })
 export default class Separator {
-  @Input()
-  orientation!: SeparatorProps['orientation'];
-  @Input()
-  className!: SeparatorProps['className'];
+  @Input() orientation!: SeparatorProps["orientation"];
+  @Input() className!: SeparatorProps["className"];
 }

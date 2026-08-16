@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface DropdownMenuProps {
   open?: boolean;
@@ -14,7 +14,7 @@ export interface DropdownMenuProps {
 }
 
 @Component({
-  selector: 'dropdown-menu',
+  selector: "dropdown-menu",
   template: `
     <div
       [ngStyle]="{
@@ -54,12 +54,8 @@ export interface DropdownMenuProps {
   imports: [CommonModule],
 })
 export default class DropdownMenu {
-  @Input()
-  className!: DropdownMenuProps['className'];
-  @Input()
-  triggerClass!: DropdownMenuProps['triggerClass'];
-  @Input()
-  trigger!: DropdownMenuProps['trigger'];
-  @Input()
-  contentClass!: DropdownMenuProps['contentClass'];
+  @Input() className!: DropdownMenuProps["className"];
+  @Input() triggerClass!: DropdownMenuProps["triggerClass"];
+  @Input() trigger!: DropdownMenuProps["trigger"];
+  @Input() contentClass!: DropdownMenuProps["contentClass"];
 }

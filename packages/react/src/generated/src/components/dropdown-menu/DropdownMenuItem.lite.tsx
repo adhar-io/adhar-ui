@@ -1,6 +1,6 @@
 // @ts-nocheck
-'use client';
-import * as React from 'react';
+"use client";
+import * as React from "react";
 
 export interface DropdownMenuItemProps {
   disabled?: boolean;
@@ -12,7 +12,7 @@ export interface DropdownMenuItemProps {
 function DropdownMenuItem(props: DropdownMenuItemProps) {
   return (
     <div
-      role='menuitem'
+      role="menuitem"
       tabIndex={props.disabled ? -1 : 0}
       aria-disabled={props.disabled}
       onClick={(event) => {
@@ -21,7 +21,7 @@ function DropdownMenuItem(props: DropdownMenuItemProps) {
         }
       }}
       onKeyDown={(event) => {
-        if ((event.key === 'Enter' || event.key === ' ') && !props.disabled) {
+        if ((event.key === "Enter" || event.key === " ") && !props.disabled) {
           event.preventDefault();
           props.onClick?.();
         }

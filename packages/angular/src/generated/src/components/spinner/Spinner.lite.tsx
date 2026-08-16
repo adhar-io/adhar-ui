@@ -1,16 +1,16 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface SpinnerProps {
-  size?: 'sm' | 'default' | 'lg';
+  size?: "sm" | "default" | "lg";
   className?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
 }
 
 @Component({
-  selector: 'spinner',
+  selector: "spinner",
   template: `
     <div
       role="status"
@@ -51,6 +51,5 @@ export interface SpinnerProps {
   imports: [CommonModule],
 })
 export default class Spinner {
-  @Input()
-  className!: SpinnerProps['className'];
+  @Input() className!: SpinnerProps["className"];
 }

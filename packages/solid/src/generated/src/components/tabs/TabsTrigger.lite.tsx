@@ -12,8 +12,8 @@ function TabsTrigger(props: TabsTriggerProps) {
   return (
     <button
       class={props.className}
-      type='button'
-      role='tab'
+      type="button"
+      role="tab"
       aria-selected={props.active}
       disabled={props.disabled}
       tabIndex={props.active ? 0 : -1}

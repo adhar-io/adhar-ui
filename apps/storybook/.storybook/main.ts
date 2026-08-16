@@ -17,6 +17,14 @@ const config: StorybookConfig = {
     name: '@storybook/react-vite',
     options: {},
   },
+  // Tailwind v4 is wired via its dedicated Vite plugin (replaces the old
+  // PostCSS setup). Loaded lazily so the config stays ESM-clean.
+  viteFinal: async (cfg) => {
+    const { default: tailwindcss } = await import('@tailwindcss/vite');
+    cfg.plugins = cfg.plugins || [];
+    cfg.plugins.push(tailwindcss());
+    return cfg;
+  },
 };
 
 export default config;

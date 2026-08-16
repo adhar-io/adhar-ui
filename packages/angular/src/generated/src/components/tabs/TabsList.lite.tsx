@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface TabsListProps {
   className?: string;
@@ -9,7 +9,7 @@ export interface TabsListProps {
 }
 
 @Component({
-  selector: 'tabs-list',
+  selector: "tabs-list",
   template: `
     <div role="tablist" [class]="className"><ng-content></ng-content></div>
   `,
@@ -24,6 +24,5 @@ export interface TabsListProps {
   imports: [CommonModule],
 })
 export default class TabsList {
-  @Input()
-  className!: TabsListProps['className'];
+  @Input() className!: TabsListProps["className"];
 }

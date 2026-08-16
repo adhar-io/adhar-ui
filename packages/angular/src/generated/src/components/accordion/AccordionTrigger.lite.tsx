@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface AccordionTriggerProps {
   open?: boolean;
@@ -11,7 +11,7 @@ export interface AccordionTriggerProps {
 }
 
 @Component({
-  selector: 'accordion-trigger',
+  selector: "accordion-trigger",
   template: `
     <button
       type="button"
@@ -51,10 +51,7 @@ export interface AccordionTriggerProps {
   imports: [CommonModule],
 })
 export default class AccordionTrigger {
-  @Input()
-  open!: AccordionTriggerProps['open'];
-  @Input()
-  onClick!: AccordionTriggerProps['onClick'];
-  @Input()
-  className!: AccordionTriggerProps['className'];
+  @Input() open!: AccordionTriggerProps["open"];
+  @Input() onClick!: AccordionTriggerProps["onClick"];
+  @Input() className!: AccordionTriggerProps["className"];
 }

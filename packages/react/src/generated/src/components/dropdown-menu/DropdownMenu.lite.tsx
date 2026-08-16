@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { useLocalProxy } from '../../../../runtime.ts';
-'use client';
-import * as React from 'react';
+import { useLocalProxy } from "../../../../runtime.ts";
+"use client";
+import * as React from "react";
 
 export interface DropdownMenuProps {
   open?: boolean;
@@ -23,32 +23,30 @@ function DropdownMenu(props: DropdownMenuProps) {
   return (
     <div
       style={{
-        position: 'relative',
-        display: 'inline-block',
+        position: "relative",
+        display: "inline-block",
       }}
       className={props.className}
     >
       <button
-        type='button'
-        aria-haspopup='menu'
+        type="button"
+        aria-haspopup="menu"
         aria-expanded={state.isOpen}
         onClick={(event) => state.toggle()}
         className={props.triggerClass}
       >
         {props.trigger}
       </button>
-      {state.isOpen
-        ? (
-          <div
-            role='menu'
-            onKeyDown={(event) => state.handleKeyDown(event)}
-            tabIndex={-1}
-            className={props.contentClass}
-          >
-            {props.children}
-          </div>
-        )
-        : null}
+      {state.isOpen ? (
+        <div
+          role="menu"
+          onKeyDown={(event) => state.handleKeyDown(event)}
+          tabIndex={-1}
+          className={props.contentClass}
+        >
+          {props.children}
+        </div>
+      ) : null}
     </div>
   );
 }

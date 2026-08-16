@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { useLocalProxy } from '../../../../runtime.ts';
-'use client';
-import * as React from 'react';
+import { useLocalProxy } from "../../../../runtime.ts";
+"use client";
+import * as React from "react";
 
 export interface DialogProps {
   open?: boolean;
@@ -20,24 +20,22 @@ function Dialog(props: DialogProps) {
 
   return (
     <div>
-      {props.open
-        ? (
+      {props.open ? (
+        <div
+          onClick={(event) => state.handleOverlayClick(event)}
+          onKeyDown={(event) => state.handleKeyDown(event)}
+          className={props.overlayClass}
+        >
           <div
-            onClick={(event) => state.handleOverlayClick(event)}
-            onKeyDown={(event) => state.handleKeyDown(event)}
-            className={props.overlayClass}
+            role="dialog"
+            aria-modal="true"
+            tabIndex={-1}
+            className={props.contentClass}
           >
-            <div
-              role='dialog'
-              aria-modal='true'
-              tabIndex={-1}
-              className={props.contentClass}
-            >
-              {props.children}
-            </div>
+            {props.children}
           </div>
-        )
-        : null}
+        </div>
+      ) : null}
     </div>
   );
 }

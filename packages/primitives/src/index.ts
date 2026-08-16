@@ -45,6 +45,19 @@ export { popoverContentVariants } from './components/popover/popover.styles.ts';
 export { sheetContentVariants, sheetOverlayVariants, sheetHeaderVariants, sheetFooterVariants, sheetTitleVariants, sheetDescriptionVariants } from './components/sheet/sheet.styles.ts';
 export { dropdownMenuContentVariants, dropdownMenuItemVariants, dropdownMenuSeparatorVariants, dropdownMenuLabelVariants, dropdownMenuShortcutVariants } from './components/dropdown-menu/dropdown-menu.styles.ts';
 
+// ─── Form Controls (extended) ──────────────────────────────────────────
+export { radioGroupVariants, radioGroupItemVariants, radioGroupIndicatorVariants } from './components/radio-group/radio-group.styles.ts';
+export { sliderVariants } from './components/slider/slider.styles.ts';
+export { toggleVariants } from './components/toggle/toggle.styles.ts';
+export { toggleGroupVariants } from './components/toggle-group/toggle-group.styles.ts';
+
+// ─── Navigation ────────────────────────────────────────────────────────
+export { breadcrumbListVariants, breadcrumbItemVariants, breadcrumbLinkVariants, breadcrumbPageVariants, breadcrumbSeparatorVariants, breadcrumbEllipsisVariants } from './components/breadcrumb/breadcrumb.styles.ts';
+export { paginationVariants, paginationContentVariants, paginationItemVariants, paginationLinkVariants, paginationEllipsisVariants } from './components/pagination/pagination.styles.ts';
+
+// ─── Display (extended) ────────────────────────────────────────────────
+export { kbdVariants } from './components/kbd/kbd.styles.ts';
+
 // ─── Types ──────────────────────────────────────────────────────────────
 export type { ButtonProps } from './components/button/button.types.ts';
 export type { ButtonVariants } from './components/button/button.styles.ts';
@@ -63,3 +76,14 @@ export type { SpinnerVariants } from './components/spinner/spinner.styles.ts';
 export type { LabelVariants } from './components/label/label.styles.ts';
 export type { ToastVariants } from './components/toast/toast.styles.ts';
 export type { SheetVariants } from './components/sheet/sheet.styles.ts';
+export type { RadioGroupProps, RadioGroupItemProps } from './components/radio-group/radio-group.types.ts';
+export type { RadioGroupVariants, RadioGroupItemVariants } from './components/radio-group/radio-group.styles.ts';
+export type { SliderProps } from './components/slider/slider.types.ts';
+export type { SliderVariants } from './components/slider/slider.styles.ts';
+export type { ToggleProps } from './components/toggle/toggle.types.ts';
+export type { ToggleVariants } from './components/toggle/toggle.styles.ts';
+export type { ToggleGroupProps, ToggleGroupItemProps } from './components/toggle-group/toggle-group.types.ts';
+export type { ToggleGroupVariants } from './components/toggle-group/toggle-group.styles.ts';
+export type { PaginationLinkVariants } from './components/pagination/pagination.styles.ts';
+export type { KbdProps } from './components/kbd/kbd.types.ts';
+export type { KbdVariants } from './components/kbd/kbd.styles.ts';

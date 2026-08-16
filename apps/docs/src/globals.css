@@ -1,6 +1,26 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+/* ── Tailwind v4 compatibility ──────────────────────────────────────────
+   Restore v3 default scales so existing utility class names (shadow-sm,
+   rounded-sm, blur-sm, …) render identically without repo-wide renames,
+   and keep the v3 border/ring defaults. */
+@theme {
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --radius-sm: 0.125rem;
+  --blur-sm: 4px;
+}
+
+@layer base {
+  /* v4 makes the default border color currentColor; keep v3's neutral border. */
+  *,
+  ::before,
+  ::after {
+    border-color: hsl(var(--border));
+  }
+}
 
 @layer base {
   :root {

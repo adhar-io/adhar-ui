@@ -1,8 +1,8 @@
 {
   "tasks": {
-    "dev": "deno run -A npm:vite@^7.1.12 --host --port 5174",
-    "build": "deno run -A npm:vite@^7.1.12 build",
-    "preview": "deno run -A npm:vite@^7.1.12 preview",
+    "dev": "deno run -A npm:vite@^8.0.0 --host --port 5174",
+    "build": "deno run -A npm:vite@^8.0.0 build",
+    "preview": "deno run -A npm:vite@^8.0.0 preview",
     "collab": "deno run -A server.ts"
   },
   "imports": {
@@ -15,9 +15,8 @@
     "yjs": "npm:yjs@^13.6",
     "y-websocket": "npm:y-websocket@^2",
     "y-protocols": "npm:y-protocols@^1",
-    "tailwindcss": "npm:tailwindcss@^3.4.0",
-    "autoprefixer": "npm:autoprefixer@^10.4.0",
-    "postcss": "npm:postcss@^8.4.0"
+    "tailwindcss": "npm:tailwindcss@^4.1.0",
+    "@tailwindcss/vite": "npm:@tailwindcss/vite@^4.1.0"
   },
   "compilerOptions": {
     "jsx": "react-jsx",

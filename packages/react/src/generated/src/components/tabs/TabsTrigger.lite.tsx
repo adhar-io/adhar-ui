@@ -1,6 +1,6 @@
 // @ts-nocheck
-'use client';
-import * as React from 'react';
+"use client";
+import * as React from "react";
 
 export interface TabsTriggerProps {
   value: string;
@@ -14,8 +14,8 @@ export interface TabsTriggerProps {
 function TabsTrigger(props: TabsTriggerProps) {
   return (
     <button
-      type='button'
-      role='tab'
+      type="button"
+      role="tab"
       aria-selected={props.active}
       disabled={props.disabled}
       tabIndex={props.active ? 0 : -1}

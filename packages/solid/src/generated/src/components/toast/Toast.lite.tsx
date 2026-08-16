@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { Show } from 'solid-js';
+import { Show } from "solid-js";
 
 export interface ToastProps {
   open?: boolean;
-  variant?: 'default' | 'destructive' | 'success';
+  variant?: "default" | "destructive" | "success";
   className?: string;
   titleClass?: string;
   descriptionClass?: string;
@@ -21,9 +21,9 @@ function Toast(props: ToastProps) {
       <Show when={isOpen}>
         <div
           class={props.className}
-          role='status'
-          aria-live='polite'
-          aria-atomic='true'
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
         >
           <div>
             <Show when={props.title}>
@@ -36,11 +36,11 @@ function Toast(props: ToastProps) {
           </div>
           <button
             class={props.closeClass}
-            type='button'
-            aria-label='Close'
+            type="button"
+            aria-label="Close"
             onClick={(event) => props.onClose?.()}
           >
-            <span aria-hidden='true'>&times;</span>
+            <span aria-hidden="true">&times;</span>
           </button>
         </div>
       </Show>

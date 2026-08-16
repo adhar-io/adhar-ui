@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface SwitchProps {
   checked?: boolean;
@@ -10,12 +10,12 @@ export interface SwitchProps {
   id?: string;
   className?: string;
   thumbClass?: string;
-  'aria-label'?: string;
+  "aria-label"?: string;
   onChange?: (checked: boolean) => void;
 }
 
 @Component({
-  selector: 'switch',
+  selector: "switch",
   template: `
     <button
       type="button"
@@ -42,12 +42,8 @@ export interface SwitchProps {
   imports: [CommonModule],
 })
 export default class Switch {
-  @Input()
-  id!: SwitchProps['id'];
-  @Input()
-  disabled!: SwitchProps['disabled'];
-  @Input()
-  className!: SwitchProps['className'];
-  @Input()
-  thumbClass!: SwitchProps['thumbClass'];
+  @Input() id!: SwitchProps["id"];
+  @Input() disabled!: SwitchProps["disabled"];
+  @Input() className!: SwitchProps["className"];
+  @Input() thumbClass!: SwitchProps["thumbClass"];
 }

@@ -1,14 +1,14 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface SkeletonProps {
   className?: string;
 }
 
 @Component({
-  selector: 'skeleton',
+  selector: "skeleton",
   template: `
     <div aria-hidden="true" role="presentation" [class]="className"></div>
   `,
@@ -23,6 +23,5 @@ export interface SkeletonProps {
   imports: [CommonModule],
 })
 export default class Skeleton {
-  @Input()
-  className!: SkeletonProps['className'];
+  @Input() className!: SkeletonProps["className"];
 }

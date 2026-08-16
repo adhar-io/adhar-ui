@@ -1,3 +1,4 @@
+// @ts-nocheck
 <template>
   <div :data-type="props.type || 'single'" :class="props.className">
     <slot />

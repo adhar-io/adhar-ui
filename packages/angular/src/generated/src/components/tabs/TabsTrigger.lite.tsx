@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface TabsTriggerProps {
   value: string;
@@ -13,7 +13,7 @@ export interface TabsTriggerProps {
 }
 
 @Component({
-  selector: 'tabs-trigger',
+  selector: "tabs-trigger",
   template: `
     <button
       type="button"
@@ -39,14 +39,9 @@ export interface TabsTriggerProps {
   imports: [CommonModule],
 })
 export default class TabsTrigger {
-  @Input()
-  active!: TabsTriggerProps['active'];
-  @Input()
-  disabled!: TabsTriggerProps['disabled'];
-  @Input()
-  value!: TabsTriggerProps['value'];
-  @Input()
-  onClick!: TabsTriggerProps['onClick'];
-  @Input()
-  className!: TabsTriggerProps['className'];
+  @Input() active!: TabsTriggerProps["active"];
+  @Input() disabled!: TabsTriggerProps["disabled"];
+  @Input() value!: TabsTriggerProps["value"];
+  @Input() onClick!: TabsTriggerProps["onClick"];
+  @Input() className!: TabsTriggerProps["className"];
 }

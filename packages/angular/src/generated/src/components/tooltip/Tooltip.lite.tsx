@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface TooltipProps {
   content: string;
-  side?: 'top' | 'right' | 'bottom' | 'left';
+  side?: "top" | "right" | "bottom" | "left";
   className?: string;
   triggerClass?: string;
   contentClass?: string;
@@ -14,7 +14,7 @@ export interface TooltipProps {
 }
 
 @Component({
-  selector: 'tooltip',
+  selector: "tooltip",
   template: `
     <div
       [ngStyle]="{
@@ -51,12 +51,8 @@ export interface TooltipProps {
   imports: [CommonModule],
 })
 export default class Tooltip {
-  @Input()
-  className!: TooltipProps['className'];
-  @Input()
-  triggerClass!: TooltipProps['triggerClass'];
-  @Input()
-  contentClass!: TooltipProps['contentClass'];
-  @Input()
-  content!: TooltipProps['content'];
+  @Input() className!: TooltipProps["className"];
+  @Input() triggerClass!: TooltipProps["triggerClass"];
+  @Input() contentClass!: TooltipProps["contentClass"];
+  @Input() content!: TooltipProps["content"];
 }

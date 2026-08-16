@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 
 export interface DialogHeaderProps {
   className?: string;
@@ -9,7 +9,7 @@ export interface DialogHeaderProps {
 }
 
 @Component({
-  selector: 'dialog-header',
+  selector: "dialog-header",
   template: ` <div [class]="className"><ng-content></ng-content></div> `,
   styles: [
     `
@@ -22,6 +22,5 @@ export interface DialogHeaderProps {
   imports: [CommonModule],
 })
 export default class DialogHeader {
-  @Input()
-  className!: DialogHeaderProps['className'];
+  @Input() className!: DialogHeaderProps["className"];
 }
