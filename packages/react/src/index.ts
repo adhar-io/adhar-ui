@@ -200,6 +200,107 @@ export type { KbdVariants } from '@adhar-ui/primitives';
 export { default as Kbd } from './generated/src/components/kbd/Kbd.lite.tsx';
 export type { KbdProps } from './generated/src/components/kbd/Kbd.lite.tsx';
 
+// ─── Advanced: Command palette ──────────────────────────────────────────
+export {
+  commandEmptyVariants,
+  commandGroupHeadingVariants,
+  commandGroupVariants,
+  commandInputVariants,
+  commandInputWrapperVariants,
+  commandItemVariants,
+  commandListVariants,
+  commandSeparatorVariants,
+  commandShortcutVariants,
+  commandVariants,
+} from '@adhar-ui/primitives';
+export { default as Command } from './generated/src/components/command/Command.lite.tsx';
+export type { CommandProps } from './generated/src/components/command/Command.lite.tsx';
+export { default as CommandInput } from './generated/src/components/command/CommandInput.lite.tsx';
+export { default as CommandList } from './generated/src/components/command/CommandList.lite.tsx';
+export { default as CommandGroup } from './generated/src/components/command/CommandGroup.lite.tsx';
+export { default as CommandItem } from './generated/src/components/command/CommandItem.lite.tsx';
+export { default as CommandEmpty } from './generated/src/components/command/CommandEmpty.lite.tsx';
+export { default as CommandSeparator } from './generated/src/components/command/CommandSeparator.lite.tsx';
+export { default as CommandShortcut } from './generated/src/components/command/CommandShortcut.lite.tsx';
+
+// ─── Advanced: Stepper ──────────────────────────────────────────────────
+export {
+  stepConnectorVariants,
+  stepDescriptionVariants,
+  stepIndicatorVariants,
+  stepLabelVariants,
+  stepperVariants,
+  stepVariants,
+} from '@adhar-ui/primitives';
+export type { StepIndicatorVariants, StepperVariants } from '@adhar-ui/primitives';
+export { default as Stepper } from './generated/src/components/stepper/Stepper.lite.tsx';
+export type { StepperProps } from './generated/src/components/stepper/Stepper.lite.tsx';
+export { default as Step } from './generated/src/components/stepper/Step.lite.tsx';
+export type { StepProps } from './generated/src/components/stepper/Step.lite.tsx';
+
+// ─── Advanced: Timeline ─────────────────────────────────────────────────
+export {
+  timelineConnectorVariants,
+  timelineContentVariants,
+  timelineDotVariants,
+  timelineItemVariants,
+  timelineMarkerVariants,
+  timelineTimeVariants,
+  timelineTitleVariants,
+  timelineVariants,
+} from '@adhar-ui/primitives';
+export type { TimelineDotVariants } from '@adhar-ui/primitives';
+export { default as Timeline } from './generated/src/components/timeline/Timeline.lite.tsx';
+export type { TimelineProps } from './generated/src/components/timeline/Timeline.lite.tsx';
+export { default as TimelineItem } from './generated/src/components/timeline/TimelineItem.lite.tsx';
+export type { TimelineItemProps } from './generated/src/components/timeline/TimelineItem.lite.tsx';
+
+// ─── Advanced: Stat Card & Empty State ──────────────────────────────────
+export { statCardTrendVariants, statCardVariants } from '@adhar-ui/primitives';
+export type { StatCardTrendVariants, StatCardVariants } from '@adhar-ui/primitives';
+export { default as StatCard } from './generated/src/components/stat-card/StatCard.lite.tsx';
+export type { StatCardProps } from './generated/src/components/stat-card/StatCard.lite.tsx';
+export {
+  emptyStateDescriptionVariants,
+  emptyStateIconVariants,
+  emptyStateTitleVariants,
+  emptyStateVariants,
+} from '@adhar-ui/primitives';
+export type { EmptyStateVariants } from '@adhar-ui/primitives';
+export { default as EmptyState } from './generated/src/components/empty-state/EmptyState.lite.tsx';
+export type { EmptyStateProps } from './generated/src/components/empty-state/EmptyState.lite.tsx';
+
+// ─── Advanced: Disclosure & Layout ──────────────────────────────────────
+export { collapsibleContentInnerVariants, collapsibleContentVariants } from '@adhar-ui/primitives';
+export type { CollapsibleContentVariants } from '@adhar-ui/primitives';
+export { default as Collapsible } from './generated/src/components/collapsible/Collapsible.lite.tsx';
+export type { CollapsibleProps } from './generated/src/components/collapsible/Collapsible.lite.tsx';
+export { default as CollapsibleTrigger } from './generated/src/components/collapsible/CollapsibleTrigger.lite.tsx';
+export { default as CollapsibleContent } from './generated/src/components/collapsible/CollapsibleContent.lite.tsx';
+
+export { aspectRatioVariants } from '@adhar-ui/primitives';
+export type { AspectRatioVariants } from '@adhar-ui/primitives';
+export { default as AspectRatio } from './generated/src/components/aspect-ratio/AspectRatio.lite.tsx';
+export type { AspectRatioProps } from './generated/src/components/aspect-ratio/AspectRatio.lite.tsx';
+
+export { scrollAreaVariants } from '@adhar-ui/primitives';
+export type { ScrollAreaVariants } from '@adhar-ui/primitives';
+export { default as ScrollArea } from './generated/src/components/scroll-area/ScrollArea.lite.tsx';
+export type { ScrollAreaProps } from './generated/src/components/scroll-area/ScrollArea.lite.tsx';
+
+export { hoverCardContentVariants, hoverCardVariants } from '@adhar-ui/primitives';
+export type { HoverCardContentVariants } from '@adhar-ui/primitives';
+export { default as HoverCard } from './generated/src/components/hover-card/HoverCard.lite.tsx';
+export type { HoverCardProps } from './generated/src/components/hover-card/HoverCard.lite.tsx';
+export { default as HoverCardTrigger } from './generated/src/components/hover-card/HoverCardTrigger.lite.tsx';
+export { default as HoverCardContent } from './generated/src/components/hover-card/HoverCardContent.lite.tsx';
+
+// ─── Advanced: Input OTP ────────────────────────────────────────────────
+export { inputOTPVariants } from '@adhar-ui/primitives';
+export type { InputOTPVariants } from '@adhar-ui/primitives';
+export { default as InputOTP } from './generated/src/components/input-otp/InputOTP.lite.tsx';
+export type { InputOTPProps } from './generated/src/components/input-otp/InputOTP.lite.tsx';
+
 // -- Accessibility utilities --
 export { announce, createFocusTrap, createRovingTabIndex, skipNavClasses } from '@adhar-ui/a11y';
 

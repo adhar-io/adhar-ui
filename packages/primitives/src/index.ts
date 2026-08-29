@@ -58,6 +58,18 @@ export { paginationVariants, paginationContentVariants, paginationItemVariants, 
 // ─── Display (extended) ────────────────────────────────────────────────
 export { kbdVariants } from './components/kbd/kbd.styles.ts';
 
+// ─── Advanced Components ───────────────────────────────────────────────
+export { commandVariants, commandInputWrapperVariants, commandInputVariants, commandListVariants, commandEmptyVariants, commandGroupVariants, commandGroupHeadingVariants, commandItemVariants, commandSeparatorVariants, commandShortcutVariants } from './components/command/command.styles.ts';
+export { stepperVariants, stepVariants, stepIndicatorVariants, stepConnectorVariants, stepLabelVariants, stepDescriptionVariants } from './components/stepper/stepper.styles.ts';
+export { timelineVariants, timelineItemVariants, timelineMarkerVariants, timelineDotVariants, timelineConnectorVariants, timelineContentVariants, timelineTitleVariants, timelineTimeVariants } from './components/timeline/timeline.styles.ts';
+export { statCardVariants, statCardTrendVariants } from './components/stat-card/stat-card.styles.ts';
+export { emptyStateVariants, emptyStateIconVariants, emptyStateTitleVariants, emptyStateDescriptionVariants } from './components/empty-state/empty-state.styles.ts';
+export { collapsibleContentVariants, collapsibleContentInnerVariants } from './components/collapsible/collapsible.styles.ts';
+export { aspectRatioVariants } from './components/aspect-ratio/aspect-ratio.styles.ts';
+export { scrollAreaVariants } from './components/scroll-area/scroll-area.styles.ts';
+export { hoverCardVariants, hoverCardContentVariants } from './components/hover-card/hover-card.styles.ts';
+export { inputOTPVariants } from './components/input-otp/input-otp.styles.ts';
+
 // ─── Types ──────────────────────────────────────────────────────────────
 export type { ButtonProps } from './components/button/button.types.ts';
 export type { ButtonVariants } from './components/button/button.styles.ts';
@@ -87,3 +99,12 @@ export type { ToggleGroupVariants } from './components/toggle-group/toggle-group
 export type { PaginationLinkVariants } from './components/pagination/pagination.styles.ts';
 export type { KbdProps } from './components/kbd/kbd.types.ts';
 export type { KbdVariants } from './components/kbd/kbd.styles.ts';
+export type { StepperVariants, StepIndicatorVariants } from './components/stepper/stepper.styles.ts';
+export type { TimelineDotVariants } from './components/timeline/timeline.styles.ts';
+export type { StatCardVariants, StatCardTrendVariants } from './components/stat-card/stat-card.styles.ts';
+export type { EmptyStateVariants } from './components/empty-state/empty-state.styles.ts';
+export type { CollapsibleContentVariants } from './components/collapsible/collapsible.styles.ts';
+export type { AspectRatioVariants } from './components/aspect-ratio/aspect-ratio.styles.ts';
+export type { ScrollAreaVariants } from './components/scroll-area/scroll-area.styles.ts';
+export type { HoverCardContentVariants } from './components/hover-card/hover-card.styles.ts';
+export type { InputOTPVariants } from './components/input-otp/input-otp.styles.ts';
