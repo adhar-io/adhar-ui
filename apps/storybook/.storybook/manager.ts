@@ -5,7 +5,7 @@ const adharTheme = create({
   base: 'light',
   brandTitle: 'Adhar UI',
   brandUrl: 'https://www.adhar.io',
-  brandImage: './branding/adhar-logo.svg',
+  brandImage: './branding/adhar-logo-horizontal.svg',
   brandTarget: '_self',
 
   // Brand palette — Blue → Indigo → Violet

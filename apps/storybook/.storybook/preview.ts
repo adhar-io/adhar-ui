@@ -1,5 +1,8 @@
-import type { Preview } from '@storybook/react';
+import type { Preview } from '@storybook/react-vite';
 import React from 'react';
+// Storybook's own hook — works inside decorators (React's hooks do not, since a
+// decorator body is not a component render, which throws a null-dispatcher error).
+import { useEffect } from 'storybook/preview-api';
 import '../src/globals.css';
 
 const preview: Preview = {
@@ -11,7 +14,7 @@ const preview: Preview = {
       },
     },
     layout: 'centered',
-    backgrounds: { disable: true },
+    backgrounds: { disabled: true },
     options: {
       storySort: {
         order: [
@@ -54,7 +57,7 @@ const preview: Preview = {
       const isDark = theme === 'dark';
 
       // Apply theme to document for global CSS variables
-      React.useEffect(() => {
+      useEffect(() => {
         document.documentElement.classList.toggle('dark', isDark);
         document.body.style.backgroundColor = isDark ? 'hsl(240 10% 3.9%)' : 'hsl(0 0% 100%)';
         document.body.style.color = isDark ? 'hsl(0 0% 98%)' : 'hsl(240 10% 3.9%)';
