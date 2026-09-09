@@ -3,6 +3,13 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "baseUrl": ".",
+    // Mirror the Deno import map (deno.json "imports") for tsup's declaration
+    // build, which runs plain TypeScript and knows nothing about Deno aliases.
+    "paths": {
+      "@adhar-ui/design-sync/generator": ["packages/design-sync/src/generator/index.ts"],
+      "@adhar-ui/*": ["packages/*/src/index.ts"]
+    },
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "strict": true,
     "esModuleInterop": true,
@@ -12,6 +19,8 @@
     "isolatedModules": true,
     "declaration": true,
     "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "allowImportingTsExtensions": true,
     "sourceMap": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

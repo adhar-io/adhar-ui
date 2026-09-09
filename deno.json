@@ -75,6 +75,10 @@
     "@adhar-ui/registry": "./packages/registry/src/index.ts",
     "@adhar-ui/dtcg": "./packages/dtcg/src/index.ts",
     "@adhar-ui/design-sync": "./packages/design-sync/src/index.ts",
-    "@adhar-ui/design-sync/generator": "./packages/design-sync/src/generator/index.ts"
+    "@adhar-ui/design-sync/generator": "./packages/design-sync/src/generator/index.ts",
+    "tsup": "npm:tsup@^8.5.1",
+    "typescript": "npm:typescript@^5.7.0",
+    "clsx": "npm:clsx@^2.1.1",
+    "tailwind-merge": "npm:tailwind-merge@^3.5.0"
   }
 }

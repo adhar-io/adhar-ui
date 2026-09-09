@@ -15,8 +15,8 @@
  * @module
  */
 
-import { type ClassValue, clsx } from 'npm:clsx@2.1.1';
-import { twMerge } from 'npm:tailwind-merge@3.5.0';
+import { type ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 /**
  * Merge class names with Tailwind CSS conflict resolution.
