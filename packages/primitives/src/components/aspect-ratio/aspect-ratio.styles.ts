@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 /**
  * Aspect ratio uses the native CSS `aspect-ratio` property (set inline from

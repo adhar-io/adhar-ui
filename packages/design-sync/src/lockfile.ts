@@ -8,6 +8,14 @@
  * @module
  */
 
+// `node:fs/promises`, not `Deno.readTextFile`/`Deno.writeTextFile`.
+//
+// Deno supports `node:` specifiers natively, so this file works under both
+// runtimes; the `Deno.*` globals only existed under Deno, which meant the
+// PUBLISHED @adhar-ui/design-sync could not run on Node at all — and the
+// declaration build could not even type-check it ("Cannot find name 'Deno'").
+import { readFile, writeFile } from 'node:fs/promises';
+
 /** State of a single sync source (code, figma, or penpot). */
 export interface SyncSource {
   /** Design tool file identifier. */
@@ -43,7 +51,7 @@ const LOCKFILE_NAME = '.adhar-ui.lock';
  */
 export async function readLockfile(cwd: string): Promise<SyncLockfile | null> {
   try {
-    const text = await Deno.readTextFile(`${cwd}/${LOCKFILE_NAME}`);
+    const text = await readFile(`${cwd}/${LOCKFILE_NAME}`, 'utf8');
     return JSON.parse(text) as SyncLockfile;
   } catch {
     return null;
@@ -58,7 +66,7 @@ export async function readLockfile(cwd: string): Promise<SyncLockfile | null> {
  */
 export async function writeLockfile(cwd: string, lockfile: SyncLockfile): Promise<void> {
   const text = JSON.stringify(lockfile, null, 2) + '\n';
-  await Deno.writeTextFile(`${cwd}/${LOCKFILE_NAME}`, text);
+  await writeFile(`${cwd}/${LOCKFILE_NAME}`, text, 'utf8');
 }
 
 /**

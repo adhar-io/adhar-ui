@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "exports": "./src/index.ts",
   "tasks": {
-    "check": "deno check src/index.ts"
+    "check": "deno check src/index.ts",
+    "build": "deno run -A npm:tsup src/index.ts --format esm --dts --clean --out-dir dist --tsconfig tsconfig.json"
   }
 }

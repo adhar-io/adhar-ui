@@ -1,13 +1,18 @@
 {
   "name": "@adhar-ui/cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "CLI tool for the Adhar UI design system",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "exports": { ".": "./src/index.ts" },
-  "files": ["src", "README.md"],
-  "keywords": ["design-system", "adhar-ui", "components", "tailwind"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "design-system",
+    "adhar-ui",
+    "components",
+    "tailwind"
+  ],
   "author": "Adhar",
   "license": "Apache-2.0",
   "repository": {
@@ -15,5 +20,8 @@
     "url": "https://github.com/adhar-io/adhar-ui",
     "directory": "packages/cli"
   },
-  "publishConfig": { "access": "public" }
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": true
 }

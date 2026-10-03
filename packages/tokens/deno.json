@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "exports": "./src/index.ts",
   "tasks": {
-    "build": "deno run -A npm:tsup src/index.ts src/presets/zinc.ts src/presets/slate.ts src/presets/blue.ts src/presets/green.ts --format esm --dts --clean --out-dir dist",
+    "build": "deno run -A npm:tsup src/index.ts src/presets/zinc.ts src/presets/slate.ts src/presets/blue.ts src/presets/green.ts --format esm --dts --clean --out-dir dist --tsconfig tsconfig.json",
     "check": "deno check src/**/*.ts"
   }
 }

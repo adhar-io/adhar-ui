@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 export const breadcrumbListVariants = cva(
   'flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5',

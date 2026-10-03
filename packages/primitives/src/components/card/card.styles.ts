@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 export const cardVariants = cva(
   'rounded-xl border bg-card text-card-foreground shadow-sm transition-shadow duration-200 motion-reduce:transition-none',

@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 export const radioGroupVariants = cva('grid gap-2 motion-reduce:transition-none', {
   variants: {

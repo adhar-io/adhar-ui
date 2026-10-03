@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 export const commandVariants = cva(
   'flex h-full w-full flex-col overflow-hidden rounded-xl bg-popover text-popover-foreground',

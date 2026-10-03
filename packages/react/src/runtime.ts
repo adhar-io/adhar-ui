@@ -5,7 +5,7 @@
  */
 
 // deno-lint-ignore-file no-explicit-any
-import { useCallback, useRef, useState as useReactState } from 'npm:react@^19.2.0';
+import { useCallback, useRef, useState as useReactState } from 'react';
 
 export function useLocalProxy<T extends Record<string, any>>(initialState: T): T {
   const [, setTick] = useReactState(0);

@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 /**
  * Smooth open/close without JS height measurement, using the grid-rows

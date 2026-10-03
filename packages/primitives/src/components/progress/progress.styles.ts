@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 export const progressVariants = cva(
   'relative w-full overflow-hidden rounded-full bg-secondary',

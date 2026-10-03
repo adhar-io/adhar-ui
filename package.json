@@ -17,5 +17,8 @@
     "cli": "deno task cli",
     "publish:dry": "pnpm -r --filter './packages/*' publish --dry-run --no-git-checks",
     "publish:npm": "pnpm -r --filter './packages/*' publish --access public --no-git-checks"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4"
   }
 }

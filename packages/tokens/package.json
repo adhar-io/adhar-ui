@@ -1,16 +1,31 @@
 {
   "name": "@adhar-ui/tokens",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Design tokens for the Adhar UI design system",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./src/index.ts",
-    "./presets/*": "./src/presets/*.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./presets/*": {
+      "types": "./dist/presets/*.d.ts",
+      "import": "./dist/presets/*.js"
+    }
   },
-  "files": ["src", "README.md"],
-  "keywords": ["design-tokens", "css-variables", "tailwind", "design-system", "adhar-ui"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "design-tokens",
+    "css-variables",
+    "tailwind",
+    "design-system",
+    "adhar-ui"
+  ],
   "author": "Adhar",
   "license": "Apache-2.0",
   "repository": {
@@ -18,5 +33,8 @@
     "url": "https://github.com/adhar-io/adhar-ui",
     "directory": "packages/tokens"
   },
-  "publishConfig": { "access": "public" }
+  "publishConfig": {
+    "access": "public"
+  },
+  "module": "./dist/index.js"
 }

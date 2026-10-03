@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 /**
  * A themed, overflow-scroll container. Uses thin, auto-hiding scrollbars that

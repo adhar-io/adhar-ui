@@ -7,7 +7,7 @@
     "react/jsx-runtime": "npm:@types/react@^19.2.0/jsx-runtime"
   },
   "tasks": {
-    "build": "deno run -A npm:tsup src/index.ts --format esm --dts --clean --out-dir dist --external react --external react-dom",
+    "build": "deno run -A npm:tsup src/index.ts --format esm --dts --clean --out-dir dist --tsconfig tsconfig.json --external react --external react-dom",
     "check": "deno check src/index.ts"
   }
 }

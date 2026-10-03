@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "exports": "./src/index.ts",
   "tasks": {
-    "build": "echo 'Vue package - placeholder'",
+    "build": "deno run -A npm:tsup src/index.ts --format esm --dts --clean --out-dir dist --tsconfig tsconfig.json --external vue",
     "check": "deno check src/**/*.ts"
   }
 }

@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 /**
  * A single native input tuned for one-time-code entry: monospace, centered,

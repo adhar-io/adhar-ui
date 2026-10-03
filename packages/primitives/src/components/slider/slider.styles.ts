@@ -1,4 +1,4 @@
-import { cva } from 'npm:class-variance-authority@0.7.1';
+import { cva } from 'class-variance-authority';
 
 /**
  * Styles a native `<input type="range">` so it gets full pointer-drag,

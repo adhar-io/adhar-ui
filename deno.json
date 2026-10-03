@@ -25,7 +25,7 @@
     "./apps/storybook"
   ],
   "tasks": {
-    "build": "deno task build:tokens && deno task build:tailwind && deno task build:utils && deno task build:a11y && deno task build:icons",
+    "build": "deno task build:tokens && deno task build:utils && deno task build:a11y && deno task build:icons && deno task build:tailwind-preset && deno task build:primitives && deno task build:angular && deno task build:cli && deno task build:design-sync && deno task build:dtcg && deno task build:react && deno task build:registry && deno task build:solid && deno task build:svelte && deno task build:vue",
     "build:tokens": "cd packages/tokens && deno task build",
     "build:tailwind": "cd packages/tailwind-preset && deno task build",
     "build:utils": "cd packages/utils && deno task build",
@@ -41,11 +41,26 @@
     "docs:dev": "cd apps/docs && deno task dev",
     "builder:dev": "cd apps/builder && deno task dev",
     "designer:dev": "cd apps/designer && deno task dev",
-    "storybook:dev": "cd apps/storybook && deno task dev"
+    "storybook:dev": "cd apps/storybook && deno task dev",
+    "build:tailwind-preset": "cd packages/tailwind-preset && deno task build",
+    "build:angular": "cd packages/angular && deno task build",
+    "build:cli": "cd packages/cli && deno task build",
+    "build:design-sync": "cd packages/design-sync && deno task build",
+    "build:dtcg": "cd packages/dtcg && deno task build",
+    "build:react": "cd packages/react && deno task build",
+    "build:registry": "cd packages/registry && deno task build",
+    "build:solid": "cd packages/solid && deno task build",
+    "build:svelte": "cd packages/svelte && deno task build",
+    "build:vue": "cd packages/vue && deno task build"
   },
   "compilerOptions": {
     "strict": true,
-    "lib": ["deno.window", "dom", "dom.iterable", "es2022"],
+    "lib": [
+      "deno.window",
+      "dom",
+      "dom.iterable",
+      "es2022"
+    ],
     "jsx": "react-jsx",
     "jsxImportSource": "react"
   },
@@ -55,14 +70,31 @@
     "indentWidth": 2,
     "singleQuote": true,
     "proseWrap": "preserve",
-    "exclude": ["packages/*/src/generated/", "packages/cli/src/templates/", "apps/"]
+    "exclude": [
+      "packages/*/src/generated/",
+      "packages/cli/src/templates/",
+      "apps/",
+      "packages/*/dist/",
+      "dist/"
+    ]
   },
   "lint": {
-    "include": ["packages/"],
-    "exclude": ["packages/*/src/generated/", "packages/cli/src/templates/"],
+    "include": [
+      "packages/"
+    ],
+    "exclude": [
+      "packages/*/src/generated/",
+      "packages/cli/src/templates/",
+      "packages/*/dist/",
+      "dist/"
+    ],
     "rules": {
-      "tags": ["recommended"],
-      "exclude": ["no-explicit-any"]
+      "tags": [
+        "recommended"
+      ],
+      "exclude": [
+        "no-explicit-any"
+      ]
     }
   },
   "imports": {
@@ -79,6 +111,8 @@
     "tsup": "npm:tsup@^8.5.1",
     "typescript": "npm:typescript@^5.7.0",
     "clsx": "npm:clsx@^2.1.1",
-    "tailwind-merge": "npm:tailwind-merge@^3.5.0"
+    "tailwind-merge": "npm:tailwind-merge@^3.5.0",
+    "class-variance-authority": "npm:class-variance-authority@0.7.1",
+    "react": "npm:react@^19.2.0"
   }
 }

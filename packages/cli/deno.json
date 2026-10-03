@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "exports": "./src/index.ts",
   "tasks": {
-    "build": "deno compile --allow-read --allow-write --allow-env --allow-net --allow-run src/index.ts --output dist/adhar-ui",
+    "build": "deno compile --allow-read --allow-write --allow-env --allow-net --allow-run --output dist/adhar-ui src/index.ts",
     "check": "deno check src/**/*.ts"
   }
 }
