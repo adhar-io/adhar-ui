@@ -1,6 +1,8 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@std/assert@*": "1.0.13",
+    "jsr:@std/internal@^1.0.6": "1.0.14",
     "npm:@builder.io/mitosis-cli@0.14.0": "0.14.0_typescript@5.9.3",
     "npm:@monaco-editor/react@^4.7.0": "4.7.0_monaco-editor@0.56.0_react@19.2.8_react-dom@19.2.8__react@19.2.8",
     "npm:@storybook/addon-a11y@^10.6.0": "10.6.0_storybook@10.6.0__@types+react@19.2.18__react@19.2.8_@types+react@19.2.18_react@19.2.8",
@@ -27,6 +29,17 @@
     "npm:y-protocols@1": "1.0.7_yjs@13.6.32",
     "npm:y-websocket@2": "2.1.0_yjs@13.6.32",
     "npm:yjs@^13.6.0": "13.6.32"
+  },
+  "jsr": {
+    "@std/assert@1.0.13": {
+      "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/internal@1.0.14": {
+      "integrity": "291516b3d4c35024d6ffbc0a9df5bf4c64116e05b50012cf846710152d2ffdf7"
+    }
   },
   "npm": {
     "@adobe/css-tools@4.5.0": {
