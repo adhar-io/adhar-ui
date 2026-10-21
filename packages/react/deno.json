@@ -3,11 +3,19 @@
   "version": "0.1.0",
   "exports": "./src/index.ts",
   "imports": {
-    "react": "npm:@types/react@^19.2.0",
-    "react/jsx-runtime": "npm:@types/react@^19.2.0/jsx-runtime"
+    "react": "npm:react@^19.2.0",
+    "react/jsx-runtime": "npm:react@^19.2.0/jsx-runtime",
+    "react-dom": "npm:react-dom@^19.2.0",
+    "react-dom/client": "npm:react-dom@^19.2.0/client",
+    "@types/react": "npm:@types/react@^19.2.0"
   },
   "tasks": {
     "build": "deno run -A npm:tsup src/index.ts --format esm --dts --clean --out-dir dist --tsconfig tsconfig.json --external react --external react-dom",
     "check": "deno check src/index.ts"
+  },
+  "compilerOptions": {
+    "types": [
+      "@types/react"
+    ]
   }
 }

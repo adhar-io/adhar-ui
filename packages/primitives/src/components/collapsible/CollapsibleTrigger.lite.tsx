@@ -2,6 +2,7 @@ import { useMetadata } from '@builder.io/mitosis';
 
 useMetadata({
   isAttachedToShadowDom: false,
+  angular: { selector: 'adhar-collapsible-trigger' },
 });
 
 export interface CollapsibleTriggerProps {
@@ -11,6 +12,7 @@ export interface CollapsibleTriggerProps {
   id?: string;
   /** ID of the content region this trigger controls */
   'aria-controls'?: string;
+  'aria-label'?: string;
   onOpenChange?: (open: boolean) => void;
   children?: any;
 }
@@ -24,6 +26,7 @@ export default function CollapsibleTrigger(props: CollapsibleTriggerProps) {
       disabled={props.disabled}
       aria-expanded={props.open ? true : false}
       aria-controls={props['aria-controls']}
+      aria-label={props['aria-label']}
       data-state={props.open ? 'open' : 'closed'}
       onClick={() => (props.disabled ? undefined : props.onOpenChange?.(!props.open))}
     >

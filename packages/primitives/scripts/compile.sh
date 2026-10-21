@@ -1,6 +1,13 @@
 #!/bin/bash
-# Compile Mitosis primitives to all framework targets
+# Compile Mitosis primitives to all framework targets.
 # Usage: deno task build (from packages/primitives)
+#
+# Uses `mitosis build` with mitosis.config.cjs, which emits each framework's
+# native file type (.tsx / .vue / .svelte / .ts) into
+# packages/<target>/src/generated and copies the plain .ts files (CVA styles,
+# _internal helpers) next to them. The older per-file `mitosis compile` path
+# kept the .lite.tsx extension for every target, so Vue and Svelte output was
+# unusable.
 
 set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -12,13 +19,20 @@ cd "$PRIMITIVES_DIR"
 TARGETS=("react" "vue" "solid" "svelte" "angular")
 
 for target in "${TARGETS[@]}"; do
-  OUT_DIR="$PACKAGES_DIR/$target/src/generated"
-  echo "Compiling to $target..."
-  rm -rf "$OUT_DIR"
-  find src/components -name '*.lite.tsx' -print0 | xargs -0 \
-    deno run -A npm:@builder.io/mitosis-cli@0.14.0 compile -t "$target" --force --out-dir "$OUT_DIR" --
+  rm -rf "$PACKAGES_DIR/$target/src/generated"
+done
 
-  # Post-process: add @ts-nocheck to all generated files.
+deno run -A npm:@builder.io/mitosis-cli@0.14.0 build --config mitosis.config.cjs
+
+for target in "${TARGETS[@]}"; do
+  OUT_DIR="$PACKAGES_DIR/$target/src/generated"
+
+  # Post-process: add @ts-nocheck to generated TypeScript files for the
+  # non-React targets. Their output is not type-checked here (no Vue / Svelte /
+  # Angular compiler in this workspace) and Mitosis drops some type
+  # information. React output is left checked: `deno task check` type-checks
+  # it through packages/react/src/index.ts, which catches real codegen bugs
+  # such as a store method shadowed by a local of the same name.
   #
   # No `sed -i`. GNU sed takes the suffix ATTACHED (`-i.bak`) and BSD/macOS sed
   # takes it as a SEPARATE argument (`-i ''`), so the macOS form handed to GNU
@@ -28,46 +42,30 @@ for target in "${TARGETS[@]}"; do
   # Rewriting through a temp file needs no dialect at all, and `printf` + `cat`
   # says "prepend a line" more plainly than a sed address ever did.
   #
+  # Only .ts/.tsx: a comment before <template> or <script> would corrupt a
+  # .vue or .svelte file.
+  #
   # `\( -o \)` is parenthesised: `-name A -o -name B` without them binds the
   # implicit action to only part of the expression on some find implementations.
   # `-print0`/`read -r -d ''` so a path containing a space or backslash survives.
-  find "$OUT_DIR" \( -name '*.tsx' -o -name '*.ts' \) -print0 | while IFS= read -r -d '' f; do
+  [ "$target" = "react" ] || find "$OUT_DIR" \( -name '*.tsx' -o -name '*.ts' \) -print0 | while IFS= read -r -d '' f; do
     if ! head -1 "$f" | grep -q '@ts-nocheck'; then
       { printf '// @ts-nocheck\n'; cat "$f"; } > "$f.tmp" && mv "$f.tmp" "$f"
     fi
   done
 
-  # React: inject useLocalProxy import for stateful components
+  # React: its onFocus / onBlur already bubble (they are built on focusin /
+  # focusout) and it has no onFocusIn / onFocusOut props. The sources use the
+  # bubbling names because Vue, Svelte, Angular and Solid need them to see
+  # focus moving inside a wrapper, so map them back for React only.
   if [ "$target" = "react" ]; then
-    grep -rl 'useLocalProxy' "$OUT_DIR" | while IFS= read -r f; do
-      if ! grep -q 'import.*useLocalProxy.*runtime' "$f"; then
-        # runtime.ts lives at <target>/src/runtime.ts; OUT_DIR is <target>/src/generated.
-        # Count directory levels the file sits below OUT_DIR, then add one more
-        # to climb from OUT_DIR up to <target>/src.
-        REL="${f#"$OUT_DIR"/}"
-        REL_DIR="$(dirname "$REL")"
-        # `dirname` of a bare filename is ".", which `tr | wc -l` counts as ONE
-        # directory level — so a component generated at the root of OUT_DIR got
-        # `../../runtime.ts` and reached a directory above the package. Dormant
-        # only because Mitosis writes into per-component subdirectories today.
-        DIRS=0
-        if [ "$REL_DIR" != "." ]; then
-          DIRS=$(printf '%s\n' "$REL_DIR" | tr '/' '\n' | wc -l | tr -d ' ')
-        fi
-        REL_PREFIX=""
-        for ((i=0; i<DIRS+1; i++)); do REL_PREFIX="../$REL_PREFIX"; done
-        # Insert at line 2, after the @ts-nocheck line prepended above. Same
-        # dialect-free rewrite as before: head/printf/tail instead of `sed -i`.
-        { head -1 "$f"
-          printf 'import { useLocalProxy } from "%sruntime.ts";\n' "$REL_PREFIX"
-          tail -n +2 "$f"
-        } > "$f.tmp" && mv "$f.tmp" "$f"
-      fi
+    grep -rlE 'onFocus(In|Out)=' "$OUT_DIR" | while IFS= read -r f; do
+      sed -e 's/onFocusIn=/onFocus=/g' -e 's/onFocusOut=/onBlur=/g' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
     done
   fi
 
   COUNT=$(find "$OUT_DIR" -type f | wc -l | tr -d ' ')
-  echo "  -> $COUNT files"
+  echo "  $target -> $COUNT files"
 done
 
 echo "All frameworks compiled successfully."

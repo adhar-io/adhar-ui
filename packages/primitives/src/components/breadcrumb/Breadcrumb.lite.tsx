@@ -2,6 +2,7 @@ import { useMetadata } from '@builder.io/mitosis';
 
 useMetadata({
   isAttachedToShadowDom: false,
+  angular: { selector: 'adhar-breadcrumb' },
 });
 
 export interface BreadcrumbProps {

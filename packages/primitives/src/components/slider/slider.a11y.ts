@@ -16,7 +16,8 @@ export const sliderA11y = {
   },
   ariaAttributes: {
     'aria-label / aria-labelledby': 'Names the slider — required when there is no visible <label>',
-    'aria-valuetext': 'Provide a human-friendly value ("$40", "Medium") when the raw number is not meaningful',
+    'aria-valuetext':
+      'Provide a human-friendly value ("$40", "Medium") when the raw number is not meaningful',
     'aria-orientation': 'Reflects horizontal (default) or vertical layout',
     'aria-valuemin/max/now': 'Managed automatically by the native range input',
   },

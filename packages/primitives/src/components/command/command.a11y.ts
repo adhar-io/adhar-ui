@@ -22,7 +22,8 @@ export const commandA11y = {
     'role="listbox"': 'On the results container (CommandList)',
     'role="option"': 'On each CommandItem',
     'aria-selected': 'Marks the currently highlighted option',
-    'aria-activedescendant': 'Keep on the input, pointing at the highlighted option id, so focus stays in the input',
+    'aria-activedescendant':
+      'Keep on the input, pointing at the highlighted option id, so focus stays in the input',
   },
   focusManagement: {
     pattern:

@@ -5,7 +5,8 @@
 export const kbdA11y = {
   role: 'native <kbd> element',
   ariaAttributes: {
-    'aria-label': 'Provide a spoken name when the visible glyph is a symbol (⌘ → "Command", ⇧ → "Shift", ↵ → "Enter")',
+    'aria-label':
+      'Provide a spoken name when the visible glyph is a symbol (⌘ → "Command", ⇧ → "Shift", ↵ → "Enter")',
   },
   notes: [
     'Use the semantic <kbd> element so the content is announced as keyboard input.',

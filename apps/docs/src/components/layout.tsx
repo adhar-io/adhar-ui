@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { categories, components } from '../data/components.ts';
 import { IconMoon, IconSearch, IconSun, NavIcon } from './icons.tsx';
 
-// Standalone-app URLs. In dev they live on their own ports; in prod they ship
-// as static bundles under /storybook and /builder respectively.
+// Storybook is a standalone app. In dev it runs on its own port; in prod it
+// ships as a static bundle under /storybook.
 const isLocalHost = typeof window !== 'undefined' &&
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 const STORYBOOK_URL = isLocalHost ? 'http://localhost:6006' : '/storybook/index.html';
-const BUILDER_URL = isLocalHost ? 'http://localhost:5174' : '/builder/index.html';
 
 interface TopNavItem {
   label: string;
@@ -22,7 +21,6 @@ const topNavItems: TopNavItem[] = [
   { label: 'Blocks', href: '/blocks', match: ['/blocks'] },
   { label: 'Guides', href: '/guides/accessibility', match: ['/guides'] },
   { label: 'Storybook', href: STORYBOOK_URL, external: true },
-  { label: 'Builder', href: BUILDER_URL, external: true },
 ];
 
 const navSections = [
@@ -49,7 +47,6 @@ const navSections = [
     items: [
       { label: 'Blocks', href: '/blocks', icon: '💡' },
       { label: 'Storybook', href: STORYBOOK_URL, icon: '📖', external: true },
-      { label: 'Page Builder', href: BUILDER_URL, icon: '⬡', external: true },
     ],
   },
   {
@@ -138,7 +135,7 @@ export function Header({
         {/* Top nav — desktop */}
         <nav className='hidden lg:flex items-center gap-0.5'>
           {topNavItems.map((item) => {
-            // External items (Storybook / Builder) open the standalone app in a new tab
+            // External items (Storybook) open the standalone app in a new tab
             if (item.external) {
               return (
                 <a
@@ -433,7 +430,6 @@ export function SearchDialog({
     { label: 'CLI Reference', href: '/cli', section: 'Pages' },
     { label: 'Storybook ↗', href: STORYBOOK_URL, section: 'Interactive', external: true },
     { label: 'Blocks', href: '/blocks', section: 'Interactive' },
-    { label: 'Page Builder ↗', href: BUILDER_URL, section: 'Interactive', external: true },
     { label: 'Changelog', href: '/changelog', section: 'Pages' },
     { label: 'Accessibility Guide', href: '/guides/accessibility', section: 'Guides' },
     { label: 'Design Sync Guide', href: '/guides/design-sync', section: 'Guides' },
@@ -747,7 +743,6 @@ export function DocsLayout({
                     {[
                       { label: 'Blocks', href: '/blocks', external: false },
                       { label: 'Storybook', href: STORYBOOK_URL, external: true },
-                      { label: 'Page Builder', href: BUILDER_URL, external: true },
                     ].map((l) => (
                       <li key={l.href}>
                         {l.external ? (

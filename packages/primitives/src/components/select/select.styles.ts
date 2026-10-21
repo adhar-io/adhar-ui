@@ -2,15 +2,28 @@ import { cva } from 'class-variance-authority';
 
 export const selectTriggerVariants = cva(
   [
-    'flex h-10 w-full items-center justify-between rounded-md border border-input',
-    'bg-background px-3 py-2 text-sm',
+    'flex w-full items-center justify-between rounded-md border border-input',
+    'bg-background px-3 py-2 text-sm cursor-pointer',
     'ring-offset-background transition-colors duration-150',
     'placeholder:text-muted-foreground',
     'focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
     'disabled:cursor-not-allowed disabled:opacity-50',
+    'aria-[invalid=true]:border-destructive aria-[invalid=true]:focus:ring-destructive',
     'motion-reduce:transition-none',
     '[&>span]:line-clamp-1',
   ].join(' '),
+  {
+    variants: {
+      size: {
+        sm: 'h-8 px-2.5 text-xs',
+        default: 'h-10',
+        lg: 'h-12 px-4 text-base',
+      },
+    },
+    defaultVariants: {
+      size: 'default',
+    },
+  },
 );
 
 export const selectContentVariants = cva(

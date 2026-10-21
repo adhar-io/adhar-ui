@@ -50,24 +50,27 @@ export const stepIndicatorVariants = cva(
   },
 );
 
-export const stepConnectorVariants = cva('transition-colors duration-200 motion-reduce:transition-none', {
-  variants: {
-    state: {
-      complete: 'bg-primary',
-      current: 'bg-border',
-      upcoming: 'bg-border',
-      error: 'bg-border',
+export const stepConnectorVariants = cva(
+  'transition-colors duration-200 motion-reduce:transition-none',
+  {
+    variants: {
+      state: {
+        complete: 'bg-primary',
+        current: 'bg-border',
+        upcoming: 'bg-border',
+        error: 'bg-border',
+      },
+      orientation: {
+        horizontal: 'h-0.5 flex-1 mt-4',
+        vertical: 'w-0.5 flex-1 ml-4 my-1 min-h-6',
+      },
     },
-    orientation: {
-      horizontal: 'h-0.5 flex-1 mt-4',
-      vertical: 'w-0.5 flex-1 ml-4 my-1 min-h-6',
+    defaultVariants: {
+      state: 'upcoming',
+      orientation: 'horizontal',
     },
   },
-  defaultVariants: {
-    state: 'upcoming',
-    orientation: 'horizontal',
-  },
-});
+);
 
 export const stepLabelVariants = cva('text-sm font-medium leading-tight', {
   variants: {
@@ -87,3 +90,24 @@ export const stepDescriptionVariants = cva('text-xs text-muted-foreground mt-0.5
 
 export type StepperVariants = Parameters<typeof stepperVariants>[0];
 export type StepIndicatorVariants = Parameters<typeof stepIndicatorVariants>[0];
+
+type StepState = 'complete' | 'current' | 'upcoming' | 'error';
+type StepSize = 'sm' | 'default' | 'lg';
+type StepOrientation = 'horizontal' | 'vertical';
+
+/**
+ * Positional wrappers for the state-driven variants. Step.lite.tsx calls these
+ * because Mitosis rewrites any `state` identifier in component code, including
+ * the `state:` object key the variants take.
+ */
+export function stepIndicatorClass(stepState: StepState, size?: StepSize): string {
+  return stepIndicatorVariants({ state: stepState, size });
+}
+
+export function stepConnectorClass(stepState: StepState, orientation?: StepOrientation): string {
+  return stepConnectorVariants({ state: stepState, orientation });
+}
+
+export function stepLabelClass(stepState: StepState): string {
+  return stepLabelVariants({ state: stepState });
+}

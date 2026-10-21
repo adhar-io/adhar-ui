@@ -1,7 +1,10 @@
-import { useMetadata } from '@builder.io/mitosis';
+import { useMetadata, useStore } from '@builder.io/mitosis';
+import { cn } from '@adhar-ui/utils';
+import { paginationEllipsisVariants } from './pagination.styles.ts';
 
 useMetadata({
   isAttachedToShadowDom: false,
+  angular: { selector: 'adhar-pagination-ellipsis' },
 });
 
 export interface PaginationEllipsisProps {
@@ -11,8 +14,14 @@ export interface PaginationEllipsisProps {
 }
 
 export default function PaginationEllipsis(props: PaginationEllipsisProps) {
+  const state = useStore({
+    get classes(): string {
+      return cn(paginationEllipsisVariants(), props.className);
+    },
+  });
+
   return (
-    <span aria-hidden='true' className={props.className}>
+    <span className={state.classes}>
       <svg
         xmlns='http://www.w3.org/2000/svg'
         width='16'
@@ -23,6 +32,7 @@ export default function PaginationEllipsis(props: PaginationEllipsisProps) {
         strokeWidth='2'
         strokeLinecap='round'
         strokeLinejoin='round'
+        aria-hidden='true'
       >
         <circle cx='12' cy='12' r='1' />
         <circle cx='19' cy='12' r='1' />

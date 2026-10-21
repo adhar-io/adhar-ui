@@ -21,7 +21,8 @@ export const inputVariants = cva(
       variant: {
         default: '',
         ghost: 'border-transparent hover:border-input focus-visible:border-input',
-        flush: 'border-0 border-b border-input rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary',
+        flush:
+          'border-0 border-b border-input rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary',
       },
     },
     defaultVariants: {

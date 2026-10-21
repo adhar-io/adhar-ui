@@ -1,7 +1,10 @@
-import { Show, useMetadata } from '@builder.io/mitosis';
+import { Show, useMetadata, useStore } from '@builder.io/mitosis';
+import { cn } from '@adhar-ui/utils';
+import { commandGroupHeadingVariants, commandGroupVariants } from './command.styles.ts';
 
 useMetadata({
   isAttachedToShadowDom: false,
+  angular: { selector: 'adhar-command-group' },
 });
 
 export interface CommandGroupProps {
@@ -12,10 +15,19 @@ export interface CommandGroupProps {
 }
 
 export default function CommandGroup(props: CommandGroupProps) {
+  const state = useStore({
+    get classes(): string {
+      return cn(commandGroupVariants(), props.className);
+    },
+    get headingClasses(): string {
+      return cn(commandGroupHeadingVariants(), props.headingClass);
+    },
+  });
+
   return (
-    <div role='group' className={props.className}>
+    <div role='group' aria-label={props.heading} className={state.classes}>
       <Show when={props.heading}>
-        <div className={props.headingClass} aria-hidden='true'>
+        <div className={state.headingClasses} aria-hidden='true'>
           {props.heading}
         </div>
       </Show>

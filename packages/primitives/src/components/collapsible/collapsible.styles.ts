@@ -10,8 +10,10 @@ export const collapsibleContentVariants = cva(
   {
     variants: {
       open: {
-        true: 'grid-rows-[1fr] opacity-100',
-        false: 'grid-rows-[0fr] opacity-0',
+        true: 'visible grid-rows-[1fr] opacity-100',
+        // `invisible` keeps collapsed content out of the tab order and the
+        // accessibility tree; visibility flips after the height transition.
+        false: 'invisible grid-rows-[0fr] opacity-0',
       },
     },
     defaultVariants: {

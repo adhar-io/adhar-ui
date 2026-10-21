@@ -441,11 +441,10 @@ export function HomePage({ navigate }: { navigate: (path: string) => void }) {
         <p className='text-muted-foreground mb-6'>
           Interactive tools, examples, and resources to help you build faster.
         </p>
-        <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-4'>
+        <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-4'>
           {(() => {
             const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
             const SB_URL = isLocal ? 'http://localhost:6006' : '/storybook/index.html';
-            const BD_URL = isLocal ? 'http://localhost:5174' : '/builder/index.html';
             const items = [
               {
                 icon: '◧',
@@ -469,14 +468,6 @@ export function HomePage({ navigate }: { navigate: (path: string) => void }) {
                 desc: 'Tweak props live, browse every component variant, run a11y checks.',
                 route: SB_URL,
                 color: 'from-pink-500/10 to-pink-500/5 border-pink-500/20',
-                external: true,
-              },
-              {
-                icon: '⬡',
-                title: 'Page Builder',
-                desc: 'Drag-and-drop visual builder for full pages and apps.',
-                route: BD_URL,
-                color: 'from-cyan-500/10 to-cyan-500/5 border-cyan-500/20',
                 external: true,
               },
             ];

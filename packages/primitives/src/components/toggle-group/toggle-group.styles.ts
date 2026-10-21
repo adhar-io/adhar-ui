@@ -8,7 +8,8 @@ export const toggleGroupVariants = cva('flex items-center', {
     },
     /** Segmented-control look: items join with shared borders and no gaps */
     attached: {
-      true: 'gap-0 [&>*]:rounded-none [&>*:first-child]:rounded-l-md [&>*:last-child]:rounded-r-md [&>*:not(:first-child)]:-ml-px',
+      true:
+        'gap-0 [&>*]:rounded-none [&>*:first-child]:rounded-l-md [&>*:last-child]:rounded-r-md [&>*:not(:first-child)]:-ml-px',
       false: 'gap-1',
     },
   },

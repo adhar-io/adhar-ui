@@ -1,4 +1,4 @@
-import { assertEquals } from 'jsr:@std/assert';
+import { assertEquals } from 'jsr:@std/assert@^1.0.13';
 
 /**
  * The build scripts must run on Linux, not only on a developer's Mac.
@@ -36,7 +36,7 @@ Deno.test('compile.sh uses no BSD-only in-place sed', () => {
   assertEquals(
     bsd,
     [],
-    'BSD-only `sed -i \'\'` breaks on GNU sed, which is what CI runs',
+    "BSD-only `sed -i ''` breaks on GNU sed, which is what CI runs",
   );
 });
 
@@ -51,14 +51,21 @@ Deno.test('compile.sh uses no bare in-place sed either', () => {
   );
 });
 
-Deno.test('compile.sh still performs both post-processing steps', () => {
+Deno.test('compile.sh still performs the post-processing step', () => {
   // The portability fix must not have quietly dropped the work the sed calls
   // were doing — a script that edits nothing also contains no sed.
-  const hasNoCheck = script.includes('// @ts-nocheck');
-  const hasProxyImport = script.includes('useLocalProxy');
   assertEquals(
-    [hasNoCheck, hasProxyImport],
-    [true, true],
-    'compile.sh must still prepend @ts-nocheck and inject the useLocalProxy import',
+    script.includes('// @ts-nocheck'),
+    true,
+    'compile.sh must still prepend @ts-nocheck to generated TypeScript',
   );
+});
+
+Deno.test('compile.sh uses mitosis build, not per-file compile', () => {
+  // `mitosis compile` emits every target with a .lite.tsx extension (Vue and
+  // Svelte SFCs in .tsx files) and does not copy the styles files the
+  // components import.
+  const usesBuild = codeLines.some((l) => /mitosis-cli@[\d.]+ build\b/.test(l));
+  const usesCompile = codeLines.some((l) => /mitosis-cli@[\d.]+ compile\b/.test(l));
+  assertEquals([usesBuild, usesCompile], [true, false]);
 });

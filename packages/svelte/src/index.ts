@@ -4,8 +4,8 @@
  * Svelte components for the Adhar UI design system.
  * Components are compiled from @adhar-ui/primitives Mitosis sources.
  *
- * Svelte components are output as .tsx files containing Svelte SFC syntax.
- * Import them directly in your Svelte project.
+ * Mitosis emits .svelte components. Import them from
+ *   @adhar-ui/svelte/components/<name>/<Name>.svelte
  */
 
 // -- Utilities --

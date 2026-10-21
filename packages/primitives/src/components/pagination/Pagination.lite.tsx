@@ -1,7 +1,10 @@
-import { useMetadata } from '@builder.io/mitosis';
+import { useMetadata, useStore } from '@builder.io/mitosis';
+import { cn } from '@adhar-ui/utils';
+import { paginationVariants } from './pagination.styles.ts';
 
 useMetadata({
   isAttachedToShadowDom: false,
+  angular: { selector: 'adhar-pagination' },
 });
 
 export interface PaginationProps {
@@ -11,12 +14,14 @@ export interface PaginationProps {
 }
 
 export default function Pagination(props: PaginationProps) {
+  const state = useStore({
+    get classes(): string {
+      return cn(paginationVariants(), props.className);
+    },
+  });
+
   return (
-    <nav
-      className={props.className}
-      role='navigation'
-      aria-label={props['aria-label'] || 'Pagination'}
-    >
+    <nav className={state.classes} aria-label={props['aria-label'] || 'Pagination'}>
       {props.children}
     </nav>
   );

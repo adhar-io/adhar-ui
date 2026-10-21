@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # ─────────────────────────────────────────────────────────────────────────────
-# Netlify production build for Adhar UI.
+# Production site build for Adhar UI.
 #
 # Assembles a single static site into ./dist:
-#   /            → docs      (apps/docs)          flagship marketing + docs
-#   /builder/    → builder   (apps/builder)       visual page builder
+#   /            → docs      (apps/docs)          marketing + documentation
 #   /storybook/  → storybook (apps/storybook)     component workshop
 #
-# Runs on Netlify; also runnable locally with `bash scripts/netlify-build.sh`.
+# Used by the GitHub Actions deploy workflow (.github/workflows/deploy.yml) and
+# by Netlify's own build if the site is ever linked directly. Also runnable
+# locally: `bash scripts/netlify-build.sh`.
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
@@ -17,7 +18,7 @@ cd "$ROOT"
 # ── 1. Ensure Deno is available (pin version for reproducible builds) ─────────
 export DENO_INSTALL="${DENO_INSTALL:-$HOME/.deno}"
 export PATH="$DENO_INSTALL/bin:$PATH"
-DENO_VERSION="${DENO_VERSION:-v2.6.0}"
+DENO_VERSION="${DENO_VERSION:-v2.9.5}"
 
 if ! command -v deno >/dev/null 2>&1; then
   echo "→ Installing Deno $DENO_VERSION"
@@ -29,9 +30,6 @@ echo "→ Using $(deno --version | head -1)"
 echo "→ Building docs"
 ( cd apps/docs && deno task build )
 
-echo "→ Building builder"
-( cd apps/builder && deno task build )
-
 echo "→ Building storybook"
 # Storybook is npm-managed. Build with npm/node directly — NOT `deno task`,
 # whose npx shim resolves into the shared .deno tree and picks up a conflicting
@@ -42,10 +40,9 @@ echo "→ Building storybook"
 # ── 3. Assemble the unified publish directory ────────────────────────────────
 echo "→ Assembling ./dist"
 rm -rf dist
-mkdir -p dist/builder dist/storybook
+mkdir -p dist/storybook
 
 cp -R apps/docs/dist/.                    dist/
-cp -R apps/builder/dist/.                 dist/builder/
 cp -R apps/storybook/storybook-static/.   dist/storybook/
 
 echo "✓ Build complete — publish directory: ./dist"

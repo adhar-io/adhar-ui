@@ -1,27 +1,33 @@
-import type { SliderVariants } from './slider.styles.ts';
-
+/**
+ * Prop types for consumers of the CVA-only API. Keep in sync with the
+ * interface(s) in `Slider.lite.tsx`, which are the source of truth.
+ */
 export interface SliderProps {
   /** Current value (controlled) */
   value?: number;
-  /** Minimum value (default 0) */
+  /** Initial value when uncontrolled */
+  defaultValue?: number;
   min?: number;
-  /** Maximum value (default 100) */
   max?: number;
-  /** Step increment (default 1) */
   step?: number;
-  /** Visual size of the track and thumb */
-  size?: NonNullable<SliderVariants>['size'];
   disabled?: boolean;
+  size?: 'sm' | 'default' | 'lg';
   name?: string;
   id?: string;
+  form?: string;
+  /** ID of a <datalist> with tick marks */
+  list?: string;
   className?: string;
   orientation?: 'horizontal' | 'vertical';
   'aria-label'?: string;
   'aria-labelledby'?: string;
-  /** Human-readable value announced by screen readers */
+  'aria-describedby'?: string;
+  /** Human-readable value for screen readers (e.g. "$40", "Medium") */
   'aria-valuetext'?: string;
   /** Fires continuously while dragging */
   onInput?: (value: number) => void;
-  /** Fires when the value is committed */
+  /** Alias of `onInput` */
+  onValueChange?: (value: number) => void;
+  /** Fires when the value is committed (drag end / keyboard) */
   onChange?: (value: number) => void;
 }

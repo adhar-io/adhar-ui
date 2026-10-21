@@ -1,13 +1,17 @@
 import { cva } from 'class-variance-authority';
 
+/**
+ * Styles a native `<input type="checkbox">`. `accent-color` themes the native
+ * box, check and indeterminate dash in every engine, so the control keeps its
+ * built-in keyboard, form and label behaviour on every framework target.
+ */
 export const checkboxVariants = cva(
   [
-    'peer shrink-0 rounded-sm border border-primary ring-offset-background',
-    'transition-colors duration-150 motion-reduce:transition-none',
+    'peer shrink-0 cursor-pointer rounded-sm accent-primary align-middle',
+    'ring-offset-background transition-shadow duration-150 motion-reduce:transition-none',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
     'disabled:cursor-not-allowed disabled:opacity-50',
-    'data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground',
-    'data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground',
+    'aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-destructive',
   ].join(' '),
   {
     variants: {

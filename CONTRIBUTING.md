@@ -65,14 +65,13 @@ apps/
 - **Mitosis source** - Components in `.lite.tsx` format compile to all frameworks
 - **CVA variants** - All style variations defined via class-variance-authority
 - **CSS variables** - Colors use HSL custom properties (`hsl(var(--primary))`)
-- **forwardRef** - All React components use `React.forwardRef` for ref forwarding
 - **cn()** - All className composition uses the `cn()` utility
 
 ### Adding a New Component
 
 Follow this checklist (mirrors adhar-kit's "Adding a New Module"):
 
-1. Create Mitosis source: `packages/primitives/src/components/<name>/<Name>.lite.tsx`
+1. Create Mitosis source: `packages/primitives/src/components/<name>/<Name>.lite.tsx` (read the authoring rules in `packages/primitives/README.md` first — several mistakes compile silently into broken output)
 2. Create CVA styles: `packages/primitives/src/components/<name>/<name>.styles.ts`
 3. Create prop types: `packages/primitives/src/components/<name>/<name>.types.ts`
 4. Create a11y spec: `packages/primitives/src/components/<name>/<name>.a11y.ts`
@@ -81,8 +80,8 @@ Follow this checklist (mirrors adhar-kit's "Adding a New Module"):
 7. Add CLI template in `packages/cli/src/templates/tier<N>.ts`
 8. Add registry entry in `packages/registry/src/component-index.ts`
 9. Add Storybook story in `apps/storybook/stories/<Category>.stories.tsx`
-10. Add playground demo in `apps/playground/src/demos.tsx`
-11. Add docs reference in `apps/docs/src/app.tsx`
+10. Add a behaviour test in `packages/react/src/__tests__/components_test.tsx`
+11. Add docs reference in `apps/docs/src/data/components.ts`
 
 ### Testing
 

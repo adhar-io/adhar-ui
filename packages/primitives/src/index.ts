@@ -16,58 +16,180 @@
 
 // ─── Form Controls ──────────────────────────────────────────────────────
 export { buttonVariants } from './components/button/button.styles.ts';
-export { inputVariants, labelVariants as inputLabelVariants } from './components/input/input.styles.ts';
+export {
+  inputVariants,
+  labelVariants as inputLabelVariants,
+} from './components/input/input.styles.ts';
 export { textareaVariants } from './components/textarea/textarea.styles.ts';
-export { selectTriggerVariants, selectContentVariants, selectItemVariants } from './components/select/select.styles.ts';
+export {
+  selectContentVariants,
+  selectItemVariants,
+  selectLabelVariants,
+  selectSeparatorVariants,
+  selectTriggerVariants,
+} from './components/select/select.styles.ts';
 export { checkboxVariants } from './components/checkbox/checkbox.styles.ts';
-export { switchVariants, switchThumbVariants } from './components/switch/switch.styles.ts';
+export { switchThumbVariants, switchVariants } from './components/switch/switch.styles.ts';
 export { labelVariants } from './components/label/label.styles.ts';
 
 // ─── Display ────────────────────────────────────────────────────────────
 export { badgeVariants } from './components/badge/badge.styles.ts';
-export { avatarVariants, avatarImageVariants, avatarFallbackVariants } from './components/avatar/avatar.styles.ts';
-export { progressVariants, progressIndicatorVariants } from './components/progress/progress.styles.ts';
+export {
+  avatarFallbackVariants,
+  avatarImageVariants,
+  avatarVariants,
+} from './components/avatar/avatar.styles.ts';
+export {
+  progressIndicatorVariants,
+  progressVariants,
+} from './components/progress/progress.styles.ts';
 export { skeletonVariants } from './components/skeleton/skeleton.styles.ts';
 export { spinnerVariants } from './components/spinner/spinner.styles.ts';
 export { separatorVariants } from './components/separator/separator.styles.ts';
 
 // ─── Layout & Composite ────────────────────────────────────────────────
-export { cardVariants, cardHeaderVariants, cardTitleVariants, cardDescriptionVariants, cardContentVariants, cardFooterVariants } from './components/card/card.styles.ts';
-export { tabsListVariants, tabsTriggerVariants, tabsContentVariants } from './components/tabs/tabs.styles.ts';
-export { accordionItemVariants, accordionTriggerVariants, accordionContentVariants } from './components/accordion/accordion.styles.ts';
+export {
+  cardContentVariants,
+  cardDescriptionVariants,
+  cardFooterVariants,
+  cardHeaderVariants,
+  cardTitleVariants,
+  cardVariants,
+} from './components/card/card.styles.ts';
+export {
+  tabsContentVariants,
+  tabsListVariants,
+  tabsTriggerVariants,
+} from './components/tabs/tabs.styles.ts';
+export {
+  accordionContentVariants,
+  accordionItemVariants,
+  accordionTriggerVariants,
+} from './components/accordion/accordion.styles.ts';
 
 // ─── Feedback & Overlay ────────────────────────────────────────────────
-export { alertVariants, alertTitleVariants, alertDescriptionVariants } from './components/alert/alert.styles.ts';
-export { dialogOverlayVariants, dialogContentVariants, dialogHeaderVariants, dialogFooterVariants, dialogTitleVariants, dialogDescriptionVariants, dialogCloseVariants } from './components/dialog/dialog.styles.ts';
-export { toastVariants, toastTitleVariants, toastDescriptionVariants, toastCloseVariants } from './components/toast/toast.styles.ts';
+export {
+  alertDescriptionVariants,
+  alertTitleVariants,
+  alertVariants,
+} from './components/alert/alert.styles.ts';
+export {
+  dialogCloseVariants,
+  dialogContentVariants,
+  dialogDescriptionVariants,
+  dialogFooterVariants,
+  dialogHeaderVariants,
+  dialogOverlayVariants,
+  dialogTitleVariants,
+} from './components/dialog/dialog.styles.ts';
+export {
+  toastCloseVariants,
+  toastDescriptionVariants,
+  toastTitleVariants,
+  toastVariants,
+} from './components/toast/toast.styles.ts';
 export { tooltipContentVariants } from './components/tooltip/tooltip.styles.ts';
 export { popoverContentVariants } from './components/popover/popover.styles.ts';
-export { sheetContentVariants, sheetOverlayVariants, sheetHeaderVariants, sheetFooterVariants, sheetTitleVariants, sheetDescriptionVariants } from './components/sheet/sheet.styles.ts';
-export { dropdownMenuContentVariants, dropdownMenuItemVariants, dropdownMenuSeparatorVariants, dropdownMenuLabelVariants, dropdownMenuShortcutVariants } from './components/dropdown-menu/dropdown-menu.styles.ts';
+export {
+  sheetCloseVariants,
+  sheetContentVariants,
+  sheetDescriptionVariants,
+  sheetFooterVariants,
+  sheetHeaderVariants,
+  sheetOverlayVariants,
+  sheetTitleVariants,
+} from './components/sheet/sheet.styles.ts';
+export { placementVariants } from './components/_internal/placement.styles.ts';
+export type { PlacementVariants } from './components/_internal/placement.styles.ts';
+export {
+  dropdownMenuContentVariants,
+  dropdownMenuItemVariants,
+  dropdownMenuLabelVariants,
+  dropdownMenuSeparatorVariants,
+  dropdownMenuShortcutVariants,
+} from './components/dropdown-menu/dropdown-menu.styles.ts';
 
 // ─── Form Controls (extended) ──────────────────────────────────────────
-export { radioGroupVariants, radioGroupItemVariants, radioGroupIndicatorVariants } from './components/radio-group/radio-group.styles.ts';
+export {
+  radioGroupIndicatorVariants,
+  radioGroupItemVariants,
+  radioGroupVariants,
+} from './components/radio-group/radio-group.styles.ts';
 export { sliderVariants } from './components/slider/slider.styles.ts';
 export { toggleVariants } from './components/toggle/toggle.styles.ts';
 export { toggleGroupVariants } from './components/toggle-group/toggle-group.styles.ts';
 
 // ─── Navigation ────────────────────────────────────────────────────────
-export { breadcrumbListVariants, breadcrumbItemVariants, breadcrumbLinkVariants, breadcrumbPageVariants, breadcrumbSeparatorVariants, breadcrumbEllipsisVariants } from './components/breadcrumb/breadcrumb.styles.ts';
-export { paginationVariants, paginationContentVariants, paginationItemVariants, paginationLinkVariants, paginationEllipsisVariants } from './components/pagination/pagination.styles.ts';
+export {
+  breadcrumbEllipsisVariants,
+  breadcrumbItemVariants,
+  breadcrumbLinkVariants,
+  breadcrumbListVariants,
+  breadcrumbPageVariants,
+  breadcrumbSeparatorVariants,
+} from './components/breadcrumb/breadcrumb.styles.ts';
+export {
+  paginationContentVariants,
+  paginationEllipsisVariants,
+  paginationItemVariants,
+  paginationLinkVariants,
+  paginationVariants,
+} from './components/pagination/pagination.styles.ts';
 
 // ─── Display (extended) ────────────────────────────────────────────────
 export { kbdVariants } from './components/kbd/kbd.styles.ts';
 
 // ─── Advanced Components ───────────────────────────────────────────────
-export { commandVariants, commandInputWrapperVariants, commandInputVariants, commandListVariants, commandEmptyVariants, commandGroupVariants, commandGroupHeadingVariants, commandItemVariants, commandSeparatorVariants, commandShortcutVariants } from './components/command/command.styles.ts';
-export { stepperVariants, stepVariants, stepIndicatorVariants, stepConnectorVariants, stepLabelVariants, stepDescriptionVariants } from './components/stepper/stepper.styles.ts';
-export { timelineVariants, timelineItemVariants, timelineMarkerVariants, timelineDotVariants, timelineConnectorVariants, timelineContentVariants, timelineTitleVariants, timelineTimeVariants } from './components/timeline/timeline.styles.ts';
-export { statCardVariants, statCardTrendVariants } from './components/stat-card/stat-card.styles.ts';
-export { emptyStateVariants, emptyStateIconVariants, emptyStateTitleVariants, emptyStateDescriptionVariants } from './components/empty-state/empty-state.styles.ts';
-export { collapsibleContentVariants, collapsibleContentInnerVariants } from './components/collapsible/collapsible.styles.ts';
+export {
+  commandEmptyVariants,
+  commandGroupHeadingVariants,
+  commandGroupVariants,
+  commandInputVariants,
+  commandInputWrapperVariants,
+  commandItemVariants,
+  commandListVariants,
+  commandSeparatorVariants,
+  commandShortcutVariants,
+  commandVariants,
+} from './components/command/command.styles.ts';
+export {
+  stepConnectorVariants,
+  stepDescriptionVariants,
+  stepIndicatorVariants,
+  stepLabelVariants,
+  stepperVariants,
+  stepVariants,
+} from './components/stepper/stepper.styles.ts';
+export {
+  timelineConnectorVariants,
+  timelineContentVariants,
+  timelineDotVariants,
+  timelineItemVariants,
+  timelineMarkerVariants,
+  timelineTimeVariants,
+  timelineTitleVariants,
+  timelineVariants,
+} from './components/timeline/timeline.styles.ts';
+export {
+  statCardTrendVariants,
+  statCardVariants,
+} from './components/stat-card/stat-card.styles.ts';
+export {
+  emptyStateDescriptionVariants,
+  emptyStateIconVariants,
+  emptyStateTitleVariants,
+  emptyStateVariants,
+} from './components/empty-state/empty-state.styles.ts';
+export {
+  collapsibleContentInnerVariants,
+  collapsibleContentVariants,
+} from './components/collapsible/collapsible.styles.ts';
 export { aspectRatioVariants } from './components/aspect-ratio/aspect-ratio.styles.ts';
 export { scrollAreaVariants } from './components/scroll-area/scroll-area.styles.ts';
-export { hoverCardVariants, hoverCardContentVariants } from './components/hover-card/hover-card.styles.ts';
+export {
+  hoverCardContentVariants,
+  hoverCardVariants,
+} from './components/hover-card/hover-card.styles.ts';
 export { inputOTPVariants } from './components/input-otp/input-otp.styles.ts';
 
 // ─── Types ──────────────────────────────────────────────────────────────
@@ -88,20 +210,35 @@ export type { SpinnerVariants } from './components/spinner/spinner.styles.ts';
 export type { LabelVariants } from './components/label/label.styles.ts';
 export type { ToastVariants } from './components/toast/toast.styles.ts';
 export type { SheetVariants } from './components/sheet/sheet.styles.ts';
-export type { RadioGroupProps, RadioGroupItemProps } from './components/radio-group/radio-group.types.ts';
-export type { RadioGroupVariants, RadioGroupItemVariants } from './components/radio-group/radio-group.styles.ts';
+export type {
+  RadioGroupItemProps,
+  RadioGroupProps,
+} from './components/radio-group/radio-group.types.ts';
+export type {
+  RadioGroupItemVariants,
+  RadioGroupVariants,
+} from './components/radio-group/radio-group.styles.ts';
 export type { SliderProps } from './components/slider/slider.types.ts';
 export type { SliderVariants } from './components/slider/slider.styles.ts';
 export type { ToggleProps } from './components/toggle/toggle.types.ts';
 export type { ToggleVariants } from './components/toggle/toggle.styles.ts';
-export type { ToggleGroupProps, ToggleGroupItemProps } from './components/toggle-group/toggle-group.types.ts';
+export type {
+  ToggleGroupItemProps,
+  ToggleGroupProps,
+} from './components/toggle-group/toggle-group.types.ts';
 export type { ToggleGroupVariants } from './components/toggle-group/toggle-group.styles.ts';
 export type { PaginationLinkVariants } from './components/pagination/pagination.styles.ts';
 export type { KbdProps } from './components/kbd/kbd.types.ts';
 export type { KbdVariants } from './components/kbd/kbd.styles.ts';
-export type { StepperVariants, StepIndicatorVariants } from './components/stepper/stepper.styles.ts';
+export type {
+  StepIndicatorVariants,
+  StepperVariants,
+} from './components/stepper/stepper.styles.ts';
 export type { TimelineDotVariants } from './components/timeline/timeline.styles.ts';
-export type { StatCardVariants, StatCardTrendVariants } from './components/stat-card/stat-card.styles.ts';
+export type {
+  StatCardTrendVariants,
+  StatCardVariants,
+} from './components/stat-card/stat-card.styles.ts';
 export type { EmptyStateVariants } from './components/empty-state/empty-state.styles.ts';
 export type { CollapsibleContentVariants } from './components/collapsible/collapsible.styles.ts';
 export type { AspectRatioVariants } from './components/aspect-ratio/aspect-ratio.styles.ts';

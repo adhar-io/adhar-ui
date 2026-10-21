@@ -1,22 +1,26 @@
 # @adhar-ui/react
 
-React components for the Adhar UI design system. Compiled from Mitosis sources with React-specific optimizations including `forwardRef`, `useState`, and the `useLocalProxy` runtime for stateful components.
+React components for the Adhar UI design system, compiled from the Mitosis sources in `@adhar-ui/primitives`.
 
 ## Usage
 
 ```tsx
-import { Button, buttonVariants } from '@adhar-ui/react'
-import { cn } from '@adhar-ui/utils'
+import { Button, Dialog, DialogTitle } from '@adhar-ui/react';
 
-// Use the compiled React component
-<Button className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}>
-  Click me
-</Button>
+<Button variant='outline' size='sm' onClick={save}>Save</Button>
+
+<Dialog open={open} onOpenChange={setOpen} aria-labelledby='dlg-title'>
+  <DialogTitle id='dlg-title'>Edit profile</DialogTitle>
+  ...
+</Dialog>
 ```
 
-## What's Included
+Components apply their own Tailwind classes; pass `className` to extend or override them (conflicts are resolved with `tailwind-merge`). Your Tailwind config must scan this package so the classes are generated, and use the `@adhar-ui/tailwind-preset` tokens.
 
-- 42 compiled React components from Mitosis sources
-- All CVA style variant exports (buttonVariants, badgeVariants, etc.)
+Form controls work controlled (`value` / `checked` / `open` + a change handler) or uncontrolled (`defaultValue` / `defaultChecked` / `defaultOpen`).
+
+## What's included
+
+- Compiled React components (see the primitives README for the list)
+- All CVA style variant exports (`buttonVariants`, `badgeVariants`, ...)
 - Re-exports of tokens, utils, a11y, and icons
-- `useLocalProxy` runtime for Mitosis-generated stateful components

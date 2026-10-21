@@ -227,30 +227,6 @@ All colors are HSL CSS custom properties (29 semantic tokens). Supports alpha co
 
 ---
 
-## Page Builder
-
-Visual drag-and-drop page builder for creating pages with Adhar UI components.
-
-```bash
-deno task builder:dev     # Start builder at localhost:5174
-deno task docs:dev        # Builder also available at localhost:5173/#/builder
-```
-
-**Features:**
-- Drag & drop 50+ components from the palette
-- AI-powered page generation (OpenAI / Anthropic / local templates)
-- Design / Code / Preview modes with responsive device switching
-- Monaco Editor for code view with full project file system
-- Live preview with Tailwind CSS and design tokens
-- 8 theme presets with live token editing
-- Property editor with layout, typography, and appearance controls
-- Undo/redo, copy/paste, keyboard shortcuts
-- Export to Penpot SVG, Figma JSON, framework code
-- Push to GitHub via REST API
-- API data source integration with response field mapping
-
----
-
 ## Design Resources
 
 Downloadable design kits for Figma and Penpot:
@@ -305,20 +281,23 @@ npx @adhar-ui/cli <command>
 ```
 Mitosis Source (.lite.tsx)
   ├── React     (JSX + hooks)
-  ├── Vue 3     (SFC + Composition API)
+  ├── Vue 3     (.vue SFC)
   ├── SolidJS   (JSX + createSignal)
-  ├── Svelte 5  (SFC + runes)
-  └── Angular   (Standalone + signals)
+  ├── Svelte    (.svelte, Svelte 4 syntax)
+  └── Angular   (standalone components)
 ```
 
 Each component follows this structure:
 
 ```
 packages/primitives/src/components/<name>/
+  <Name>.lite.tsx       # Mitosis source
   <name>.styles.ts      # CVA variants (Tailwind classes)
   <name>.types.ts       # TypeScript interfaces
   <name>.a11y.ts        # Accessibility spec
 ```
+
+See [packages/primitives/README.md](packages/primitives/README.md) for the Mitosis authoring rules.
 
 ---
 
@@ -326,7 +305,7 @@ packages/primitives/src/components/<name>/
 
 ```
 adhar-ui/
-  deno.json                       # Workspace root (21 packages + 3 apps)
+  deno.json                       # Workspace root (19 packages + 2 apps)
   packages/
     tokens/                       # Design tokens (4 presets, CSS generator)
     tailwind-preset/              # Tailwind CSS v4 preset
@@ -346,8 +325,9 @@ adhar-ui/
     code-connect/                 # Figma Code Connect
   apps/
     docs/                         # Documentation portal
-    playground/                   # Interactive playground
     storybook/                    # 97 component stories
+  scripts/netlify-build.sh        # Builds docs + Storybook into ./dist
+  .github/workflows/              # CI and Netlify deploys
 ```
 
 ---
@@ -363,13 +343,34 @@ deno task lint                 # Lint
 deno task fmt                  # Format
 deno task test                 # Run tests
 deno task docs:dev             # Start docs site (localhost:5173)
-deno task playground:dev       # Start playground
+deno task storybook:dev        # Start Storybook (localhost:6006)
 deno task cli --help           # Run CLI locally
 
 # Build
 deno task build                # Build all packages
 deno task build:primitives     # Compile Mitosis to 5 frameworks
+bash scripts/netlify-build.sh  # Build the docs + Storybook site into ./dist
 ```
+
+---
+
+## Deployment
+
+The docs site (`/`) and Storybook (`/storybook/`) deploy to Netlify as one static site, from GitHub Actions:
+
+| Workflow | Trigger | What it does |
+| --- | --- | --- |
+| `.github/workflows/ci.yml` | push to `main`, pull requests | type-check, lint, test, build all packages |
+| `.github/workflows/deploy.yml` | push to `main`, manual run | build the site and deploy it to production |
+| `.github/workflows/deploy.yml` | pull requests from this repo | deploy a preview and comment its URL on the PR |
+
+One-time setup:
+
+1. Create a Netlify site (Add new site → Deploy manually is enough; no Git link needed).
+2. In the GitHub repo, add two Actions secrets: `NETLIFY_AUTH_TOKEN` (Netlify → User settings → Applications → Personal access tokens) and `NETLIFY_SITE_ID` (Site configuration → Site details → Site ID).
+3. If the Netlify site is also linked to the repo, turn off its own builds (Site configuration → Build & deploy → Stop builds) so pushes don't build twice.
+
+Redirects, security headers and cache rules live in `netlify.toml` and are applied to CLI deploys as well.
 
 ---
 

@@ -16,7 +16,9 @@ export const commandInputVariants = cva(
   ].join(' '),
 );
 
-export const commandListVariants = cva('max-h-80 overflow-y-auto overflow-x-hidden p-1 scroll-py-1');
+export const commandListVariants = cva(
+  'max-h-80 overflow-y-auto overflow-x-hidden p-1 scroll-py-1',
+);
 
 export const commandEmptyVariants = cva('py-6 text-center text-sm text-muted-foreground');
 

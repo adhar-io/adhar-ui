@@ -1,17 +1,20 @@
-import type { ToggleVariants } from './toggle.styles.ts';
-
+/**
+ * Prop types for consumers of the CVA-only API. Keep in sync with the
+ * interface(s) in `Toggle.lite.tsx`, which are the source of truth.
+ */
 export interface ToggleProps {
   /** Whether the toggle is currently pressed/on (controlled) */
   pressed?: boolean;
-  /** Visual variant */
-  variant?: NonNullable<ToggleVariants>['variant'];
-  /** Size of the toggle */
-  size?: NonNullable<ToggleVariants>['size'];
+  /** Initial pressed state when uncontrolled */
+  defaultPressed?: boolean;
   disabled?: boolean;
+  variant?: 'default' | 'outline';
+  size?: 'sm' | 'default' | 'lg';
   className?: string;
   id?: string;
-  /** Accessible label — required for icon-only toggles */
+  title?: string;
   'aria-label'?: string;
   /** Fired with the next pressed state when activated */
   onPressedChange?: (pressed: boolean) => void;
+  children?: any;
 }

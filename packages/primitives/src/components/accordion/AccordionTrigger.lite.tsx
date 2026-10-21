@@ -1,43 +1,75 @@
-import { useMetadata } from '@builder.io/mitosis';
+import { useMetadata, useStore } from '@builder.io/mitosis';
+import { cn } from '@adhar-ui/utils';
+import { accordionTriggerVariants } from './accordion.styles.ts';
 
 useMetadata({
   isAttachedToShadowDom: false,
+  angular: { selector: 'adhar-accordion-trigger' },
 });
 
 export interface AccordionTriggerProps {
   open?: boolean;
+  /** The owning item’s value — lets Accordion’s onValueChange handle the click */
+  value?: string;
+  disabled?: boolean;
   className?: string;
+  /** Class for the heading element wrapping the trigger */
+  headingClass?: string;
+  /** Give the trigger an id and pass it to AccordionContent `aria-labelledby` */
+  id?: string;
+  /** ID of the AccordionContent region this trigger toggles */
+  'aria-controls'?: string;
   onClick?: () => void;
   children?: any;
 }
 
+// Wrapped in a heading per the WAI-ARIA accordion pattern, so screen-reader
+// users can jump between sections with heading navigation.
 export default function AccordionTrigger(props: AccordionTriggerProps) {
+  const state = useStore({
+    get classes(): string {
+      return cn(
+        accordionTriggerVariants(),
+        'w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm disabled:cursor-not-allowed disabled:opacity-50',
+        props.className,
+      );
+    },
+    get headingClasses(): string {
+      return cn('flex', props.headingClass);
+    },
+  });
+
   return (
-    <button
-      type='button'
-      className={props.className}
-      aria-expanded={props.open}
-      onClick={() => props.onClick?.()}
-    >
-      {props.children}
-      <svg
-        xmlns='http://www.w3.org/2000/svg'
-        width='16'
-        height='16'
-        viewBox='0 0 24 24'
-        fill='none'
-        stroke='currentColor'
-        stroke-width='2'
-        stroke-linecap='round'
-        stroke-linejoin='round'
-        aria-hidden='true'
-        style={{
-          transform: props.open ? 'rotate(180deg)' : 'rotate(0deg)',
-          transition: 'transform 0.2s',
-        }}
+    <h3 className={state.headingClasses}>
+      <button
+        type='button'
+        className={state.classes}
+        id={props.id}
+        disabled={props.disabled}
+        aria-expanded={props.open ? true : false}
+        aria-controls={props['aria-controls']}
+        data-state={props.open ? 'open' : 'closed'}
+        data-value={props.value}
+        data-accordion-trigger=''
+        onClick={() => props.onClick?.()}
       >
-        <path d='m6 9 6 6 6-6' />
-      </svg>
-    </button>
+        {props.children}
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          width='16'
+          height='16'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='2'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          className='shrink-0 text-muted-foreground transition-transform duration-200 motion-reduce:transition-none'
+          aria-hidden='true'
+        >
+          <path d='m6 9 6 6 6-6' />
+        </svg>
+      </button>
+    </h3>
   );
 }

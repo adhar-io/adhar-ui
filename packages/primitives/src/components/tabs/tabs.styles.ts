@@ -1,10 +1,21 @@
 import { cva } from 'class-variance-authority';
 
 export const tabsListVariants = cva(
-  [
-    'inline-flex h-10 items-center justify-center rounded-md bg-muted p-1',
-    'text-muted-foreground',
-  ].join(' '),
+  'inline-flex items-center justify-center rounded-md bg-muted p-1 text-muted-foreground',
+  {
+    variants: {
+      orientation: {
+        horizontal: 'h-10 flex-row',
+        vertical: 'h-auto flex-col items-stretch',
+      },
+      fullWidth: {
+        true: 'flex w-full [&>*]:flex-1',
+      },
+    },
+    defaultVariants: {
+      orientation: 'horizontal',
+    },
+  },
 );
 
 export const tabsTriggerVariants = cva(

@@ -8,7 +8,8 @@ export const statCardVariants = cva(
   {
     variants: {
       interactive: {
-        true: 'cursor-pointer hover:shadow-md hover:border-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        true:
+          'cursor-pointer hover:shadow-md hover:border-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
         false: '',
       },
     },

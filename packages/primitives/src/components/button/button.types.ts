@@ -1,38 +1,35 @@
-import type { ButtonVariants } from './button.styles.ts';
-
+/**
+ * Prop types for consumers of the CVA-only API. Keep in sync with the
+ * interface(s) in `Button.lite.tsx`, which are the source of truth.
+ */
 export interface ButtonProps {
-  /** Visual variant of the button */
-  variant?: NonNullable<ButtonVariants>['variant'];
-  /** Size of the button */
-  size?: NonNullable<ButtonVariants>['size'];
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+  size?: 'xs' | 'sm' | 'default' | 'lg' | 'xl' | 'icon' | 'icon-sm' | 'icon-lg';
   /** Whether the button is disabled */
   disabled?: boolean;
-  /** Whether the button is in a loading state (shows spinner, disables interaction) */
+  /** Shows a spinner, sets aria-busy, and blocks interaction */
   loading?: boolean;
   /** Text announced by screen readers while loading (defaults to "Loading") */
   loadingText?: string;
-  /** Stretches the button to fill the width of its container */
+  /** Stretches the button to fill its container */
   fullWidth?: boolean;
-  /** Button type attribute */
   type?: 'button' | 'submit' | 'reset';
-  /** Name submitted with the form when used as a submit button */
-  name?: string;
-  /** Value submitted with the form when used as a submit button */
-  value?: string;
-  /** ID of the form this button belongs to (allows placement outside the form) */
-  form?: string;
-  /** Additional CSS classes */
   className?: string;
-  /** Accessible label when button has no visible text */
+  id?: string;
+  title?: string;
+  name?: string;
+  value?: string;
+  form?: string;
+  autoFocus?: boolean;
   'aria-label'?: string;
-  /** ID of the element this button controls */
+  'aria-describedby'?: string;
   'aria-controls'?: string;
-  /** Whether the controlled element is expanded */
   'aria-expanded'?: boolean;
-  /** Whether this is a toggle button and its pressed state */
   'aria-pressed'?: boolean;
-  /** Indicates the button opens a menu, listbox, or dialog */
-  'aria-haspopup'?: boolean;
-  /** Click handler */
-  onClick?: (event: MouseEvent) => void;
+  'aria-haspopup'?: boolean | 'menu' | 'listbox' | 'tree' | 'grid' | 'dialog';
+  onClick?: (event: any) => void;
+  onFocus?: (event: any) => void;
+  onBlur?: (event: any) => void;
+  onKeyDown?: (event: any) => void;
+  children?: any;
 }

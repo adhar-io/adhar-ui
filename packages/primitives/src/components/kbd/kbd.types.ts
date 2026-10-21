@@ -1,9 +1,11 @@
-import type { KbdVariants } from './kbd.styles.ts';
-
+/**
+ * Prop types for consumers of the CVA-only API. Keep in sync with the
+ * interface(s) in `Kbd.lite.tsx`, which are the source of truth.
+ */
 export interface KbdProps {
-  /** Size of the key cap */
-  size?: NonNullable<KbdVariants>['size'];
+  size?: 'sm' | 'default' | 'lg';
   className?: string;
-  /** Spoken label when the glyph is not descriptive (e.g. "⌘" → "Command") */
+  /** Spoken label for the key when the glyph is not descriptive (e.g. "⌘" → "Command") */
   'aria-label'?: string;
+  children?: any;
 }

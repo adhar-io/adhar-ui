@@ -9,10 +9,12 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    }
+    },
+    "./components/*": "./src/generated/src/components/*"
   },
   "files": [
     "dist",
+    "src/generated",
     "README.md"
   ],
   "keywords": [
@@ -23,6 +25,10 @@
   ],
   "author": "Adhar",
   "license": "Apache-2.0",
+  "dependencies": {
+    "@adhar-ui/utils": "^0.1.1",
+    "class-variance-authority": "^0.7.1"
+  },
   "peerDependencies": {
     "solid-js": "^1.8.0"
   },

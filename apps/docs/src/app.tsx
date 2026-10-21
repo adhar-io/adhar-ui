@@ -11,10 +11,9 @@ import { StorybookPage } from './pages/storybook.tsx';
 import { ExamplesPage as BlocksPage } from './pages/examples.tsx';
 import { ChangelogPage } from './pages/changelog.tsx';
 import { DesignResourcesPage } from './pages/design-resources.tsx';
-import { BuilderPage } from './pages/builder.tsx';
 
 // These routes render fullscreen without the DocsLayout wrapper
-const FULLSCREEN_ROUTES = ['/builder', '/storybook'];
+const FULLSCREEN_ROUTES = ['/storybook'];
 
 export function App() {
   const { route, navigate, isActive, segments } = useRoute();
@@ -46,9 +45,6 @@ export function App() {
     }
     if (route === '/design-resources') {
       return <DesignResourcesPage navigate={navigate} />;
-    }
-    if (route === '/builder') {
-      return <BuilderPage navigate={navigate} />;
     }
 
     // Components routes

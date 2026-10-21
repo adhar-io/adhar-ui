@@ -1,7 +1,10 @@
-import { useMetadata } from '@builder.io/mitosis';
+import { useMetadata, useStore } from '@builder.io/mitosis';
+import { cn } from '@adhar-ui/utils';
+import { commandSeparatorVariants } from './command.styles.ts';
 
 useMetadata({
   isAttachedToShadowDom: false,
+  angular: { selector: 'adhar-command-separator' },
 });
 
 export interface CommandSeparatorProps {
@@ -9,5 +12,11 @@ export interface CommandSeparatorProps {
 }
 
 export default function CommandSeparator(props: CommandSeparatorProps) {
-  return <div role='separator' aria-orientation='horizontal' className={props.className} />;
+  const state = useStore({
+    get classes(): string {
+      return cn(commandSeparatorVariants(), props.className);
+    },
+  });
+
+  return <div role='separator' aria-orientation='horizontal' className={state.classes} />;
 }

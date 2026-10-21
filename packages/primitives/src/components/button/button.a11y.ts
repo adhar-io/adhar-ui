@@ -11,7 +11,8 @@ export const buttonA11y = {
     'Shift+Tab': 'Move focus to the previous focusable element',
   },
   ariaAttributes: {
-    'aria-disabled': 'Set when button is disabled or loading. Preferred over HTML disabled for screen reader announcements.',
+    'aria-disabled':
+      'Set when button is disabled or loading. Preferred over HTML disabled for screen reader announcements.',
     'aria-pressed': 'Set for toggle buttons to indicate pressed/unpressed state.',
     'aria-expanded': 'Set when button controls expandable content (dropdown, accordion).',
     'aria-controls': 'ID of the element this button controls.',
@@ -21,7 +22,8 @@ export const buttonA11y = {
   },
   focusManagement: {
     focusable: true,
-    focusVisible: 'Visible focus ring via focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+    focusVisible:
+      'Visible focus ring via focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
     focusOrder: 'Follows DOM order. Use tabindex="-1" to remove from tab order when disabled.',
   },
   motionPreferences: {

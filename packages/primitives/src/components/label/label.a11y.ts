@@ -5,7 +5,8 @@ export const labelA11y = {
   element: 'label',
   ariaAttributes: {
     htmlFor: 'Must match the id of the associated form control',
-    'aria-required': 'Visual indicator (*) for required fields — pair with aria-required on the input',
+    'aria-required':
+      'Visual indicator (*) for required fields — pair with aria-required on the input',
   },
   behavior: {
     click: 'Clicking the label focuses/activates the associated form control',

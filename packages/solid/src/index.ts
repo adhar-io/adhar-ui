@@ -5,7 +5,7 @@
  * Components are compiled from @adhar-ui/primitives Mitosis sources.
  *
  * Generated Solid components are available at:
- *   @adhar-ui/solid/generated/src/components/<name>/<Name>.lite.tsx
+ *   @adhar-ui/solid/components/<name>/<Name>.tsx
  */
 
 // -- Utilities --

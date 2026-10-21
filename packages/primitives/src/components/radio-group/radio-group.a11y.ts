@@ -13,7 +13,8 @@ export const radioGroupA11y = {
   },
   ariaAttributes: {
     'role="radiogroup"': 'Set on the container that wraps the radio items',
-    'aria-label / aria-labelledby': 'Names the group — required when there is no visible group label',
+    'aria-label / aria-labelledby':
+      'Names the group — required when there is no visible group label',
     'aria-orientation': 'Reflects horizontal/vertical layout for assistive tech',
     'aria-required': 'Set when a selection is mandatory',
     'role="radio"': 'Set on each item',
