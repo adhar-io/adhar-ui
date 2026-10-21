@@ -63,15 +63,15 @@ async function mount(el: React.ReactElement): Promise<Mounted> {
   const container = document.createElement('div');
   document.body.appendChild(container);
   const root = createRoot(container);
-  await act(async () => root.render(el));
+  await act(() => root.render(el));
   return {
     container,
     root,
     rerender: async (next) => {
-      await act(async () => root.render(next));
+      await act(() => root.render(next));
     },
     unmount: async () => {
-      await act(async () => root.unmount());
+      await act(() => root.unmount());
       container.remove();
     },
   };
@@ -85,7 +85,7 @@ async function flush(ms = 0) {
 }
 
 async function key(target: Element, k: string, init: KeyboardEventInit = {}) {
-  await act(async () => {
+  await act(() => {
     target.dispatchEvent(
       new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true, ...init }),
     );
@@ -93,7 +93,7 @@ async function key(target: Element, k: string, init: KeyboardEventInit = {}) {
 }
 
 async function click(target: Element) {
-  await act(async () => {
+  await act(() => {
     (target as HTMLElement).click();
   });
 }
@@ -345,12 +345,12 @@ Deno.test('Tooltip shows on focus, hides on Escape, ids are unique', testOpts, a
   );
   const b1 = m.container.querySelector<HTMLElement>('#t1')!;
   const b2 = m.container.querySelector<HTMLElement>('#t2')!;
-  await act(async () => b1.focus());
+  await act(() => b1.focus());
   const tip1 = m.container.querySelector('[role="tooltip"]')!;
   assertEquals(tip1.textContent, 'First');
   await key(b1, 'Escape');
   assertEquals(m.container.querySelector('[role="tooltip"]'), null);
-  await act(async () => b2.focus());
+  await act(() => b2.focus());
   const tip2 = m.container.querySelector('[role="tooltip"]')!;
   assert(tip1.id !== tip2.id);
   assertEquals(b2.parentElement!.getAttribute('aria-describedby'), tip2.id);
@@ -371,7 +371,7 @@ Deno.test('InputOTP strips non-digits and completes once', testOpts, async () =>
   const m = await mount(h(InputOTP, { length: 4, onComplete: (v: string) => done.push(v) }));
   const input = m.container.querySelector('input')!;
   const type = async (v: string) => {
-    await act(async () => {
+    await act(() => {
       input.value = v;
       input.dispatchEvent(new Event('input', { bubbles: true }));
     });
