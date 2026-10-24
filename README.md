@@ -1,12 +1,16 @@
-<h1 align="center">Adhar UI</h1>
-
 <p align="center">
-  <strong>The open, framework-agnostic design system.</strong><br/>
-  <sub>Own your components. Ship to any framework. Sync with your design tools.</sub>
+  <a href="https://adhar.io">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="apps/docs/public/branding/adhar-logo-dark.svg" />
+      <img src="apps/docs/public/branding/adhar-logo.svg" alt="Adhar logo" width="200" />
+    </picture>
+  </a>
 </p>
 
+<h1 align="center">Adhar UI - The open, framework-agnostic design system</h1>
+
 <p align="center">
-  <img src="https://img.shields.io/badge/components-97-4f46e5?style=flat-square" alt="78 Components" />
+  <img src="https://img.shields.io/badge/components-97-4f46e5?style=flat-square" alt="97 Components" />
   <img src="https://img.shields.io/badge/blocks-16-22c55e?style=flat-square" alt="16 Blocks" />
   <img src="https://img.shields.io/badge/frameworks-5-06b6d4?style=flat-square" alt="5 Frameworks" />
   <img src="https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind v4" />
@@ -24,11 +28,25 @@
   <img src="https://img.shields.io/badge/Penpot-sync-63E6BE?style=flat-square&logo=penpot&logoColor=black" alt="Penpot" />
 </p>
 
+<p align="center">
+  <sub>Own your components. Ship to any framework. Sync with your design tools.</sub>
+</p>
+
 ---
 
 ## What is Adhar UI?
 
 Adhar UI is a design system where **you own every line of code**. Components are copied into your project -- not installed as dependencies. Read, modify, and extend them freely.
+
+| | |
+|-|-|
+| 🧩 **Own the code** | Components live in your repo, not in `node_modules`. No lock-in, no wrapper APIs. |
+| 🌐 **Write once, ship everywhere** | One Mitosis source compiles to React, Vue, SolidJS, Svelte, and Angular. |
+| 🎨 **Design-tool native** | Tokens round-trip between code, Figma, and Penpot in W3C DTCG format. |
+| ♿ **Accessible by default** | Keyboard navigation, focus management, and ARIA semantics built into every primitive. |
+| 🤖 **AI-ready** | Chat, streaming text, prompt input, and model selector components out of the box. |
+
+### At a glance
 
 - **97 components** -- from primitives (Button, Input, Card) to enterprise (Data Table, Kanban, Form Builder) and AI (Chat, Streaming Text, Prompt Input)
 - **16 blocks** -- pre-composed page sections (Login, Dashboard, Pricing, Chat, Navbar, Kanban Board, etc.)
@@ -335,7 +353,7 @@ adhar-ui/
 ## Development
 
 ```bash
-git clone https://github.com/nicober1/adhar-ui.git && cd adhar-ui
+git clone https://github.com/adhar-io/adhar-ui.git && cd adhar-ui
 
 # Development
 deno task check                # Type-check all packages
@@ -418,11 +436,23 @@ Redirects, security headers and cache rules live in `netlify.toml` and are appli
 
 ---
 
-## License
+## Contributing
 
-Apache License 2.0
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request, and run `deno task check`, `deno task lint`, and `deno task test` locally first.
 
 ---
+
+## License
+
+Released under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
+---
+
+<p align="center">
+  <a href="https://adhar.io">
+    <img src="apps/docs/public/branding/symbol-color.svg" alt="Adhar" width="40" />
+  </a>
+</p>
 
 <p align="center">
   <strong>Adhar UI</strong> &mdash; Part of the <a href="https://adhar.io">Adhar Platform</a>
