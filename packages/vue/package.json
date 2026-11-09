@@ -26,7 +26,7 @@
   "author": "Adhar",
   "license": "Apache-2.0",
   "dependencies": {
-    "@adhar-ui/utils": "^0.1.1",
+    "@adhar-ui/utils": "workspace:*",
     "class-variance-authority": "^0.7.1"
   },
   "peerDependencies": {
