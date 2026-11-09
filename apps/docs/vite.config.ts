@@ -1,6 +1,6 @@
-import { defineConfig } from 'npm:vite@^8.0.0';
-import react from 'npm:@vitejs/plugin-react@^5.1.0';
-import tailwindcss from 'npm:@tailwindcss/vite@^4.1.0';
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import path from 'node:path';
 
 export default defineConfig({

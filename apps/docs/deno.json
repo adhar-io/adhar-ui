@@ -1,8 +1,8 @@
 {
   "tasks": {
-    "dev": "deno run -A npm:vite@^8.0.0 --host",
-    "build": "deno run -A npm:vite@^8.0.0 build",
-    "preview": "deno run -A npm:vite@^8.0.0 preview"
+    "dev": "pnpm install --frozen-lockfile && pnpm run dev -- --host",
+    "build": "pnpm install --frozen-lockfile && pnpm run build",
+    "preview": "pnpm run preview -- --host"
   },
   "imports": {
     "react": "npm:react@^19.2.0",
