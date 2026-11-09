@@ -1,0 +1,77 @@
+// Development container for adhar-ui: the toolchain this repository declares, the
+// platform's tools, and the editor extensions and IDE plugins. VS Code, IntelliJ
+// IDEA, a Coder workspace and `devcontainer up` all build it from this file.
+// Dockerfile, post-create.sh, app-ci.sh and README.md beside it are the same as in
+// every application created from an Adhar template; README.md explains them.
+{
+  "name": "adhar-ui",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      // Node.js 20: package.json engines.node and .github/workflows/deploy.yml.
+      // Change them together (post-create.sh warns when they differ).
+      "BASE_IMAGE": "mcr.microsoft.com/devcontainers/typescript-node:4-20-trixie",
+      // pnpm exactly as package.json packageManager pins it (the release pipeline
+      // publishes with pnpm), and tsx. Change them together.
+      "NPM_GLOBAL_PACKAGES": "pnpm@10.13.1 tsx"
+    }
+  },
+  "features": {
+    // Deno exactly as .github/workflows/ci.yml pins it: every deno task and
+    // packages/primitives/scripts/compile.sh (bash, plus coreutils the image has).
+    "ghcr.io/devcontainers-community/features/deno:1": { "version": "2.9.5" },
+    // kubectl and Helm.
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": { "version": "latest", "helm": "latest", "minikube": "none" }
+  },
+  "remoteUser": "node",
+  "forwardPorts": [5173, 6006],
+  "portsAttributes": {
+    "5173": { "label": "Docs (deno task docs:dev)", "onAutoForward": "notify" },
+    "6006": { "label": "Storybook (deno task storybook:dev)", "onAutoForward": "notify" }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "customizations": {
+    "vscode": {
+      // The same list as ../.vscode/extensions.json: every id is on the VS Code
+      // Marketplace AND Open VSX, so VS Code and code-server install the same set.
+      "extensions": [
+        "denoland.vscode-deno",
+        "esbenp.prettier-vscode",
+        "yoavbls.pretty-ts-errors",
+        "bradlc.vscode-tailwindcss",
+        "eamodio.gitlens",
+        "ms-azuretools.vscode-containers",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "redhat.vscode-yaml",
+        "editorconfig.editorconfig",
+        "42crunch.vscode-openapi",
+        "sonarsource.sonarlint-vscode",
+        "usernamehw.errorlens",
+        "humao.rest-client"
+      ],
+      "settings": {
+        "deno.enable": true,
+        "redhat.telemetry.enabled": false
+      }
+    },
+    "jetbrains": {
+      // IntelliJ IDEA Ultimate, the IDE the platform's Coder workspaces open through
+      // JetBrains Gateway; the plugins are the same list as ../.idea/externalDependencies.xml.
+      "backend": "IntelliJ",
+      "plugins": [
+        "JavaScript",
+        "NodeJS",
+        "deno",
+        "intellij.prettierJS",
+        "com.intellij.tailwindcss",
+        "com.intellij.kubernetes",
+        "Docker",
+        "org.jetbrains.plugins.yaml",
+        "org.editorconfig.editorconfigjetbrains",
+        "org.sonarlint.idea",
+        "com.intellij.swagger",
+        "com.jetbrains.restClient"
+      ]
+    }
+  }
+}
